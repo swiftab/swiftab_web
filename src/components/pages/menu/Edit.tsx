@@ -27,7 +27,7 @@ export default function EditItemDialog({ item, onEditItem }) {
           <DialogHeader>
             <DialogTitle>Edit Menu Item</DialogTitle>
             <DialogDescription>
-              Make changes to the menu item here. Click save when you're done.
+              Make changes to the menu item here. Click save when you&apos;re done.
             </DialogDescription>
           </DialogHeader>
           <form onSubmit={handleSubmit} className="grid gap-4 py-4">
