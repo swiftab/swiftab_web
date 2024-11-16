@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button"
 import DeleteConfirmationDialog from "./Delete"
 import EditItemDialog from "./Edit"
 import CreateItemDialog from "./Create"
+import Image from "next/image"
 
 const initialMenuItems = [
   {
@@ -138,7 +139,7 @@ export default function MenuManager() {
                           <TableCell>
                             <div className="flex items-center gap-2">
                               <div className="h-10 w-10 rounded-md bg-muted flex items-center justify-center">
-                                <img
+                                <Image
                                   src={item.image}
                                   alt={item.menu}
                                   className="h-8 w-8 rounded object-cover"
