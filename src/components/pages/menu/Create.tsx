@@ -43,7 +43,7 @@ export default function CreateItemDialog({ onCreateItem }) {
           <DialogHeader>
             <DialogTitle>Create New Menu Item</DialogTitle>
             <DialogDescription>
-              Add a new item to your restaurant menu. Click save when you're done.
+              Add a new item to your restaurant menu. Click save when you&apos;re done.
             </DialogDescription>
           </DialogHeader>
           <form onSubmit={handleSubmit} className="grid gap-4 py-4">
