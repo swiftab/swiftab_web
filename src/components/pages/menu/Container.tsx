@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from "react"
-import { Pencil, Plus, Search, Trash2 } from "lucide-react"
+import { Search, Trash2 } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
