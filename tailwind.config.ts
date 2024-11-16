@@ -10,6 +10,7 @@ const config: Config = {
   theme: {
   	extend: {
   		colors: {
+
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {
@@ -21,11 +22,11 @@ const config: Config = {
   				foreground: 'hsl(var(--popover-foreground))'
   			},
   			primary: {
-  				DEFAULT: 'hsl(var(--primary))',
+  				DEFAULT: '#008080',
   				foreground: 'hsl(var(--primary-foreground))'
   			},
   			secondary: {
-  				DEFAULT: 'hsl(var(--secondary))',
+  				DEFAULT: '#003366',
   				foreground: 'hsl(var(--secondary-foreground))'
   			},
   			muted: {
