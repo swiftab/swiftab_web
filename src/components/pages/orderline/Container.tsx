@@ -13,6 +13,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import Image from "next/image";
 
 const orders = [
   {
@@ -126,7 +127,7 @@ export default function Container() {
                         <TableCell>
                           <div className="flex items-center gap-2">
                             <div className="h-10 w-10 rounded-md bg-muted flex items-center justify-center">
-                              <img
+                              <Image
                                 src={order.image}
                                 alt={order.menu}
                                 className="h-8 w-8 rounded"
