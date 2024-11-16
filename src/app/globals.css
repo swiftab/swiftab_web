@@ -96,3 +96,21 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+@layer components{
+  .primary-btn{
+    @apply bg-[#008080]
+  }
+  .secondary-btn{
+    @apply bg-[#003366]
+  }
+}
+
+/* export const color = {
+  navy:'#003366',
+  green:'#008080',
+  white:'#fff',
+  graywhite:'#f7f8f8',
+  gray:'#cdd5d7',
+  black:'#000'
+} */
