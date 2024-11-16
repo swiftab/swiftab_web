@@ -5,9 +5,6 @@ import {
   Table2, 
   Utensils, 
   Users, 
-  ShoppingCart,
-  Settings, 
-  LogOut, 
   ChartNetwork
 } from "lucide-react";
 
@@ -46,10 +43,6 @@ const menuItems: SidebarItem[] = [
       { icon: Users, title: "Customers", url: "/customers/loyal" },
     ]
   },
-  // { icon: ShoppingCart, title: "Orders", url: "/dashboard/orders" },
-  // { icon: Settings, title: "Settings", url: "/dashboard/settings" },
-  // Uncomment when implementing logout functionality
-  // { icon: LogOut, title: "Logout", url: "/logout" },
 ];
 
 export default menuItems;
