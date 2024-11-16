@@ -1,14 +1,15 @@
 import Link from "next/link"
 import { Facebook, Twitter, Instagram } from "lucide-react"
+import Image from "next/image"
 
-export default function Container() {
+export default function FooterHome() {
   return (
-    <footer className="w-full bg-zinc-800 text-zinc-100 py-12 px-4 md:px-6">
+    <footer className="w-full bg-[#008080] text-zinc-100 py-12 px-4 md:px-6">
       <div className="container mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
           {/* Brand Column */}
           <div className="md:col-span-3">
-            <h2 className="text-xl font-bold mb-4">SwifTab</h2>
+            <Image src="/swiftab/logo.svg" width={80} height={80} alt="logo" />
             <p className="text-sm text-zinc-300 mb-4">
               Your guide to unforgettable dining experiences
             </p>
