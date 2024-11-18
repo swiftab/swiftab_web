@@ -1,5 +1,5 @@
-import Container from '@/components/pages/dashboard/Container'
-import React from 'react'
+import Container from "@/components/pages/dashboard/Container";
+import React from "react";
 
 export default function DashboardPage() {
   return (
@@ -10,5 +10,5 @@ export default function DashboardPage() {
     <div>
       <Container />
     </div>
-  )
+  );
 }

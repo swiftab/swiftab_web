@@ -1,7 +1,5 @@
-import React from 'react'
+import React from "react";
 
 export default function ReservationList() {
-  return (
-    <div>RESERVATION LIST</div>
-  )
+  return <div>RESERVATION LIST</div>;
 }

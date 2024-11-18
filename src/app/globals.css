@@ -97,12 +97,12 @@ body {
   }
 }
 
-@layer components{
-  .primary-btn{
-    @apply bg-[#008080]
+@layer components {
+  .primary-btn {
+    @apply bg-[#008080];
   }
-  .secondary-btn{
-    @apply bg-[#003366]
+  .secondary-btn {
+    @apply bg-[#003366];
   }
 }
 

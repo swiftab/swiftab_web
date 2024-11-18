@@ -18,14 +18,15 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 
-
 export function SideBarContent() {
   const pathname = usePathname();
   const [openGroups, setOpenGroups] = useState<string[]>([]);
 
   const toggleGroup = (title: string) => {
     setOpenGroups((prev) =>
-      prev.includes(title) ? prev.filter((group) => group !== title) : [...prev, title]
+      prev.includes(title)
+        ? prev.filter((group) => group !== title)
+        : [...prev, title],
     );
   };
 
@@ -39,7 +40,10 @@ export function SideBarContent() {
                 <SidebarMenuItem>
                   <SidebarMenuButton
                     asChild
-                    isActive={pathname === item.url || pathname.startsWith(`${item.url}/`)}
+                    isActive={
+                      pathname === item.url ||
+                      pathname.startsWith(`${item.url}/`)
+                    }
                     onClick={() => item.children && toggleGroup(item.title)}
                   >
                     <a href={item.url}>
@@ -57,7 +61,10 @@ export function SideBarContent() {
                 </SidebarMenuItem>
 
                 {item.children && (
-                  <Collapsible open={openGroups.includes(item.title)} onOpenChange={() => toggleGroup(item.title)}>
+                  <Collapsible
+                    open={openGroups.includes(item.title)}
+                    onOpenChange={() => toggleGroup(item.title)}
+                  >
                     <CollapsibleTrigger asChild>
                       <div></div>
                     </CollapsibleTrigger>
@@ -68,7 +75,10 @@ export function SideBarContent() {
                             <SidebarMenuItem key={subItem.title}>
                               <SidebarMenuButton
                                 asChild
-                                isActive={pathname === subItem.url || pathname.startsWith(`${subItem.url}/`)}
+                                isActive={
+                                  pathname === subItem.url ||
+                                  pathname.startsWith(`${subItem.url}/`)
+                                }
                               >
                                 <a href={subItem.url}>
                                   <subItem.icon className="h-4 w-4" />

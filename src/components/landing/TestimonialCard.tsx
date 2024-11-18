@@ -3,7 +3,13 @@ import { Card, CardContent } from "../ui/card";
 import Image from "next/image";
 import { Star } from "lucide-react";
 import testimonials from "./Testimonial";
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "../ui/carousel";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "../ui/carousel";
 
 export default function TestimonialCard() {
   return (
@@ -23,9 +29,15 @@ export default function TestimonialCard() {
                       className="object-cover"
                     />
                   </div>
-                  <div className="flex gap-1" aria-label={`Rating: ${testimonial.rating} out of 5 stars`}>
+                  <div
+                    className="flex gap-1"
+                    aria-label={`Rating: ${testimonial.rating} out of 5 stars`}
+                  >
                     {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
+                      <Star
+                        key={i}
+                        className="w-5 h-5 text-yellow-400 fill-current"
+                      />
                     ))}
                   </div>
                   <p className="text-muted-foreground">{testimonial.text}</p>

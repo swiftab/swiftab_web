@@ -1,6 +1,6 @@
-import Link from "next/link"
-import { Facebook, Twitter, Instagram } from "lucide-react"
-import Image from "next/image"
+import Link from "next/link";
+import { Facebook, Twitter, Instagram } from "lucide-react";
+import Image from "next/image";
 
 export default function FooterHome() {
   return (
@@ -34,22 +34,34 @@ export default function FooterHome() {
             <h3 className="font-semibold mb-4">Product</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="#" className="text-sm text-zinc-300 hover:text-white">
+                <Link
+                  href="#"
+                  className="text-sm text-zinc-300 hover:text-white"
+                >
                   Features
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-sm text-zinc-300 hover:text-white">
+                <Link
+                  href="#"
+                  className="text-sm text-zinc-300 hover:text-white"
+                >
                   Pricing
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-sm text-zinc-300 hover:text-white">
+                <Link
+                  href="#"
+                  className="text-sm text-zinc-300 hover:text-white"
+                >
                   Reviews
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-sm text-zinc-300 hover:text-white">
+                <Link
+                  href="#"
+                  className="text-sm text-zinc-300 hover:text-white"
+                >
                   Updates
                 </Link>
               </li>
@@ -61,22 +73,34 @@ export default function FooterHome() {
             <h3 className="font-semibold mb-4">Company</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="#" className="text-sm text-zinc-300 hover:text-white">
+                <Link
+                  href="#"
+                  className="text-sm text-zinc-300 hover:text-white"
+                >
                   About
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-sm text-zinc-300 hover:text-white">
+                <Link
+                  href="#"
+                  className="text-sm text-zinc-300 hover:text-white"
+                >
                   Contact us
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-sm text-zinc-300 hover:text-white">
+                <Link
+                  href="#"
+                  className="text-sm text-zinc-300 hover:text-white"
+                >
                   Careers
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-sm text-zinc-300 hover:text-white">
+                <Link
+                  href="#"
+                  className="text-sm text-zinc-300 hover:text-white"
+                >
                   Blog
                 </Link>
               </li>
@@ -88,22 +112,34 @@ export default function FooterHome() {
             <h3 className="font-semibold mb-4">Support</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="#" className="text-sm text-zinc-300 hover:text-white">
+                <Link
+                  href="#"
+                  className="text-sm text-zinc-300 hover:text-white"
+                >
                   Getting started
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-sm text-zinc-300 hover:text-white">
+                <Link
+                  href="#"
+                  className="text-sm text-zinc-300 hover:text-white"
+                >
                   Help center
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-sm text-zinc-300 hover:text-white">
+                <Link
+                  href="#"
+                  className="text-sm text-zinc-300 hover:text-white"
+                >
                   Server status
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-sm text-zinc-300 hover:text-white">
+                <Link
+                  href="#"
+                  className="text-sm text-zinc-300 hover:text-white"
+                >
                   Chat support
                 </Link>
               </li>
@@ -115,17 +151,26 @@ export default function FooterHome() {
             <h3 className="font-semibold mb-4">Privacy and Terms</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="#" className="text-sm text-zinc-300 hover:text-white">
+                <Link
+                  href="#"
+                  className="text-sm text-zinc-300 hover:text-white"
+                >
                   Community guidelines
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-sm text-zinc-300 hover:text-white">
+                <Link
+                  href="#"
+                  className="text-sm text-zinc-300 hover:text-white"
+                >
                   Privacy
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-sm text-zinc-300 hover:text-white">
+                <Link
+                  href="#"
+                  className="text-sm text-zinc-300 hover:text-white"
+                >
                   Terms
                 </Link>
               </li>
@@ -134,5 +179,5 @@ export default function FooterHome() {
         </div>
       </div>
     </footer>
-  )
+  );
 }

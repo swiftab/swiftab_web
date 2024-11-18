@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 import {
   Area,
   AreaChart,
@@ -10,19 +10,19 @@ import {
   Tooltip,
   XAxis,
   YAxis,
-} from "recharts"
-import { ChevronLeft, Download } from "lucide-react"
-import Link from "next/link"
+} from "recharts";
+import { ChevronLeft, Download } from "lucide-react";
+import Link from "next/link";
 
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
+} from "@/components/ui/select";
 
 // Sample data
 const salesData = [
@@ -32,7 +32,7 @@ const salesData = [
   { month: "Apr", thisYear: 28000, lastYear: 29000 },
   { month: "May", thisYear: 35000, lastYear: 26000 },
   { month: "Jun", thisYear: 30000, lastYear: 27000 },
-]
+];
 
 const sparklineData = [
   { value: 400 },
@@ -41,10 +41,10 @@ const sparklineData = [
   { value: 350 },
   { value: 450 },
   { value: 400 },
-]
+];
 
 export default function AnalyticsPage() {
-  const [timeframe, setTimeframe] = React.useState("month")
+  const [timeframe, setTimeframe] = React.useState("month");
 
   return (
     <div className="flex-1 p-4 md:p-8 pt-6">
@@ -67,7 +67,9 @@ export default function AnalyticsPage() {
                 <SelectItem value="7days">Last 7 days</SelectItem>
                 <SelectItem value="30days">Last 30 days</SelectItem>
                 <SelectItem value="90days">Last 90 days</SelectItem>
-                <SelectItem value="custom">Jun 10,2020 - Jun 10,2021</SelectItem>
+                <SelectItem value="custom">
+                  Jun 10,2020 - Jun 10,2021
+                </SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -80,7 +82,9 @@ export default function AnalyticsPage() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">$60,040</div>
-              <div className="text-xs text-muted-foreground">+12% from last month</div>
+              <div className="text-xs text-muted-foreground">
+                +12% from last month
+              </div>
               <div className="h-[35px] mt-3">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={sparklineData}>
@@ -92,11 +96,15 @@ export default function AnalyticsPage() {
           </Card>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Transactions</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                Transactions
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">953,000</div>
-              <div className="text-xs text-muted-foreground">+8.2% from last month</div>
+              <div className="text-xs text-muted-foreground">
+                +8.2% from last month
+              </div>
               <div className="h-[35px] mt-3">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={sparklineData}>
@@ -108,11 +116,15 @@ export default function AnalyticsPage() {
           </Card>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">AVG Item/Sale</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                AVG Item/Sale
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">2.005</div>
-              <div className="text-xs text-muted-foreground">+4.4% from last month</div>
+              <div className="text-xs text-muted-foreground">
+                +4.4% from last month
+              </div>
               <div className="h-[35px] mt-3">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={sparklineData}>
@@ -195,7 +207,10 @@ export default function AnalyticsPage() {
                     tickFormatter={(value) => `$${value}`}
                   />
                   <Tooltip
-                    contentStyle={{ background: "white", border: "1px solid #e2e8f0" }}
+                    contentStyle={{
+                      background: "white",
+                      border: "1px solid #e2e8f0",
+                    }}
                     formatter={(value) => [`$${value}`, "Sales"]}
                   />
                   <Area
@@ -221,5 +236,5 @@ export default function AnalyticsPage() {
         </Card>
       </div>
     </div>
-  )
+  );
 }

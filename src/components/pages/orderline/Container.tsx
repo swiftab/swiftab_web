@@ -1,8 +1,7 @@
-"use client"
+"use client";
 
 import * as React from "react";
 import { Search } from "lucide-react";
-
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
@@ -19,56 +18,56 @@ const orders = [
   {
     code: "#430085",
     menu: "Hamburger",
-    image: "/placeholder.svg",
+    image: "/user.png",
     customer: "Devon Lane",
     price: "$5.42",
   },
   {
     code: "#430086",
     menu: "Burger with cheese",
-    image: "/placeholder.svg",
+    image: "/user.png",
     customer: "Jacob Jones",
     price: "$12.00",
   },
   {
     code: "#430084",
     menu: "Potato with drink",
-    image: "/placeholder.svg",
+    image: "/user.png",
     customer: "Ronald Richards",
     price: "$8.50",
   },
   {
     code: "#430087",
     menu: "Burger with cheese",
-    image: "/placeholder.svg",
+    image: "/user.png",
     customer: "Esther Howard",
     price: "$12.00",
   },
   {
     code: "#430088",
     menu: "Bread and chicken",
-    image: "/placeholder.svg",
+    image: "/user.png",
     customer: "Wade Warren",
     price: "$9.99",
   },
   {
     code: "#430089",
     menu: "Hamburger",
-    image: "/placeholder.svg",
+    image: "/user.png",
     customer: "Kathryn Murphy",
     price: "$5.42",
   },
   {
     code: "#430078",
     menu: "Gourmet burger",
-    image: "/placeholder.svg",
+    image: "/user.png",
     customer: "Brooklyn Simmons",
     price: "$15.99",
   },
   {
     code: "#430079",
     menu: "Hamburger",
-    image: "/placeholder.svg",
+    image: "/user.png",
     customer: "Kristin Watson",
     price: "$5.42",
   },
@@ -81,7 +80,7 @@ export default function Container() {
     (order) =>
       order.code.toLowerCase().includes(searchQuery.toLowerCase()) ||
       order.menu.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      order.customer.toLowerCase().includes(searchQuery.toLowerCase())
+      order.customer.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   return (
@@ -123,13 +122,17 @@ export default function Container() {
                   <TableBody>
                     {filteredOrders.map((order) => (
                       <TableRow key={order.code}>
-                        <TableCell className="font-medium">{order.code}</TableCell>
+                        <TableCell className="font-medium">
+                          {order.code}
+                        </TableCell>
                         <TableCell>
                           <div className="flex items-center gap-2">
                             <div className="h-10 w-10 rounded-md bg-muted flex items-center justify-center">
                               <Image
                                 src={order.image}
                                 alt={order.menu}
+                                width={20}
+                                height={20}
                                 className="h-8 w-8 rounded"
                               />
                             </div>
@@ -137,7 +140,9 @@ export default function Container() {
                           </div>
                         </TableCell>
                         <TableCell>{order.customer}</TableCell>
-                        <TableCell className="text-right">{order.price}</TableCell>
+                        <TableCell className="text-right">
+                          {order.price}
+                        </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
@@ -147,17 +152,23 @@ export default function Container() {
           </TabsContent>
           <TabsContent value="recent">
             <div className="flex h-[450px] items-center justify-center border rounded-lg">
-              <p className="text-muted-foreground">Recent orders will appear here</p>
+              <p className="text-muted-foreground">
+                Recent orders will appear here
+              </p>
             </div>
           </TabsContent>
           <TabsContent value="previous">
             <div className="flex h-[450px] items-center justify-center border rounded-lg">
-              <p className="text-muted-foreground">Previous orders will appear here</p>
+              <p className="text-muted-foreground">
+                Previous orders will appear here
+              </p>
             </div>
           </TabsContent>
           <TabsContent value="canceled">
             <div className="flex h-[450px] items-center justify-center border rounded-lg">
-              <p className="text-muted-foreground">Canceled orders will appear here</p>
+              <p className="text-muted-foreground">
+                Canceled orders will appear here
+              </p>
             </div>
           </TabsContent>
         </Tabs>

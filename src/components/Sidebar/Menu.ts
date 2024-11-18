@@ -1,11 +1,11 @@
-import { 
-  LucideIcon, 
-  LayoutDashboard, 
+import {
+  LucideIcon,
+  LayoutDashboard,
   ListOrdered,
-  Table2, 
-  Utensils, 
-  Users, 
-  ChartNetwork
+  Table2,
+  Utensils,
+  Users,
+  ChartNetwork,
 } from "lucide-react";
 
 interface SidebarItem {
@@ -20,28 +20,28 @@ const menuItems: SidebarItem[] = [
   { icon: ChartNetwork, title: "Analytics", url: "/analytics" },
   { icon: ListOrdered, title: "Order Line", url: "/order-line" },
   {
-    icon: Table2, 
-    title: "Manage Tables", 
-    url: "#", 
+    icon: Table2,
+    title: "Manage Tables",
+    url: "#",
     children: [
       { icon: Table2, title: "Grid", url: "/tables/grid" },
       { icon: Table2, title: "Floor Plans", url: "/tables/floorplan" },
-    ]
+    ],
   },
   {
-    icon: Utensils, 
-    title: "Manage Dishes", 
-    url: "/dishes" 
+    icon: Utensils,
+    title: "Manage Dishes",
+    url: "/dishes",
   },
   {
-    icon: Users, 
-    title: "Customers", 
-    url: "#", 
+    icon: Users,
+    title: "Customers",
+    url: "#",
     children: [
       { icon: Users, title: "Review", url: "/customers/review" },
       { icon: Users, title: "Reservation List", url: "/customers/reservation" },
       { icon: Users, title: "Customers", url: "/customers/loyal" },
-    ]
+    ],
   },
 ];
 

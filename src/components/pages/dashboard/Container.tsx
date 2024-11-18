@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 import {
   Bar,
   BarChart,
@@ -13,13 +13,13 @@ import {
   YAxis,
   Tooltip,
   Cell,
-} from "recharts"
-import { Search, Bell, MapPin } from "lucide-react"
+} from "recharts";
+import { Search, Bell, MapPin } from "lucide-react";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
@@ -27,7 +27,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
+} from "@/components/ui/table";
 
 // Sample data
 const monthlyOrders = [
@@ -43,13 +43,13 @@ const monthlyOrders = [
   { month: "Oct", orders: 70 },
   { month: "Nov", orders: 45 },
   { month: "Dec", orders: 58 },
-]
+];
 
 const visitorAge = [
   { name: "15-25", value: 15 },
   { name: "26-35", value: 60 },
   { name: "36-45", value: 25 },
-]
+];
 
 const recentOrders = [
   {
@@ -73,9 +73,9 @@ const recentOrders = [
     price: "$15.00",
     date: "02 May 2024",
   },
-]
+];
 
-const COLORS = ['#FF8042', '#00C49F', '#FFBB28']
+const COLORS = ["#FF8042", "#00C49F", "#FFBB28"];
 
 export default function Container() {
   return (
@@ -280,7 +280,10 @@ export default function Container() {
                   dataKey="value"
                 >
                   {visitorAge.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={COLORS[index % COLORS.length]}
+                    />
                   ))}
                 </Pie>
                 <Tooltip />
@@ -303,5 +306,5 @@ export default function Container() {
         </Card>
       </div>
     </div>
-  )
+  );
 }
