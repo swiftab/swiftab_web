@@ -47,7 +47,7 @@ export function SideBarContent() {
                     onClick={() => item.children && toggleGroup(item.title)}
                   >
                     <a href={item.url}>
-                      <item.icon className="h-4 w-4" />
+                      <item.icon className="h-4 w-4 " />
                       <span>{item.title}</span>
                       {item.children && (
                         <ChevronDown
