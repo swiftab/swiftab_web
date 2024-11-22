@@ -1,7 +1,6 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { Button } from "@/components/ui/button";
 import ServiceCard from "@/components/landing/benefits/ServiceCard";
 import FooterHome from "@/components/landing/footer/FooterHome";
 import Header from "@/components/landing/header/Header";
@@ -14,7 +13,7 @@ import dynamic from "next/dynamic";
 
 const AuthModal = dynamic(
   () => import("../auth/Authmodal").then((mod) => mod.AuthModal),
-  { ssr: false }
+  { ssr: false },
 );
 
 export default function LandingPage() {
@@ -22,8 +21,10 @@ export default function LandingPage() {
   const testimonialsRef = useRef<HTMLElement>(null);
   const featuresRef = useRef<HTMLElement>(null);
 
-  const scrollToSection = (ref: React.RefObject<HTMLElement>) => {
-    ref.current?.scrollIntoView({ behavior: "smooth" });
+  const scrollToSection = (ref: React.RefObject<HTMLElement> | null) => {
+    if (ref && ref.current) {
+      ref.current.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   const [isModalOpen, setIsModalOpen] = useState(false);

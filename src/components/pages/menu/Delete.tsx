@@ -9,12 +9,20 @@ import {
 } from "@/components/ui/dialog";
 import React from "react";
 
+// Define the types for the props
+interface DeleteConfirmationDialogProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onConfirm: () => void;
+  itemName: string | undefined;
+}
+
 export default function DeleteConfirmationDialog({
   isOpen,
   onClose,
   onConfirm,
   itemName,
-}) {
+}: DeleteConfirmationDialogProps) {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent>

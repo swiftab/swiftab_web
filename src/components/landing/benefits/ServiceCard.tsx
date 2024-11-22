@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { CalendarCheck, ChartNoAxesCombined, Star } from "lucide-react";
 import dynamic from "next/dynamic";
-
-// Dynamically import react-animated-numbers
-const AnimatedNumbers = dynamic(() => import("react-animated-numbers"), {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const AnimatedNumbers = dynamic<any>(() => import("react-animated-numbers"), {
   ssr: false,
 });
 

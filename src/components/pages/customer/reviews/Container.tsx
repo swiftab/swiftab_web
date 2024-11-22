@@ -13,7 +13,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
 
 // Sample review data
 const initialReviews = [
@@ -62,7 +61,7 @@ export function ReviewList() {
     const filtered = initialReviews.filter(
       (review) =>
         review.customerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        review.comment.toLowerCase().includes(searchTerm.toLowerCase())
+        review.comment.toLowerCase().includes(searchTerm.toLowerCase()),
     );
     setReviews(filtered);
   };

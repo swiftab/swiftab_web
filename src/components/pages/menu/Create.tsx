@@ -13,9 +13,27 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Plus } from "lucide-react";
 
-export default function CreateItemDialog({ onCreateItem }) {
+// Define the type for a menu item
+interface MenuItem {
+  id?: string; // id might be undefined when creating a new item
+  code: string;
+  menu: string;
+  description: string;
+  price: string;
+  category: "breakfast" | "lunch" | "dinner";
+  image: string;
+}
+
+// Define the type for the props
+interface CreateItemDialogProps {
+  onCreateItem: (newItem: MenuItem) => void; // onCreateItem expects a function that takes a MenuItem
+}
+
+export default function CreateItemDialog({
+  onCreateItem,
+}: CreateItemDialogProps) {
   const [isOpen, setIsOpen] = React.useState(false);
-  const [newItem, setNewItem] = React.useState({
+  const [newItem, setNewItem] = React.useState<MenuItem>({
     code: "",
     menu: "",
     description: "",
@@ -24,9 +42,9 @@ export default function CreateItemDialog({ onCreateItem }) {
     image: "/placeholder.svg",
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onCreateItem(newItem);
+    onCreateItem(newItem); // Call the onCreateItem prop with the new item
     setIsOpen(false);
     setNewItem({
       code: "",
@@ -111,7 +129,10 @@ export default function CreateItemDialog({ onCreateItem }) {
               id="category"
               value={newItem.category}
               onChange={(e) =>
-                setNewItem({ ...newItem, category: e.target.value })
+                setNewItem({
+                  ...newItem,
+                  category: e.target.value as "breakfast" | "lunch" | "dinner",
+                })
               }
               className="col-span-3 flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
             >

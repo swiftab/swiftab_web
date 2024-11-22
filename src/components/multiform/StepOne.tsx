@@ -11,7 +11,7 @@ interface StepOneProps {
     image: File | null;
   };
   handleInputChange: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => void;
   handleFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }

@@ -80,7 +80,7 @@ export default function Container() {
     (order) =>
       order.code.toLowerCase().includes(searchQuery.toLowerCase()) ||
       order.menu.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      order.customer.toLowerCase().includes(searchQuery.toLowerCase())
+      order.customer.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   return (

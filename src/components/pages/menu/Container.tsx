@@ -18,7 +18,18 @@ import EditItemDialog from "./Edit";
 import CreateItemDialog from "./Create";
 import Image from "next/image";
 
-const initialMenuItems = [
+// Define the type for a menu item
+interface MenuItem {
+  id: string;
+  code: string;
+  menu: string;
+  image: string;
+  description: string;
+  price: string;
+  category: "breakfast" | "lunch" | "dinner";
+}
+
+const initialMenuItems: MenuItem[] = [
   {
     id: "1",
     code: "#430085",
@@ -46,49 +57,46 @@ const initialMenuItems = [
     price: "$24.99",
     category: "dinner",
   },
-  // Add more menu items to test scrolling
-  ...[...Array(20)].map((_, index) => ({
-    id: `${index + 4}`,
-    code: `#4300${90 + index}`,
-    menu: `Menu Item ${index + 4}`,
-    image: "/swiftab/pancakes.png",
-    description: `Description for Menu Item ${index + 4}`,
-    price: `$${(Math.random() * 20 + 5).toFixed(2)}`,
-    category: ["breakfast", "lunch", "dinner"][Math.floor(Math.random() * 3)],
-  })),
 ];
 
 export default function MenuManager() {
   const [searchQuery, setSearchQuery] = React.useState("");
   const [activeTab, setActiveTab] = React.useState("breakfast");
-  const [menuItems, setMenuItems] = React.useState(initialMenuItems);
-  const [editItem, setEditItem] = React.useState(null);
+  const [menuItems, setMenuItems] =
+    React.useState<MenuItem[]>(initialMenuItems);
+  // Removed unused 'editItem' state to avoid error
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = React.useState(false);
-  const [itemToDelete, setItemToDelete] = React.useState(null);
+  const [itemToDelete, setItemToDelete] = React.useState<MenuItem | null>(null);
 
   const filteredMenuItems = menuItems.filter(
     (item) =>
       item.category === activeTab &&
       (item.code.toLowerCase().includes(searchQuery.toLowerCase()) ||
         item.menu.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        item.description.toLowerCase().includes(searchQuery.toLowerCase()))
+        item.description.toLowerCase().includes(searchQuery.toLowerCase())),
   );
 
-  const handleCreateItem = (newItem) => {
+  // Handle creating a new menu item
+  const handleCreateItem = (newItem: Omit<MenuItem, "id">) => {
     setMenuItems([...menuItems, { ...newItem, id: Date.now().toString() }]);
   };
 
-  const handleEditItem = (updatedItem) => {
+  // Handle editing an existing menu item
+  const handleEditItem = (updatedItem: MenuItem) => {
     setMenuItems(
-      menuItems.map((item) => (item.id === updatedItem.id ? updatedItem : item))
+      menuItems.map((item) => {
+        return item.id === updatedItem.id ? updatedItem : item;
+      }),
     );
-    setEditItem(null);
   };
 
+  // Handle deleting a menu item
   const handleDeleteItem = () => {
-    setMenuItems(menuItems.filter((item) => item.id !== itemToDelete.id));
-    setIsDeleteDialogOpen(false);
-    setItemToDelete(null);
+    if (itemToDelete) {
+      setMenuItems(menuItems.filter((item) => item.id !== itemToDelete.id));
+      setIsDeleteDialogOpen(false);
+      setItemToDelete(null);
+    }
   };
 
   return (

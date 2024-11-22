@@ -40,7 +40,7 @@ export default function Container() {
     Array.from({ length: GRID_SIZE * GRID_SIZE }, (_, index) => ({
       id: `grid-${index}`,
       item: null,
-    }))
+    })),
   );
 
   const onDragEnd = (result: DropResult) => {
@@ -170,7 +170,7 @@ export default function Container() {
                     {...provided.droppableProps}
                     className={cn(
                       "h-16 w-16 border border-gray-200 flex items-center justify-center",
-                      snapshot.isDraggingOver && "bg-blue-100"
+                      snapshot.isDraggingOver && "bg-blue-100",
                     )}
                   >
                     {cell.item && (
@@ -185,11 +185,11 @@ export default function Container() {
                             {...provided.dragHandleProps}
                             className="w-full h-full flex items-center justify-center"
                           >
-                            {cell.item.type === "chair" ? (
+                            {cell.item && cell.item.type === "chair" ? (
                               <ChairIcon className="h-8 w-8 text-gray-600" />
-                            ) : (
+                            ) : cell.item ? (
                               <TableIcon className="h-8 w-8 text-gray-600" />
-                            )}
+                            ) : null}
                           </div>
                         )}
                       </Draggable>

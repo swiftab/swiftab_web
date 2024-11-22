@@ -12,7 +12,7 @@ import SideBarFooter from "./sidebar-footer";
 import { SideBarContent } from "./side-barcontent";
 
 export function AppSidebar() {
-  const { toggleSidebar, state } = useSidebar();
+  const { state } = useSidebar();
 
   return (
     <Sidebar variant="floating" collapsible="icon">

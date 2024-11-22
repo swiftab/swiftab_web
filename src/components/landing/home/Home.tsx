@@ -7,6 +7,7 @@ import {
   SlidersVertical,
   Utensils,
 } from "lucide-react";
+import Image from "next/image";
 import React, { useEffect, useState } from "react";
 
 export default function Home() {
@@ -113,7 +114,7 @@ export default function Home() {
             className="absolute inset-0 w-full h-full object-cover"
           >
             <source src="/swiftab/dash.mp4" type="video/mp4" />
-            <img
+            <Image
               src="/dashboard-placeholder.jpg"
               alt="Dashboard Prototype"
               className="absolute inset-0 w-full h-full object-cover"

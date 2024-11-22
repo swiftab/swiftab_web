@@ -13,11 +13,31 @@ import { Pencil } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 
-export default function EditItemDialog({ item, onEditItem }) {
-  const [isOpen, setIsOpen] = React.useState(false);
-  const [editedItem, setEditedItem] = React.useState(item);
+// Define the type for the 'item' prop
+interface MenuItem {
+  id: string;
+  menu: string;
+  description: string;
+  price: string;
+  category: "breakfast" | "lunch" | "dinner";
+  image: string;
+  code: string;
+}
 
-  const handleSubmit = (e) => {
+// Define the type for the props
+interface EditItemDialogProps {
+  item: MenuItem; // Use MenuItem if that's what you expect
+  onEditItem: (item: MenuItem) => void;
+}
+
+export default function EditItemDialog({
+  item,
+  onEditItem,
+}: EditItemDialogProps) {
+  const [isOpen, setIsOpen] = React.useState(false);
+  const [editedItem, setEditedItem] = React.useState<MenuItem>(item);
+
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onEditItem(editedItem);
     setIsOpen(false);

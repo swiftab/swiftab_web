@@ -51,7 +51,7 @@ export function CustomerDetails() {
       (customer) =>
         customer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         customer.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        customer.phone.includes(searchTerm)
+        customer.phone.includes(searchTerm),
     );
     setCustomers(filtered);
   };

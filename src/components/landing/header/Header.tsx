@@ -7,10 +7,6 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
 
-interface HeaderProps {
-  onOpenModal: (type: "signin" | "signup") => void;
-}
-
 export default function Header({
   scrollToSection = () => {},
   servicesRef = null,
@@ -22,16 +18,26 @@ export default function Header({
   servicesRef?: React.RefObject<HTMLElement> | null;
   testimonialsRef?: React.RefObject<HTMLElement> | null;
   featuresRef?: React.RefObject<HTMLElement> | null;
-  onOpenModal: HeaderProps;
+  onOpenModal: (type: "signin" | "signup") => void;
 }) {
   const [isOpen, setIsOpen] = useState(false);
 
   const navItems = [
     { name: "Home", onClick: () => {} },
     { name: "Contact Us", onClick: () => {} },
-    { name: "Services", onClick: () => scrollToSection(servicesRef) },
-    { name: "About Us", onClick: () => scrollToSection(testimonialsRef) },
-    { name: "FAQ", onClick: () => scrollToSection(featuresRef) },
+    {
+      name: "Services",
+      onClick: () => servicesRef?.current && scrollToSection(servicesRef),
+    },
+    {
+      name: "About Us",
+      onClick: () =>
+        testimonialsRef?.current && scrollToSection(testimonialsRef),
+    },
+    {
+      name: "FAQ",
+      onClick: () => featuresRef?.current && scrollToSection(featuresRef),
+    },
   ];
 
   return (

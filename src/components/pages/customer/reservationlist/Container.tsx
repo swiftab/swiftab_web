@@ -95,7 +95,7 @@ export function ReservationList() {
         (customer) =>
           customer.name.toLowerCase().includes(search.toLowerCase()) ||
           customer.email.toLowerCase().includes(search.toLowerCase()) ||
-          customer.phone.includes(search)
+          customer.phone.includes(search),
       );
     }
 
@@ -103,7 +103,7 @@ export function ReservationList() {
       filtered = filtered.filter(
         (customer) =>
           format(customer.reservation, "yyyy-MM-dd") ===
-          format(date, "yyyy-MM-dd")
+          format(date, "yyyy-MM-dd"),
       );
     }
 

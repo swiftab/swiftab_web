@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, MotionValue, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
 
 const features = [
@@ -112,7 +112,7 @@ interface FeatureCardProps {
     image: string;
     bgColor: string;
   };
-  progress: any;
+  progress: MotionValue<number>;
   index: number;
   total: number;
 }
@@ -126,7 +126,7 @@ function FeatureCard({ feature, progress, index, total }: FeatureCardProps) {
   const opacity = useTransform(
     progress,
     [threshold, Math.min(nextThreshold, 1)],
-    [1, 0]
+    [1, 0],
   );
 
   const zIndex = total - index;
