@@ -20,56 +20,56 @@ const orders = [
     menu: "Hamburger",
     image: "/user.png",
     customer: "Devon Lane",
-    price: "$5.42",
+    price: "5.42",
   },
   {
     code: "#430086",
     menu: "Burger with cheese",
     image: "/user.png",
     customer: "Jacob Jones",
-    price: "$12.00",
+    price: "12.00",
   },
   {
     code: "#430084",
     menu: "Potato with drink",
     image: "/user.png",
     customer: "Ronald Richards",
-    price: "$8.50",
+    price: "8.50",
   },
   {
     code: "#430087",
     menu: "Burger with cheese",
     image: "/user.png",
     customer: "Esther Howard",
-    price: "$12.00",
+    price: "12.00",
   },
   {
     code: "#430088",
     menu: "Bread and chicken",
     image: "/user.png",
     customer: "Wade Warren",
-    price: "$9.99",
+    price: "9.99",
   },
   {
     code: "#430089",
     menu: "Hamburger",
     image: "/user.png",
     customer: "Kathryn Murphy",
-    price: "$5.42",
+    price: "5.42",
   },
   {
     code: "#430078",
     menu: "Gourmet burger",
     image: "/user.png",
     customer: "Brooklyn Simmons",
-    price: "$15.99",
+    price: "15.99",
   },
   {
     code: "#430079",
     menu: "Hamburger",
     image: "/user.png",
     customer: "Kristin Watson",
-    price: "$5.42",
+    price: "5.42",
   },
 ];
 
@@ -108,7 +108,7 @@ export default function Container() {
           </TabsList>
           <TabsContent value="all" className="border rounded-lg mt-6">
             <div className="p-6">
-              <h3 className="text-xl font-semibold mb-4">Recent Orders</h3>
+              {/* <h3 className="text-xl font-semibold mb-4">Recent Orders</h3> */}
               <div className="rounded-lg border">
                 <Table className="min-w-full">
                   <TableHeader>
@@ -116,7 +116,7 @@ export default function Container() {
                       <TableHead className="w-[100px]">CODE</TableHead>
                       <TableHead>MENU</TableHead>
                       <TableHead>CUSTOMER NAME</TableHead>
-                      <TableHead className="text-right">PRICE</TableHead>
+                      <TableHead className="text-center">PRICE (Ksh.)</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -140,7 +140,7 @@ export default function Container() {
                           </div>
                         </TableCell>
                         <TableCell>{order.customer}</TableCell>
-                        <TableCell className="text-right">
+                        <TableCell className="text-center">
                           {order.price}
                         </TableCell>
                       </TableRow>
