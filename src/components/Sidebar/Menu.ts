@@ -6,6 +6,7 @@ import {
   Utensils,
   Users,
   ChartNetwork,
+  Grid3x3,
 } from "lucide-react";
 
 interface SidebarItem {
@@ -24,8 +25,8 @@ const menuItems: SidebarItem[] = [
     title: "Manage Tables",
     url: "#",
     children: [
+      { icon: Grid3x3, title: "Floor Plan", url: "/tables/floorplan" },
       { icon: Table2, title: "Grid", url: "/tables/grid" },
-      { icon: Table2, title: "Floor Plans", url: "/tables/floorplan" },
     ],
   },
   {
@@ -36,12 +37,12 @@ const menuItems: SidebarItem[] = [
   {
     icon: Users,
     title: "Customers",
-    url: "#",
-    children: [
-      { icon: Users, title: "Review", url: "/customers/review" },
-      { icon: Users, title: "Reservation List", url: "/customers/reservation" },
-      { icon: Users, title: "Customers", url: "/customers/loyal" },
-    ],
+    url: "/customers",
+    // children: [
+    //   { icon: Users, title: "Review", url: "/customers/review" },
+    //   { icon: Users, title: "Reservation List", url: "/customers/reservation" },
+    //   { icon: Users, title: "Customers", url: "/customers/loyal" },
+    // ],
   },
 ];
 
