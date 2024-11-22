@@ -32,12 +32,12 @@ export default function TrustedRestaurants() {
             ref={containerRef}
             className="flex gap-24"
             animate={{
-              x: [0, -containerWidth /2],
+              x: [0, -containerWidth / 2],
             }}
             transition={{
               x: {
                 repeat: Infinity,
-                repeatType: "loop", 
+                repeatType: "loop",
                 duration: 50,
                 ease: "linear",
               },

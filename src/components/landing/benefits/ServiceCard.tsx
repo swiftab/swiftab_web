@@ -3,14 +3,17 @@ import { CalendarCheck, ChartNoAxesCombined, Star } from "lucide-react";
 import dynamic from "next/dynamic";
 
 // Dynamically import react-animated-numbers
-const AnimatedNumbers = dynamic(
-  () => import("react-animated-numbers"),
-  { ssr: false }
-);
+const AnimatedNumbers = dynamic(() => import("react-animated-numbers"), {
+  ssr: false,
+});
 
 export default function ServiceCard() {
   // State to control when animations start
-  const [trigger, setTrigger] = useState({ first: false, second: false, third: false });
+  const [trigger, setTrigger] = useState({
+    first: false,
+    second: false,
+    third: false,
+  });
 
   useEffect(() => {
     // Trigger animations sequentially
@@ -76,7 +79,9 @@ export default function ServiceCard() {
 
       <div className="container flex flex-col justify-end items-end">
         <p className="text-xl text-muted-foreground">
-          Consolidate all your restaurant management needs in one place, from reservation and table management to menu management, offering a holistic solution for efficient and effective operations.
+          Consolidate all your restaurant management needs in one place, from
+          reservation and table management to menu management, offering a
+          holistic solution for efficient and effective operations.
         </p>
 
         <div className="flex flex-col md:flex-row justify-center items-center gap-8 py-12">

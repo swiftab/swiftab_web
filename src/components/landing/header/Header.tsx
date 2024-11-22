@@ -90,10 +90,19 @@ export default function Header({
                   {item.name}
                 </button>
               ))}
-              <Button variant="outline" asChild className="w-full sm:hidden cursor-pointer" onClick={() => onOpenModal("signin")}>
+              <Button
+                variant="outline"
+                asChild
+                className="w-full sm:hidden cursor-pointer"
+                onClick={() => onOpenModal("signin")}
+              >
                 <span>Log In</span>
               </Button>
-              <Button asChild className="w-full sm:hidden cursor-pointer" onClick={() => onOpenModal("signup")}>
+              <Button
+                asChild
+                className="w-full sm:hidden cursor-pointer"
+                onClick={() => onOpenModal("signup")}
+              >
                 <span>Sign up</span>
               </Button>
             </nav>

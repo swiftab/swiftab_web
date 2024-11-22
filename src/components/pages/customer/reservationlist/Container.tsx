@@ -1,26 +1,26 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { CalendarIcon, Filter, Search } from 'lucide-react'
-import { format } from "date-fns"
+import { useState } from "react";
+import { CalendarIcon, Filter, Search } from "lucide-react";
+import { format } from "date-fns";
 
-import { Button } from "@/components/ui/button"
-import { Calendar } from "@/components/ui/calendar"
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
+} from "@/components/ui/select";
 import {
   Table,
   TableBody,
@@ -28,13 +28,13 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
-import { Badge } from "@/components/ui/badge"
+} from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"
+} from "@/components/ui/popover";
 
 // Sample data
 const initialCustomers = [
@@ -78,47 +78,48 @@ const initialCustomers = [
     reservation: new Date("2024-01-29"),
     status: "Cancelled",
   },
-]
+];
 
 export function ReservationList() {
-  const [customers, setCustomers] = useState(initialCustomers)
-  const [search, setSearch] = useState("")
-  const [date, setDate] = useState<Date>()
-  const [status, setStatus] = useState<string>()
+  const [customers, setCustomers] = useState(initialCustomers);
+  const [search, setSearch] = useState("");
+  const [date, setDate] = useState<Date>();
+  const [status, setStatus] = useState<string>();
 
   // Filter function
   const filterCustomers = () => {
-    let filtered = [...initialCustomers]
+    let filtered = [...initialCustomers];
 
     if (search) {
       filtered = filtered.filter(
-        customer =>
+        (customer) =>
           customer.name.toLowerCase().includes(search.toLowerCase()) ||
           customer.email.toLowerCase().includes(search.toLowerCase()) ||
           customer.phone.includes(search)
-      )
+      );
     }
 
     if (date) {
       filtered = filtered.filter(
-        customer =>
-          format(customer.reservation, "yyyy-MM-dd") === format(date, "yyyy-MM-dd")
-      )
+        (customer) =>
+          format(customer.reservation, "yyyy-MM-dd") ===
+          format(date, "yyyy-MM-dd")
+      );
     }
 
     if (status) {
-      filtered = filtered.filter(customer => customer.status === status)
+      filtered = filtered.filter((customer) => customer.status === status);
     }
 
-    setCustomers(filtered)
-  }
+    setCustomers(filtered);
+  };
 
   // Reset filters
   const resetFilters = () => {
-    setDate(undefined)
-    setStatus(undefined)
-    setCustomers(initialCustomers)
-  }
+    setDate(undefined);
+    setStatus(undefined);
+    setCustomers(initialCustomers);
+  };
 
   return (
     <div>
@@ -189,9 +190,9 @@ export function ReservationList() {
             placeholder="Search customers..."
             className="pl-8"
             value={search}
-            onChange={e => {
-              setSearch(e.target.value)
-              filterCustomers()
+            onChange={(e) => {
+              setSearch(e.target.value);
+              filterCustomers();
             }}
           />
         </div>
@@ -209,15 +210,19 @@ export function ReservationList() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {customers.map(customer => (
+            {customers.map((customer) => (
               <TableRow key={customer.id}>
                 <TableCell>{customer.name}</TableCell>
                 <TableCell>{customer.phone}</TableCell>
                 <TableCell>{customer.email}</TableCell>
-                <TableCell>{format(customer.reservation, "dd.MM.yyyy")}</TableCell>
+                <TableCell>
+                  {format(customer.reservation, "dd.MM.yyyy")}
+                </TableCell>
                 <TableCell>
                   <Badge
-                    variant={customer.status === "Active" ? "default" : "destructive"}
+                    variant={
+                      customer.status === "Active" ? "default" : "destructive"
+                    }
                   >
                     {customer.status}
                   </Badge>
@@ -228,6 +233,5 @@ export function ReservationList() {
         </Table>
       </div>
     </div>
-  )
+  );
 }
-

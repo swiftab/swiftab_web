@@ -1,19 +1,23 @@
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { StarRating } from './StarRating'
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { StarRating } from "./StarRating";
 
 interface StepTwoProps {
   formData: {
-    averagePrice: string
-    hoursOfOperation: string
-    rate: number
-    cuisines: string
-  }
-  handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void
-  handleRatingChange: (rating: number) => void
+    averagePrice: string;
+    hoursOfOperation: string;
+    rate: number;
+    cuisines: string;
+  };
+  handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleRatingChange: (rating: number) => void;
 }
 
-export function StepTwo({ formData, handleInputChange, handleRatingChange }: StepTwoProps) {
+export function StepTwo({
+  formData,
+  handleInputChange,
+  handleRatingChange,
+}: StepTwoProps) {
   return (
     <div className="space-y-4">
       <div>
@@ -41,7 +45,10 @@ export function StepTwo({ formData, handleInputChange, handleRatingChange }: Ste
       </div>
       <div>
         <Label htmlFor="rate">Rate</Label>
-        <StarRating rating={formData.rate} onRatingChange={handleRatingChange} />
+        <StarRating
+          rating={formData.rate}
+          onRatingChange={handleRatingChange}
+        />
       </div>
       <div>
         <Label htmlFor="cuisines">Cuisines</Label>
@@ -55,6 +62,5 @@ export function StepTwo({ formData, handleInputChange, handleRatingChange }: Ste
         />
       </div>
     </div>
-  )
+  );
 }
-

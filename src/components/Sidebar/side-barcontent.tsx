@@ -26,7 +26,7 @@ export function SideBarContent() {
     setOpenGroups((prev) =>
       prev.includes(title)
         ? prev.filter((group) => group !== title)
-        : [...prev, title],
+        : [...prev, title]
     );
   };
 

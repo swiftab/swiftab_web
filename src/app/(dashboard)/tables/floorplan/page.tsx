@@ -6,5 +6,5 @@ export default function FloorPlans() {
     <div>
       <Container />
     </div>
-  )
+  );
 }

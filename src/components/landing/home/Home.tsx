@@ -1,12 +1,17 @@
-"use client"
+"use client";
 
 import { Button } from "@/components/ui/button";
-import { LayoutDashboard, MoveRight, SlidersVertical, Utensils } from 'lucide-react';
+import {
+  LayoutDashboard,
+  MoveRight,
+  SlidersVertical,
+  Utensils,
+} from "lucide-react";
 import React, { useEffect, useState } from "react";
 
 export default function Home() {
   const [isClient, setIsClient] = useState(false);
- 
+
   useEffect(() => {
     setIsClient(true);
   }, []);
@@ -23,7 +28,13 @@ export default function Home() {
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           >
-            <circle cx="87.5" cy="87.5" r="87.5" fill="#003366" fillOpacity="0.1"/>
+            <circle
+              cx="87.5"
+              cy="87.5"
+              r="87.5"
+              fill="#003366"
+              fillOpacity="0.1"
+            />
           </svg>
           <svg
             className="absolute bottom-[-50px] right-[-90px] opacity-50 z-0"
@@ -33,7 +44,13 @@ export default function Home() {
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           >
-            <circle cx="87.5" cy="87.5" r="87.5" fill="green" fillOpacity="0.1"/>
+            <circle
+              cx="87.5"
+              cy="87.5"
+              r="87.5"
+              fill="green"
+              fillOpacity="0.1"
+            />
           </svg>
         </>
       )}
@@ -107,4 +124,3 @@ export default function Home() {
     </section>
   );
 }
-

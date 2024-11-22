@@ -1,7 +1,5 @@
-import React from 'react'
+import React from "react";
 
 export default function Container() {
-  return (
-    <div>Container</div>
-  )
+  return <div>Container</div>;
 }

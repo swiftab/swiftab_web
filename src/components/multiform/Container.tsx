@@ -1,20 +1,28 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { Button } from "@/components/ui/button"
-import { StepOne } from "./StepOne"
-import { StepTwo } from "./StepTwo"
-import { StepThree } from "./StepThree"
-import { StepIndicator } from './StepIndicator'
+import { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { StepOne } from "./StepOne";
+import { StepTwo } from "./StepTwo";
+import { StepThree } from "./StepThree";
+import { StepIndicator } from "./StepIndicator";
 
 interface RestaurantSetupModalProps {
-  isOpen: boolean
-  onClose: () => void
+  isOpen: boolean;
+  onClose: () => void;
 }
 
-export function RestaurantSetupModal({ isOpen, onClose }: RestaurantSetupModalProps) {
-  const [step, setStep] = useState(1)
+export function RestaurantSetupModal({
+  isOpen,
+  onClose,
+}: RestaurantSetupModalProps) {
+  const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -27,38 +35,40 @@ export function RestaurantSetupModal({ isOpen, onClose }: RestaurantSetupModalPr
     cuisines: "",
     location: "",
     latitude: "",
-    longitude: ""
-  })
+    longitude: "",
+  });
 
   const handleNext = () => {
-    setStep(step + 1)
-  }
+    setStep(step + 1);
+  };
 
   const handlePrevious = () => {
-    setStep(step - 1)
-  }
+    setStep(step - 1);
+  };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target
-    setFormData({ ...formData, [name]: value })
-  }
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      setFormData({ ...formData, image: e.target.files[0] })
+      setFormData({ ...formData, image: e.target.files[0] });
     }
-  }
+  };
 
   const handleRatingChange = (rating: number) => {
-    setFormData({ ...formData, rate: rating })
-  }
+    setFormData({ ...formData, rate: rating });
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    console.log("Form submitted:", formData)
+    e.preventDefault();
+    console.log("Form submitted:", formData);
     // Here you would typically send the data to your backend
-    onClose()
-  }
+    onClose();
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -82,7 +92,12 @@ export function RestaurantSetupModal({ isOpen, onClose }: RestaurantSetupModalPr
               handleRatingChange={handleRatingChange}
             />
           )}
-          {step === 3 && <StepThree formData={formData} handleInputChange={handleInputChange} />}
+          {step === 3 && (
+            <StepThree
+              formData={formData}
+              handleInputChange={handleInputChange}
+            />
+          )}
           <div className="flex justify-between mt-4">
             {step > 1 && (
               <Button type="button" variant="outline" onClick={handlePrevious}>
@@ -100,5 +115,5 @@ export function RestaurantSetupModal({ isOpen, onClose }: RestaurantSetupModalPr
         </form>
       </DialogContent>
     </Dialog>
-  )
+  );
 }

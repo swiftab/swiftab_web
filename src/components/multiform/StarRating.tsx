@@ -1,8 +1,8 @@
-import { Star } from 'lucide-react'
+import { Star } from "lucide-react";
 
 interface StarRatingProps {
-  rating: number
-  onRatingChange: (rating: number) => void
+  rating: number;
+  onRatingChange: (rating: number) => void;
 }
 
 export function StarRating({ rating, onRatingChange }: StarRatingProps) {
@@ -18,6 +18,5 @@ export function StarRating({ rating, onRatingChange }: StarRatingProps) {
         />
       ))}
     </div>
-  )
+  );
 }
-

@@ -1,13 +1,13 @@
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 interface StepThreeProps {
   formData: {
-    location: string
-    latitude: string
-    longitude: string
-  }
-  handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+    location: string;
+    latitude: string;
+    longitude: string;
+  };
+  handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export function StepThree({ formData, handleInputChange }: StepThreeProps) {
@@ -51,6 +51,5 @@ export function StepThree({ formData, handleInputChange }: StepThreeProps) {
         />
       </div>
     </div>
-  )
+  );
 }
-

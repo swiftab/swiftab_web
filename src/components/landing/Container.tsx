@@ -10,9 +10,12 @@ import TrustedRestuarants from "./benefits/TrustedRestuarants";
 import Features from "./features/Features";
 import Testimonials from "@/components/landing/testimonials/Testimonials";
 import Started from "./started/Started";
-import dynamic from 'next/dynamic';
+import dynamic from "next/dynamic";
 
-const AuthModal = dynamic(() => import('../auth/Authmodal').then((mod) => mod.AuthModal), { ssr: false });
+const AuthModal = dynamic(
+  () => import("../auth/Authmodal").then((mod) => mod.AuthModal),
+  { ssr: false }
+);
 
 export default function LandingPage() {
   const servicesRef = useRef<HTMLElement>(null);
@@ -84,4 +87,3 @@ export default function LandingPage() {
     </div>
   );
 }
-

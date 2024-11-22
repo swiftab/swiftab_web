@@ -1,20 +1,26 @@
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 
 interface StepOneProps {
   formData: {
-    name: string
-    description: string
-    email: string
-    phone: string
-    image: File | null
-  }
-  handleInputChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void
-  handleFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+    name: string;
+    description: string;
+    email: string;
+    phone: string;
+    image: File | null;
+  };
+  handleInputChange: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => void;
+  handleFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export function StepOne({ formData, handleInputChange, handleFileChange }: StepOneProps) {
+export function StepOne({
+  formData,
+  handleInputChange,
+  handleFileChange,
+}: StepOneProps) {
   return (
     <div className="space-y-4">
       <div>
@@ -75,6 +81,5 @@ export function StepOne({ formData, handleInputChange, handleFileChange }: StepO
         />
       </div>
     </div>
-  )
+  );
 }
-

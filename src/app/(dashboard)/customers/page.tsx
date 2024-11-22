@@ -1,8 +1,6 @@
-import ReservationDashboard from '@/components/pages/customer/Container'
-import React from 'react'
+import ReservationDashboard from "@/components/pages/customer/Container";
+import React from "react";
 
 export default function page() {
-  return (
-    <ReservationDashboard />
-  )
+  return <ReservationDashboard />;
 }

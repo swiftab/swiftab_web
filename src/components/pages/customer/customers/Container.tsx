@@ -1,12 +1,12 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Search, Mail, Phone, MapPin, Calendar } from 'lucide-react'
-import { format } from "date-fns"
+import { useState } from "react";
+import { Search, Mail, Phone, MapPin, Calendar } from "lucide-react";
+import { format } from "date-fns";
 
-import { Input } from "@/components/ui/input"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Input } from "@/components/ui/input";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 // Sample customer data
 const initialCustomers = [
@@ -40,27 +40,27 @@ const initialCustomers = [
     totalVisits: 22,
     avatar: "/placeholder.svg?height=40&width=40",
   },
-]
+];
 
 export function CustomerDetails() {
-  const [customers, setCustomers] = useState(initialCustomers)
-  const [search, setSearch] = useState("")
+  const [customers, setCustomers] = useState(initialCustomers);
+  const [search, setSearch] = useState("");
 
   const filterCustomers = (searchTerm: string) => {
     const filtered = initialCustomers.filter(
-      customer =>
+      (customer) =>
         customer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         customer.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
         customer.phone.includes(searchTerm)
-    )
-    setCustomers(filtered)
-  }
+    );
+    setCustomers(filtered);
+  };
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const searchTerm = e.target.value
-    setSearch(searchTerm)
-    filterCustomers(searchTerm)
-  }
+    const searchTerm = e.target.value;
+    setSearch(searchTerm);
+    filterCustomers(searchTerm);
+  };
 
   return (
     <div>
@@ -77,16 +77,23 @@ export function CustomerDetails() {
       </div>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {customers.map(customer => (
+        {customers.map((customer) => (
           <Card key={customer.id}>
             <CardHeader className="flex flex-row items-center gap-4">
               <Avatar>
                 <AvatarImage src={customer.avatar} alt={customer.name} />
-                <AvatarFallback>{customer.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+                <AvatarFallback>
+                  {customer.name
+                    .split(" ")
+                    .map((n) => n[0])
+                    .join("")}
+                </AvatarFallback>
               </Avatar>
               <div>
                 <CardTitle>{customer.name}</CardTitle>
-                <p className="text-sm text-muted-foreground">Customer ID: {customer.id}</p>
+                <p className="text-sm text-muted-foreground">
+                  Customer ID: {customer.id}
+                </p>
               </div>
             </CardHeader>
             <CardContent>
@@ -105,7 +112,9 @@ export function CustomerDetails() {
                 </div>
                 <div className="flex items-center gap-2">
                   <Calendar className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm">Last visit: {format(customer.lastVisit, "dd.MM.yyyy")}</span>
+                  <span className="text-sm">
+                    Last visit: {format(customer.lastVisit, "dd.MM.yyyy")}
+                  </span>
                 </div>
                 <div className="mt-2 text-sm font-semibold">
                   Total visits: {customer.totalVisits}
@@ -116,6 +125,5 @@ export function CustomerDetails() {
         ))}
       </div>
     </div>
-  )
+  );
 }
-

@@ -1,34 +1,34 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { useRouter } from 'next/navigation'
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 interface SignInFormProps {
-  onToggleView: () => void
-  onClose?: () => void
+  onToggleView: () => void;
+  onClose?: () => void;
 }
 
 export function SignInForm({ onToggleView, onClose }: SignInFormProps) {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const router = useRouter()
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     // Handle sign-in logic here
-    console.log('Sign in:', { email, password })
-    
+    console.log("Sign in:", { email, password });
+
     // Close the modal if provided
     if (onClose) {
-      onClose()
+      onClose();
     }
-    
+
     // Navigate to dashboard
-    router.push('/dash')
-  }
+    router.push("/dash");
+  };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
@@ -52,12 +52,15 @@ export function SignInForm({ onToggleView, onClose }: SignInFormProps) {
           required
         />
       </div>
-      <Button type="submit" className="w-full">Sign In</Button>
+      <Button type="submit" className="w-full">
+        Sign In
+      </Button>
       <p className="text-center">
         Don't have an account?{" "}
-        <Button variant="link" onClick={onToggleView}>Sign Up</Button>
+        <Button variant="link" onClick={onToggleView}>
+          Sign Up
+        </Button>
       </p>
     </form>
-  )
+  );
 }
-

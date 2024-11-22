@@ -71,7 +71,7 @@ export default function MenuManager() {
       item.category === activeTab &&
       (item.code.toLowerCase().includes(searchQuery.toLowerCase()) ||
         item.menu.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        item.description.toLowerCase().includes(searchQuery.toLowerCase())),
+        item.description.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
   const handleCreateItem = (newItem) => {
@@ -80,9 +80,7 @@ export default function MenuManager() {
 
   const handleEditItem = (updatedItem) => {
     setMenuItems(
-      menuItems.map((item) =>
-        item.id === updatedItem.id ? updatedItem : item,
-      ),
+      menuItems.map((item) => (item.id === updatedItem.id ? updatedItem : item))
     );
     setEditItem(null);
   };

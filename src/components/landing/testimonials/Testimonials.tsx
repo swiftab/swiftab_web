@@ -1,16 +1,40 @@
-"use client"
+"use client";
 
-import React from 'react'
-import { motion } from 'framer-motion'
+import React from "react";
+import { motion } from "framer-motion";
 
 const testimonials = [
-  { id: 1, text: "This product has revolutionized our business operations!", author: "John Doe, CEO" },
-  { id: 2, text: "The customer support is unparalleled. Highly recommended!", author: "Jane Smith, CTO" },
-  { id: 3, text: "We've seen a 50% increase in productivity since implementing this solution.", author: "Bob Johnson, COO" },
-  { id: 4, text: "Intuitive interface and powerful features. A game-changer!", author: "Alice Brown, Project Manager" },
-  { id: 5, text: "The ROI on this product has exceeded our expectations.", author: "Charlie Davis, CFO" },
-  { id: 6, text: "This tool has streamlined our workflow significantly.", author: "Eva Wilson, Team Lead" },
-]
+  {
+    id: 1,
+    text: "This product has revolutionized our business operations!",
+    author: "John Doe, CEO",
+  },
+  {
+    id: 2,
+    text: "The customer support is unparalleled. Highly recommended!",
+    author: "Jane Smith, CTO",
+  },
+  {
+    id: 3,
+    text: "We've seen a 50% increase in productivity since implementing this solution.",
+    author: "Bob Johnson, COO",
+  },
+  {
+    id: 4,
+    text: "Intuitive interface and powerful features. A game-changer!",
+    author: "Alice Brown, Project Manager",
+  },
+  {
+    id: 5,
+    text: "The ROI on this product has exceeded our expectations.",
+    author: "Charlie Davis, CFO",
+  },
+  {
+    id: 6,
+    text: "This tool has streamlined our workflow significantly.",
+    author: "Eva Wilson, Team Lead",
+  },
+];
 
 export default function Testimonials() {
   return (
@@ -35,15 +59,19 @@ export default function Testimonials() {
                 key={`${testimonial.id}-${index}`}
                 className="w-64 h-64 bg-white bg-opacity-20 backdrop-blur-lg rounded-xl p-6 flex flex-col justify-between transform rotate-[-45deg] shadow-lg"
               >
-                <p className="text-white text-lg font-medium italic">&ldquo;{testimonial.text}&rdquo;</p>
-                <p className="text-white text-sm font-bold mt-4">- {testimonial.author}</p>
+                <p className="text-white text-lg font-medium italic">
+                  &ldquo;{testimonial.text}&rdquo;
+                </p>
+                <p className="text-white text-sm font-bold mt-4">
+                  - {testimonial.author}
+                </p>
               </div>
             ))}
           </motion.div>
         </div>
       </div>
       <div className="absolute top-1/2 left-16 transform -translate-y-1/2 z-10">
-      <div className="relative inline-block mb-12">
+        <div className="relative inline-block mb-12">
           <svg
             className="absolute -top-3 -left-3 w-6 h-6 text-primary/40"
             viewBox="0 0 24 24"
@@ -66,7 +94,9 @@ export default function Testimonials() {
               strokeWidth="2"
             />
           </svg>
-          <h2 className="text-4xl font-bold px-4 text-primary">What Our Clients Say</h2>
+          <h2 className="text-4xl font-bold px-4 text-primary">
+            What Our Clients Say
+          </h2>
           <svg
             className="absolute -bottom-3 -right-3 w-6 h-6 text-primary/40"
             viewBox="0 0 24 24"
@@ -91,9 +121,10 @@ export default function Testimonials() {
           </svg>
         </div>
         <p className="text-xl text-gray-600 max-w-md">
-          Don't just take our word for it. See what our satisfied customers have to say about our swiftab.
+          Don't just take our word for it. See what our satisfied customers have
+          to say about our swiftab.
         </p>
       </div>
     </div>
-  )
+  );
 }
