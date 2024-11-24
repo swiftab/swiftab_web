@@ -149,8 +149,10 @@ function FeatureCard({ feature, progress, index, total }: FeatureCardProps) {
           <Image
             src={feature.image}
             alt={feature.title}
-            layout="fill"
-            objectFit="cover"
+            //layout="fill"
+            width={150}
+            height={150}
+            className="object-cover"
           />
         </div>
       </div>

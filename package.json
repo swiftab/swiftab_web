@@ -27,17 +27,19 @@
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
     "framer-motion": "^11.11.17",
-    "lucide-react": "^0.454.0",
-    "next": "^15.0.3",
-    "react": "19.0.0-rc-02c0e824-20241028",
+    "lucide-react": "^0.454.0",   
     "react-animated-numbers": "^0.18.0",
     "react-awesome-shapes": "^0.1.6",
     "react-beautiful-dnd": "^13.1.1",
     "react-day-picker": "^8.10.1",
-    "react-dom": "19.0.0-rc-02c0e824-20241028",
     "recharts": "^2.13.3",
     "tailwind-merge": "^2.5.4",
     "tailwindcss-animate": "^1.0.7"
+  },
+  "peerDependencies": {
+  "react": "19.0.0-rc-02c0e824-20241028",
+  "react-dom": "19.0.0-rc-02c0e824-20241028",
+  "next": "^15.0.3"
   },
   "devDependencies": {
     "@types/node": "^20",
