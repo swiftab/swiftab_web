@@ -14,9 +14,15 @@
       {
         "argsIgnorePattern": "^_",
         "varsIgnorePattern": "^_",
-        "caughtErrorsIgnorePattern": "^_"
+        "caughtErrorsIgnorePattern": "^_",
+        "vars": "all",
+        "args": "after-used",
+        "ignoreRestSiblings": true,
+        "caughtErrors": "none"
       }
     ],
-    "@typescript-eslint/no-empty-interface": "off"
+    "@typescript-eslint/no-empty-interface": "off",
+    "prettier/prettier": "off",
+    "@typescript-eslint/no-explicit-any": "off"
   }
 }
