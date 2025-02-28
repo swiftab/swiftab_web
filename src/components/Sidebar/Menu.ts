@@ -7,19 +7,27 @@ import {
   Users,
   ChartNetwork,
   Grid3x3,
+  CalendarRange
 } from "lucide-react";
 
 interface SidebarItem {
   icon: LucideIcon;
   title: string;
   url: string;
-  children?: SidebarItem[]; // Add children property for nested items
+  children?: SidebarItem[];
 }
 
 const menuItems: SidebarItem[] = [
   { icon: LayoutDashboard, title: "Dashboard", url: "/dash" },
-  { icon: ChartNetwork, title: "Analytics", url: "/analytics" },
-  { icon: ListOrdered, title: "Order Line", url: "/order-line" },
+  { icon: ChartNetwork, title: "Report", url: "/analytics" },
+  {icon:CalendarRange,title:"Reservations",url:'/reservations'},
+  { icon: ListOrdered, title: "Orders", url: "/order-line" },
+
+  {
+    icon: Utensils,
+    title: "Manage Dishes",
+    url: "/dishes",
+  },
   {
     icon: Table2,
     title: "Manage Tables",
@@ -28,11 +36,6 @@ const menuItems: SidebarItem[] = [
       { icon: Grid3x3, title: "Floor Plan", url: "/tables/floorplan" },
       { icon: Table2, title: "Grid", url: "/tables/grid" },
     ],
-  },
-  {
-    icon: Utensils,
-    title: "Manage Dishes",
-    url: "/dishes",
   },
   {
     icon: Users,
