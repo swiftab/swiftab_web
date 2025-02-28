@@ -17,6 +17,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
+import Link from "next/link";
 
 export function SideBarContent() {
   const pathname = usePathname();
@@ -46,7 +47,7 @@ export function SideBarContent() {
                     }
                     onClick={() => item.children && toggleGroup(item.title)}
                   >
-                    <a href={item.url}>
+                    <Link href={item.url}>
                       <item.icon className="h-4 w-4 " />
                       <span>{item.title}</span>
                       {item.children && (
@@ -56,7 +57,7 @@ export function SideBarContent() {
                           }`}
                         />
                       )}
-                    </a>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
 
@@ -80,10 +81,10 @@ export function SideBarContent() {
                                   pathname.startsWith(`${subItem.url}/`)
                                 }
                               >
-                                <a href={subItem.url}>
+                                <Link href={subItem.url}>
                                   <subItem.icon className="h-4 w-4" />
                                   <span>{subItem.title}</span>
-                                </a>
+                                </Link>
                               </SidebarMenuButton>
                             </SidebarMenuItem>
                           ))}
