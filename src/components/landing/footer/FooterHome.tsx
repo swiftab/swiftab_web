@@ -1,50 +1,66 @@
+import { Button } from "@/components/ui/button";
+import { CalendarClock } from "lucide-react";
 import Link from "next/link";
-import { Facebook, Twitter, Instagram } from "lucide-react";
-import Image from "next/image";
 
 export default function FooterHome() {
   return (
-    <footer className="w-full bg-[#008080] text-zinc-100 py-12 px-4 md:px-6">
-      <div className="container mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
-          {/* Brand Column */}
-          <div className="md:col-span-3">
-            <Image src="/swiftab/logo.svg" width={80} height={80} alt="logo" />
-            <p className="text-sm text-zinc-300 mb-4">
-              Your guide to unforgettable dining experiences
+    <footer className="border-t border-gray-200/70 bg-gray-100">
+      <div className="container px-4 py-12 md:px-6 md:py-16 lg:py-20">
+        <div className="grid gap-8 lg:grid-cols-4">
+          <div className="flex flex-col gap-4">
+            <div className="flex items-center gap-2">
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-indigo-600 blur-sm rounded-full opacity-70"></div>
+                <CalendarClock className="h-8 w-8 relative" />
+              </div>
+              <span className="text-xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
+                SwifTab
+              </span>
+            </div>
+            <p className="text-gray-500">
+              Streamlining restaurant reservations since 2021.
             </p>
-            <div className="flex space-x-4">
-              <Link href="#" className="text-zinc-300 hover:text-white">
-                <Facebook className="h-5 w-5" />
-                <span className="sr-only">Facebook</span>
-              </Link>
-              <Link href="#" className="text-zinc-300 hover:text-white">
-                <Twitter className="h-5 w-5" />
-                <span className="sr-only">Twitter</span>
-              </Link>
-              <Link href="#" className="text-zinc-300 hover:text-white">
-                <Instagram className="h-5 w-5" />
-                <span className="sr-only">Instagram</span>
-              </Link>
+            <div className="flex gap-4 mt-2">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="rounded-full text-gray-700 hover:text-gray-900 hover:bg-gray-100"
+              >
+                <span className="sr-only">Twitter</span>𝕏
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="rounded-full text-gray-700 hover:text-gray-900 hover:bg-gray-100"
+              >
+                <span className="sr-only">Instagram</span>📸
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="rounded-full text-gray-700 hover:text-gray-900 hover:bg-gray-100"
+              >
+                <span className="sr-only">LinkedIn</span>🔗
+              </Button>
             </div>
           </div>
-
-          {/* Product Column */}
-          <div className="md:col-span-2">
-            <h3 className="font-semibold mb-4">Product</h3>
-            <ul className="space-y-2">
+          <div>
+            <h3 className="mb-4 text-sm font-semibold text-gray-700 uppercase tracking-wider">
+              Product
+            </h3>
+            <ul className="space-y-3 text-sm">
               <li>
                 <Link
-                  href="#"
-                  className="text-sm text-zinc-300 hover:text-white"
+                  href="#features"
+                  className="text-gray-500 hover:text-gray-900 transition-colors"
                 >
                   Features
                 </Link>
               </li>
               <li>
                 <Link
-                  href="#"
-                  className="text-sm text-zinc-300 hover:text-white"
+                  href="#pricing"
+                  className="text-gray-500 hover:text-gray-900 transition-colors"
                 >
                   Pricing
                 </Link>
@@ -52,30 +68,69 @@ export default function FooterHome() {
               <li>
                 <Link
                   href="#"
-                  className="text-sm text-zinc-300 hover:text-white"
+                  className="text-gray-500 hover:text-gray-900 transition-colors"
                 >
-                  Reviews
+                  Integrations
                 </Link>
               </li>
               <li>
                 <Link
                   href="#"
-                  className="text-sm text-zinc-300 hover:text-white"
+                  className="text-gray-500 hover:text-gray-900 transition-colors"
                 >
                   Updates
                 </Link>
               </li>
             </ul>
           </div>
-
-          {/* Company Column */}
-          <div className="md:col-span-2">
-            <h3 className="font-semibold mb-4">Company</h3>
-            <ul className="space-y-2">
+          <div>
+            <h3 className="mb-4 text-sm font-semibold text-gray-700 uppercase tracking-wider">
+              Resources
+            </h3>
+            <ul className="space-y-3 text-sm">
               <li>
                 <Link
                   href="#"
-                  className="text-sm text-zinc-300 hover:text-white"
+                  className="text-gray-500 hover:text-gray-900 transition-colors"
+                >
+                  Blog
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="#"
+                  className="text-gray-500 hover:text-gray-900 transition-colors"
+                >
+                  Help Center
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="#"
+                  className="text-gray-500 hover:text-gray-900 transition-colors"
+                >
+                  Guides
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="#"
+                  className="text-gray-500 hover:text-gray-900 transition-colors"
+                >
+                  API Documentation
+                </Link>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 className="mb-4 text-sm font-semibold text-gray-700 uppercase tracking-wider">
+              Company
+            </h3>
+            <ul className="space-y-3 text-sm">
+              <li>
+                <Link
+                  href="#"
+                  className="text-gray-500 hover:text-gray-900 transition-colors"
                 >
                   About
                 </Link>
@@ -83,15 +138,7 @@ export default function FooterHome() {
               <li>
                 <Link
                   href="#"
-                  className="text-sm text-zinc-300 hover:text-white"
-                >
-                  Contact us
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#"
-                  className="text-sm text-zinc-300 hover:text-white"
+                  className="text-gray-500 hover:text-gray-900 transition-colors"
                 >
                   Careers
                 </Link>
@@ -99,82 +146,45 @@ export default function FooterHome() {
               <li>
                 <Link
                   href="#"
-                  className="text-sm text-zinc-300 hover:text-white"
+                  className="text-gray-500 hover:text-gray-900 transition-colors"
                 >
-                  Blog
+                  Contact
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="#"
+                  className="text-gray-500 hover:text-gray-900 transition-colors"
+                >
+                  Privacy Policy
                 </Link>
               </li>
             </ul>
           </div>
-
-          {/* Support Column */}
-          <div className="md:col-span-2">
-            <h3 className="font-semibold mb-4">Support</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link
-                  href="#"
-                  className="text-sm text-zinc-300 hover:text-white"
-                >
-                  Getting started
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#"
-                  className="text-sm text-zinc-300 hover:text-white"
-                >
-                  Help center
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#"
-                  className="text-sm text-zinc-300 hover:text-white"
-                >
-                  Server status
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#"
-                  className="text-sm text-zinc-300 hover:text-white"
-                >
-                  Chat support
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Privacy and Terms Column */}
-          <div className="md:col-span-3">
-            <h3 className="font-semibold mb-4">Privacy and Terms</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link
-                  href="#"
-                  className="text-sm text-zinc-300 hover:text-white"
-                >
-                  Community guidelines
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#"
-                  className="text-sm text-zinc-300 hover:text-white"
-                >
-                  Privacy
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#"
-                  className="text-sm text-zinc-300 hover:text-white"
-                >
-                  Terms
-                </Link>
-              </li>
-            </ul>
+        </div>
+        <div className="mt-12 border-t border-gray-200/70 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="text-sm text-gray-500">
+            © {new Date().getFullYear()} TableReserve. All rights reserved.
+          </p>
+          <div className="flex gap-6">
+            <Link
+              href="#"
+              className="text-sm text-gray-500 hover:text-gray-900 transition-colors"
+            >
+              Terms
+            </Link>
+            <Link
+              href="#"
+              className="text-sm text-gray-500 hover:text-gray-900 transition-colors"
+            >
+              Privacy
+            </Link>
+            <Link
+              href="#"
+              className="text-sm text-gray-500 hover:text-gray-900 transition-colors"
+            >
+              Cookies
+            </Link>
           </div>
         </div>
       </div>
