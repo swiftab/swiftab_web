@@ -11,9 +11,44 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { ChevronUp, Settings } from "lucide-react";
+import { ChevronUp, CircleUser, LogOut, Settings } from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useMutation } from "@tanstack/react-query";
+import { fetchLogout } from "@/hooks/authhook/authhooks";
+import { toast } from "@/hooks/use-toast";
+import { Button } from "../ui/button";
 
 export default function SideBarFooter() {
+  const router = useRouter();
+
+  const logoutMutation = useMutation<void, Error, void>({
+    mutationFn: fetchLogout,
+    onSuccess: () => {
+      toast({
+        title: "Logged out",
+        description: "You have logged out successfully.",
+        variant: "default",
+      });
+      router.replace("/signin");
+      localStorage.clear();
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Logout failed",
+        description: error.message || "An error occurred.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const handleLogout = async () => {
+    try {
+      await logoutMutation.mutateAsync();
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
   return (
     <SidebarFooter>
       <SidebarMenu>
@@ -30,13 +65,23 @@ export default function SideBarFooter() {
               className="w-[--radix-popper-anchor-width]"
             >
               <DropdownMenuItem>
-                <span>Account</span>
+                <Link href={"/accounts"} className="w-full">
+                  <Button className="w-full" variant="default">
+                    <span>Account</span>
+                    <CircleUser />
+                  </Button>
+                </Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <span>Billing</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <span>Sign out</span>
+                <Button
+                  className="w-full"
+                  variant="destructive"
+                  onClick={handleLogout}
+                >
+                  <span>Sign out</span>
+
+                  <LogOut />
+                </Button>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
