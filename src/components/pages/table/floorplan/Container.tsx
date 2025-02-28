@@ -2,211 +2,246 @@
 
 import * as React from "react";
 import {
-  DragDropContext,
-  Droppable,
-  Draggable,
-  DropResult,
-} from "react-beautiful-dnd";
-import { RockingChairIcon as ChairIcon, TableIcon } from "lucide-react";
-
-import { cn } from "@/lib/utils";
+  DndContext,
+  DragEndEvent,
+  useSensor,
+  useSensors,
+  PointerSensor,
+} from "@dnd-kit/core";
+import { restrictToParentElement } from "@dnd-kit/modifiers";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { TableItem} from "@/types/table";
+import { DraggableTable } from "./DraggableTable";
+import { FloorSelector } from "./FloorSelector";
+import { AddTableDialog } from "./AddTable";
+import { useQuery } from "@tanstack/react-query";
+import { fetchRestaurantTables } from "@/hooks/tablehook/fetchrestable";
+import { FullScreenLoader } from "@/components/Loading/FullScreen";
+import { useSaveTable } from "@/hooks/tablehook/savelayouthook";
 
-type Item = {
+interface DiningArea {
   id: string;
-  type: "chair" | "table";
-};
+  name: string;
+}
 
-type GridItem = {
-  id: string;
-  item: Item | null;
-};
+const initialTables: TableItem[] = [];
 
-const GRID_SIZE = 10;
+
 
 export default function Container() {
-  const [items, setItems] = React.useState<Item[]>([
-    { id: "chair1", type: "chair" },
-    { id: "chair2", type: "chair" },
-    { id: "chair3", type: "chair" },
-    { id: "chair4", type: "chair" },
-    { id: "table1", type: "table" },
-    { id: "table2", type: "table" },
-  ]);
-
-  const [grid, setGrid] = React.useState<GridItem[]>(
-    Array.from({ length: GRID_SIZE * GRID_SIZE }, (_, index) => ({
-      id: `grid-${index}`,
-      item: null,
-    })),
+  const [diningAreas, setDiningAreas] = React.useState<DiningArea[]>([]);
+  //console.log(diningAreas)
+  const [selectedFloor, setSelectedFloor] = React.useState<string>(
+    ""
   );
+  //console.log(selectedFloor)
+  const [tables, setTables] = React.useState<TableItem[]>(initialTables);
+  const [selectedTable, setSelectedTable] = React.useState<string | null>(null);
+  const sensors = useSensors(useSensor(PointerSensor));
+  const saveTableMutation = useSaveTable();
 
-  const onDragEnd = (result: DropResult) => {
-    const { source, destination } = result;
+  //console.log(tables)
 
-    // If there's no destination, we don't need to do anything
-    if (!destination) return;
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, delta } = event;
 
-    // If the source and destination are the same, we don't need to do anything
-    if (
-      source.droppableId === destination.droppableId &&
-      source.index === destination.index
-    )
-      return;
+    setTables((tables) =>
+      tables.map((table) => {
+        if (table.id === active.id) {
+          return {
+            ...table,
+            position: {
+              x: table.position.x + delta.x,
+              y: table.position.y + delta.y,
+            },
+          };
+        }
+        return table;
+      })
+    );
+  };
 
-    // Moving from items to grid
-    if (
-      source.droppableId === "items" &&
-      destination.droppableId.startsWith("grid-")
-    ) {
-      const newItems = Array.from(items);
-      const [movedItem] = newItems.splice(source.index, 1);
-      setItems(newItems);
+  const handleRotateTable = (id: string) => {
+    setTables((tables) =>
+      tables.map((table) => {
+        if (table.id === id) {
+          return {
+            ...table,
+            rotation: (table.rotation + 90) % 360,
+          };
+        }
+        return table;
+      })
+    );
+  };
 
-      const newGrid = [...grid];
-      const destIndex = parseInt(destination.droppableId.split("-")[1]);
-      newGrid[destIndex] = { ...newGrid[destIndex], item: movedItem };
-      setGrid(newGrid);
+  const handleRemoveTable = (id: string) => {
+    setTables((tables) => tables.filter((table) => table.id !== id));
+  };
+
+  const handleAddChair = (tableId: string) => {
+    setTables((tables) =>
+      tables.map((table) => {
+        if (table.id === tableId) {
+          const newChairId = `${table.id}-chair-${table.chairs.length + 1}`;
+          const newChairPosition =
+            table.shape === "round"
+              ? { id: newChairId, position: "top" }
+              : {
+                  id: newChairId,
+                  position: ["top", "right", "bottom", "left"][
+                    table.chairs.length % 4
+                  ] as ChairPosition,
+                };
+          return {
+            ...table,
+            chairs: [...table.chairs, newChairPosition],
+          };
+        }
+        return table;
+      })
+    );
+  };
+
+  const handleRemoveChair = (tableId: string, chairId: string) => {
+    setTables((tables) =>
+      tables.map((table) => {
+        if (table.id === tableId) {
+          return {
+            ...table,
+            chairs: table.chairs.filter((chair) => chair.id !== chairId),
+          };
+        }
+        return table;
+      })
+    );
+  };
+
+  const handleAddTable = (
+    floorId: string,
+    tableData: Omit<TableItem, "id" | "floorId">
+  ) => {
+    const newTable: TableItem = {
+      ...tableData,
+      id: `T-${tables.length + 1}`,
+      floorId: selectedFloor,
+    };
+    setTables([...tables, newTable]);
+  };
+
+  const handleUpdateTableName = (tableId: string, newName: string) => {
+    setTables((tables) =>
+      tables.map((table) => {
+        if (table.id === tableId) {
+          return {
+            ...table,
+            name: newName,
+          };
+        }
+        return table;
+      })
+    );
+  };
+
+
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["restaurantTables"],
+    queryFn: fetchRestaurantTables,
+    select: (data) =>
+      data?.restaurantLayoutData
+        ? {
+            diningAreas: data.restaurantLayoutData.diningAreas,
+            tablePosition: data.restaurantLayoutData.tablePosition,
+          }
+        : { diningAreas: [], tablePosition: [] },
+  });
+
+  
+
+
+  React.useEffect(() => {
+    if (data?.diningAreas) {
+      const areasWithIds = data.diningAreas.map((area: string, index:number) => ({
+        id:(index + 1).toString(),
+        name: area
+      }));
+      setDiningAreas(areasWithIds);
+      setSelectedFloor(areasWithIds[0]?.id || "");
+      setTables(data?.tablePosition)
     }
-    // Moving within the grid
-    else if (
-      source.droppableId.startsWith("grid-") &&
-      destination.droppableId.startsWith("grid-")
-    ) {
-      const newGrid = [...grid];
-      const sourceIndex = parseInt(source.droppableId.split("-")[1]);
-      const destIndex = parseInt(destination.droppableId.split("-")[1]);
-      const [movedItem] = [newGrid[sourceIndex].item];
-      newGrid[sourceIndex] = { ...newGrid[sourceIndex], item: null };
-      newGrid[destIndex] = { ...newGrid[destIndex], item: movedItem };
-      setGrid(newGrid);
-    }
-    // Moving from grid back to items (optional feature)
-    else if (
-      source.droppableId.startsWith("grid-") &&
-      destination.droppableId === "items"
-    ) {
-      const newGrid = [...grid];
-      const sourceIndex = parseInt(source.droppableId.split("-")[1]);
-      const [movedItem] = [newGrid[sourceIndex].item];
-      newGrid[sourceIndex] = { ...newGrid[sourceIndex], item: null };
-      setGrid(newGrid);
+  }, [data]);
 
-      const newItems = Array.from(items);
-      newItems.splice(destination.index, 0, movedItem!);
-      setItems(newItems);
+console.log(data?.tablePosition)
+
+  const filteredTables = tables?.filter(
+    (table:TableItem) => table.floorId === selectedFloor
+  );
+  
+  if (isLoading) return <FullScreenLoader />;
+  if (error) return <div>Error loading tables</div>; 
+
+  const handleSave = () => {
+    console.log("Payload to be sent:", tables);
+    if (tables.length > 0) {
+      saveTableMutation.mutate(tables);
+    } else {
+      console.error("No tables to save");
     }
   };
 
   return (
-    <div className="flex h-screen">
-      <DragDropContext onDragEnd={onDragEnd}>
-        <div className="w-1/4 bg-gray-100 p-4">
-          <Tabs defaultValue="items" className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="items">Items</TabsTrigger>
-              <TabsTrigger value="saved">Saved Layouts</TabsTrigger>
-            </TabsList>
-            <TabsContent value="items">
-              <Card>
-                <CardContent className="pt-6">
-                  <Droppable droppableId="items" direction="vertical">
-                    {(provided) => (
-                      <div
-                        {...provided.droppableProps}
-                        ref={provided.innerRef}
-                        className="space-y-2"
-                      >
-                        {items.map((item, index) => (
-                          <Draggable
-                            key={item.id}
-                            draggableId={item.id}
-                            index={index}
-                          >
-                            {(provided) => (
-                              <div
-                                ref={provided.innerRef}
-                                {...provided.draggableProps}
-                                {...provided.dragHandleProps}
-                                className="bg-white p-2 rounded shadow"
-                              >
-                                {item.type === "chair" ? (
-                                  <ChairIcon className="h-6 w-6" />
-                                ) : (
-                                  <TableIcon className="h-6 w-6" />
-                                )}
-                                <span className="ml-2">
-                                  {item.type === "chair" ? "Chair" : "Table"}
-                                </span>
-                              </div>
-                            )}
-                          </Draggable>
-                        ))}
-                        {provided.placeholder}
-                      </div>
-                    )}
-                  </Droppable>
-                </CardContent>
-              </Card>
-            </TabsContent>
-            <TabsContent value="saved">
-              <Card>
-                <CardContent>
-                  <p>Saved layouts will appear here.</p>
-                </CardContent>
-              </Card>
-            </TabsContent>
-          </Tabs>
+    <>
+      <div className="flex  ">
+        {/* Header */}
+
+        <div className="flex-1">
+          <header className="flex items-center justify-between gap-4 border-b pb-2 mb-5">
+            <h1 className="text-lg font-semibold">Floor Plan</h1>
+            <FloorSelector
+                  floors={diningAreas}
+                  selectedFloor={selectedFloor}
+                  onFloorChange={setSelectedFloor}
+                />
+            <div className="flex items-center gap-2">
+              <AddTableDialog floors={diningAreas} onAddTable={handleAddTable} />
+              <Button
+                onClick={handleSave}
+                disabled={saveTableMutation.isPending}
+              >
+                {saveTableMutation.isPending ? "Saving..." : "Save"}
+              </Button>
+            </div>
+          </header>
+          <DndContext
+            sensors={sensors}
+            modifiers={[restrictToParentElement]}
+            onDragEnd={handleDragEnd}
+          >
+            <div className="relative h-[calc(100vh-8rem)] border rounded-lg bg-muted/20 grid-background flex items-center justify-center">
+              <div className="absolute top-2 left-2 z-10">
+                
+              </div>
+              {filteredTables.map((table:TableItem) => (
+                <DraggableTable
+                  key={table.id}
+                  table={table}
+                  isSelected={selectedTable === table.id}
+                  onSelect={() => setSelectedTable(table.id)}
+                  onRotate={() => handleRotateTable(table.id)}
+                  onRemove={() => handleRemoveTable(table.id)}
+                  onAddChair={() => handleAddChair(table.id)}
+                  onRemoveChair={(chairId) =>
+                    handleRemoveChair(table.id, chairId)
+                  }
+                  onUpdateName={(newName) =>
+                    handleUpdateTableName(table.id, newName)
+                  }
+                />
+              ))}
+            </div>
+          </DndContext>
         </div>
-        <div className="flex-1 p-4">
-          <div className="grid grid-cols-10 gap-1">
-            {grid.map((cell, index) => (
-              <Droppable key={cell.id} droppableId={`grid-${index}`}>
-                {(provided, snapshot) => (
-                  <div
-                    ref={provided.innerRef}
-                    {...provided.droppableProps}
-                    className={cn(
-                      "h-16 w-16 border border-gray-200 flex items-center justify-center",
-                      snapshot.isDraggingOver && "bg-blue-100",
-                    )}
-                  >
-                    {cell.item && (
-                      <Draggable
-                        draggableId={`grid-item-${cell.item.id}`}
-                        index={0}
-                      >
-                        {(provided) => (
-                          <div
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                            className="w-full h-full flex items-center justify-center"
-                          >
-                            {cell.item && cell.item.type === "chair" ? (
-                              <ChairIcon className="h-8 w-8 text-gray-600" />
-                            ) : cell.item ? (
-                              <TableIcon className="h-8 w-8 text-gray-600" />
-                            ) : null}
-                          </div>
-                        )}
-                      </Draggable>
-                    )}
-                    {provided.placeholder}
-                  </div>
-                )}
-              </Droppable>
-            ))}
-          </div>
-          <div className="mt-4">
-            <Button onClick={() => console.log("Save layout", grid)}>
-              Save Layout
-            </Button>
-          </div>
-        </div>
-      </DragDropContext>
-    </div>
+      </div>
+    </>
   );
 }

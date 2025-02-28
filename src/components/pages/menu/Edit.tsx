@@ -18,7 +18,7 @@ interface MenuItem {
   id: string;
   menu: string;
   description: string;
-  price: string;
+  price: number;
   category: "breakfast" | "lunch" | "dinner";
   image: string;
   code: string;
@@ -93,9 +93,15 @@ export default function EditItemDialog({
             <Input
               id="edit-price"
               value={editedItem.price}
-              onChange={(e) =>
-                setEditedItem({ ...editedItem, price: e.target.value })
-              }
+              onChange={(e) => {
+                const value = e.target.value;
+                if (!isNaN(Number(value)) || value === "") { // Allow clearing the input as well
+                  setEditedItem({
+                    ...editedItem,
+                    price: Number(value),
+                  });
+                }
+              }}
               className="col-span-3"
             />
           </div>

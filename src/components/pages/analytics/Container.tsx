@@ -11,8 +11,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { ChevronLeft, Download } from "lucide-react";
-import Link from "next/link";
+import { Download } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -47,17 +46,10 @@ export default function AnalyticsPage() {
   const [timeframe, setTimeframe] = React.useState("month");
 
   return (
-    <div className="flex-1 p-4 md:p-8 pt-6">
+    <div className="flex-1 p-4 md:p-2 pt-6">
       <div className="mx-auto max-w-7xl">
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center space-x-2">
-            <Link href="/(dashboard)/dash">
-              <Button variant="ghost" size="icon">
-                <ChevronLeft className="h-4 w-4" />
-              </Button>
-            </Link>
-            <h2 className="text-3xl font-bold tracking-tight">Analytics</h2>
-          </div>
+        <div className="flex items-center justify-between border-b pb-2 mb-5">
+          <h1 className="text-lg font-semibold">Report</h1>
           <div className="flex items-center space-x-2">
             <Select defaultValue="custom">
               <SelectTrigger className="w-[240px]">
@@ -171,7 +163,7 @@ export default function AnalyticsPage() {
             </div>
           </CardHeader>
           <CardContent>
-            <div className="h-[400px]">
+            <div className="h-[200px]">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart
                   data={salesData}

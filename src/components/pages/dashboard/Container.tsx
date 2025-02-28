@@ -11,12 +11,13 @@ import {
   YAxis,
   Tooltip,
 } from "recharts";
-import { Bell, MapPin } from "lucide-react";
+import { MapPin } from "lucide-react";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import Header from "./Header";
 
 const monthlyOrders = [
   { month: "Jan", orders: 45 },
@@ -43,18 +44,7 @@ export default function Dashboard() {
   return (
     <div className="flex h-screen flex-col px-4 overflow-x-hidden">
       {/* Header */}
-      <header className="flex items-center justify-between gap-4 border-b pb-2">
-        <h1 className="text-lg font-semibold">Dashboard</h1>
-        <div className="flex items-center gap-2">
-          <Button size="icon" variant="ghost">
-            <Bell className="h-4 w-4" />
-          </Button>
-          <Avatar className="h-8 w-8">
-            <AvatarImage src="/placeholder.svg" />
-            <AvatarFallback>KC</AvatarFallback>
-          </Avatar>
-        </div>
-      </header>
+      <Header />
 
       {/* Dashboard Content */}
       <div className="grid grid-cols-4 gap-3 mt-4">

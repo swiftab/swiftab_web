@@ -8,16 +8,22 @@ interface DashboardContentProps {
 }
 
 export function DashboardContent({ children }: DashboardContentProps) {
-  const [isNewUser, setIsNewUser] = useState(true); // This should be determined by your authentication logic
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [isNewUser, setIsNewUser] = useState(false); 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    // Check if the user is new when the component mounts
-    // This is where you'd typically check your authentication state or make an API call
-    if (isNewUser) {
-      setIsModalOpen(true);
+    const storedUser = localStorage.getItem("user");
+    console.log("Stored User:", storedUser);
+    if (storedUser) {
+      const user = JSON.parse(storedUser);
+      console.log("Parsed User:", user);
+      if (!user.restaurantId) {
+        setIsNewUser(true);
+        setIsModalOpen(true);
+      }
     }
-  }, [isNewUser]);
+  }, []);  
 
   const handleCloseModal = () => {
     setIsModalOpen(false);

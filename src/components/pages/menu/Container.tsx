@@ -1,6 +1,7 @@
 "use client";
 
-import * as React from "react";
+import React, { useState, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { Search, Trash2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -17,110 +18,144 @@ import DeleteConfirmationDialog from "./Delete";
 import EditItemDialog from "./Edit";
 import CreateItemDialog from "./Create";
 import Image from "next/image";
+import { fetchMenu } from "@/hooks/restauranthook/fetchmenuhook";
+import { useDeleteMenu } from "@/hooks/restauranthook/deletehook";
+import { toast } from "@/hooks/use-toast";
+import { useEditMenuItem } from "@/hooks/restauranthook/editmenuhook";
+import { FullScreenLoader } from "@/components/Loading/FullScreen";
 
-// Define the type for a menu item
 interface MenuItem {
   id: string;
   code: string;
   menu: string;
   image: string;
   description: string;
-  price: string;
+  price: number;
   category: "breakfast" | "lunch" | "dinner";
 }
 
-const initialMenuItems: MenuItem[] = [
-  {
-    id: "1",
-    code: "#430085",
-    menu: "Eggs Benedict",
-    image: "/swiftab/pancakes.png",
-    description: "Classic breakfast dish with hollandaise sauce",
-    price: "$12.99",
-    category: "breakfast",
-  },
-  {
-    id: "2",
-    code: "#430086",
-    menu: "Grilled Chicken Salad",
-    image: "/swiftab/pancakes.png",
-    description: "Fresh salad with grilled chicken breast",
-    price: "$10.50",
-    category: "lunch",
-  },
-  {
-    id: "3",
-    code: "#430087",
-    menu: "Steak Frites",
-    image: "/swiftab/pancakes.png",
-    description: "Juicy steak served with crispy fries",
-    price: "$24.99",
-    category: "dinner",
-  },
-];
-
 export default function MenuManager() {
-  const [searchQuery, setSearchQuery] = React.useState("");
-  const [activeTab, setActiveTab] = React.useState("breakfast");
-  const [menuItems, setMenuItems] =
-    React.useState<MenuItem[]>(initialMenuItems);
-  // Removed unused 'editItem' state to avoid error
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = React.useState(false);
-  const [itemToDelete, setItemToDelete] = React.useState<MenuItem | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [activeTab, setActiveTab] = useState("breakfast");
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState<MenuItem | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [restaurantName, setRestaurantName] = useState("");
+
+  useEffect(() => {
+    const restaurantData = localStorage.getItem("RestaurantData");
+    if (restaurantData) {
+      const parsedData = JSON.parse(restaurantData);
+      const name = parsedData.restaurant?.data[0]?.restaurantName;
+      if (name) {
+        setRestaurantName(name);
+      }
+    } else {
+      console.log("No restaurant data found in localStorage.");
+    }
+  }, []);
+
+  const { data: menu, error, isPending } = useQuery({
+    queryKey: ["menu"],
+    queryFn: () => fetchMenu(),
+  });
+
+  const validCategories = ["breakfast", "lunch", "dinner"] as const;
+
+  const menuItems: MenuItem[] = menu
+    ? Object.entries(menu)
+        .filter(([category]) =>
+          validCategories.includes(category as (typeof validCategories)[number])
+        )
+        .flatMap(([category, items]) => {
+          if (!Array.isArray(items)) {
+            console.error(
+              `Expected items to be an array for category ${category}, but got:`,
+              items
+            );
+            return [];
+          }
+          return items.map((item: any) => ({
+            id: item._id,
+            code: item._id,
+            menu: item.name,
+            image: item.image,
+            description: item.description,
+            price: item.cost,
+            category: category as "breakfast" | "lunch" | "dinner",
+          }));
+        })
+    : [];
 
   const filteredMenuItems = menuItems.filter(
     (item) =>
       item.category === activeTab &&
       (item.code.toLowerCase().includes(searchQuery.toLowerCase()) ||
         item.menu.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        item.description.toLowerCase().includes(searchQuery.toLowerCase())),
+        item.description.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
-  // Handle creating a new menu item
-  const handleCreateItem = (newItem: Omit<MenuItem, "id">) => {
-    setMenuItems([...menuItems, { ...newItem, id: Date.now().toString() }]);
+  const editMutation = useEditMenuItem();
+
+  const handleEditItem = (updatedItem: MenuItem, menuType: string) => {
+    editMutation.mutate({ updatedItem, menuType });
   };
 
-  // Handle editing an existing menu item
-  const handleEditItem = (updatedItem: MenuItem) => {
-    setMenuItems(
-      menuItems.map((item) => {
-        return item.id === updatedItem.id ? updatedItem : item;
-      }),
-    );
-  };
+  const deleteMutation = useDeleteMenu();
 
-  // Handle deleting a menu item
   const handleDeleteItem = () => {
     if (itemToDelete) {
-      setMenuItems(menuItems.filter((item) => item.id !== itemToDelete.id));
-      setIsDeleteDialogOpen(false);
-      setItemToDelete(null);
+      deleteMutation.mutate({
+        menuType: itemToDelete.category,
+        itemId: itemToDelete.id,
+      });
     }
   };
 
+  useEffect(() => {
+    if (deleteMutation.isSuccess) {
+      toast({
+        title: "Deleted!",
+        description: "Menu item deleted successfully.",
+        variant: "default",
+      });
+
+      // Close the dialog and reset the state after successful deletion
+      setIsDeleteDialogOpen(false);
+      setItemToDelete(null);
+    }
+
+    if (deleteMutation.isError && deleteMutation.error) {
+      toast({
+        title: "Error",
+        description: deleteMutation.error.message || "An error occurred.",
+        variant: "destructive",
+      });
+    }
+  }, [deleteMutation.isSuccess, deleteMutation.isError, deleteMutation.error]);
+
+  if (isPending) return <FullScreenLoader />
+  if(deleteMutation.isPending) return <FullScreenLoader />
+  if (error) return <div>Error loading menu</div>;
+
   return (
     <div className="flex flex-col h-screen">
-      <div className="sticky top-0 z-10 bg-background shadow-md">
-        <div className="max-w-7xl mx-auto p-4 md:p-6 space-y-4">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <h1 className="text-4xl font-bold tracking-tight text-primary">
-              Manage Menu
-            </h1>
-            <div className="relative w-full md:w-64">
-              <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input
-                placeholder="Search menu items..."
-                className="pl-8"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-            </div>
-          </div>
-          <div className="flex justify-between items-center">
-            <CreateItemDialog onCreateItem={handleCreateItem} />
-          </div>
+      <header className="flex items-center justify-between gap-4 border-b pb-2 mb-5">
+        <h1 className="text-lg font-semibold">Menu</h1>
+        <div className="relative w-full md:w-64">
+          <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder="Search menu items..."
+            className="pl-8"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
         </div>
+      </header>
+      <div className="flex justify-between items-center">
+        <CreateItemDialog
+        //onCreateItem={handleCreateItem}
+        />
       </div>
       <div className="flex-grow overflow-auto">
         <div className="max-w-7xl mx-auto p-4 md:p-6">
@@ -140,9 +175,6 @@ export default function MenuManager() {
                 value={category}
                 className="border rounded-lg p-6"
               >
-                <h2 className="text-2xl font-semibold mb-4 text-primary">
-                  {category.charAt(0).toUpperCase() + category.slice(1)} Menu
-                </h2>
                 <div className="rounded-lg border overflow-hidden">
                   <Table>
                     <TableHeader>
@@ -160,7 +192,7 @@ export default function MenuManager() {
                       {filteredMenuItems.map((item) => (
                         <TableRow key={item.id}>
                           <TableCell className="font-medium">
-                            {item.code}
+                          {`****${item.code.slice(-4)}`}
                           </TableCell>
                           <TableCell>
                             <div className="flex items-center gap-2">
@@ -183,7 +215,9 @@ export default function MenuManager() {
                           <TableCell className="text-right">
                             <EditItemDialog
                               item={item}
-                              onEditItem={handleEditItem}
+                              onEditItem={(updatedItem) =>
+                                handleEditItem(updatedItem, item.category)
+                              }
                             />
                             <Button
                               variant="ghost"

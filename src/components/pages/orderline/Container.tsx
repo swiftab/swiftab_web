@@ -80,14 +80,14 @@ export default function Container() {
     (order) =>
       order.code.toLowerCase().includes(searchQuery.toLowerCase()) ||
       order.menu.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      order.customer.toLowerCase().includes(searchQuery.toLowerCase()),
+      order.customer.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
-    <div className="w-full flex-1 space-y-4 p-4 md:p-8 pt-6 overflow-x-auto">
-      <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <h2 className="text-3xl font-bold tracking-tight">Order</h2>
+    <div className="w-full flex-1 space-y-4 p-4  pt-0 overflow-x-auto">
+      <div className="space-y-2">
+        <header className="flex items-center justify-between gap-4 border-b pb-2 mb-2">
+          <h1 className="text-lg font-semibold">Orders</h1>
           <div className="relative w-64">
             <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
@@ -97,7 +97,7 @@ export default function Container() {
               onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
-        </div>
+        </header>
 
         <Tabs defaultValue="all" className="w-full">
           <TabsList>
@@ -116,7 +116,9 @@ export default function Container() {
                       <TableHead className="w-[100px]">CODE</TableHead>
                       <TableHead>MENU</TableHead>
                       <TableHead>CUSTOMER NAME</TableHead>
-                      <TableHead className="text-center">PRICE (Ksh.)</TableHead>
+                      <TableHead className="text-center">
+                        PRICE (Ksh.)
+                      </TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
