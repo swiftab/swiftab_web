@@ -11,7 +11,7 @@ const features = [
     description:
       "Design your restaurant layout with intuitive tools and templates.",
     image: "/user.png",
-    bgColor: "bg-primary/90",
+    bgColor: "bg-primary/100",
   },
   {
     id: 2,
@@ -19,7 +19,7 @@ const features = [
     description:
       "Optimize your workflow with our integrated management system.",
     image: "/user.png",
-    bgColor: "bg-primary/50",
+    bgColor: "bg-primary/70",
   },
   {
     id: 3,
@@ -27,7 +27,7 @@ const features = [
     description:
       "Manage bookings seamlessly with our advanced reservation system.",
     image: "/user.png",
-    bgColor: "bg-primary/10",
+    bgColor: "bg-primary/50",
   },
 ];
 
@@ -145,13 +145,13 @@ function FeatureCard({ feature, progress, index, total }: FeatureCardProps) {
           </h3>
           <p className="text-xl text-white/90">{feature.description}</p>
         </div>
-        <div className="w-1/2 relative">
+        <div className="w-1/2 relative flex flex-col justify-center">
           <Image
             src={feature.image}
             alt={feature.title}
             //layout="fill"
-            width={150}
-            height={150}
+            width={400}
+            height={400}
             className="object-cover"
           />
         </div>
