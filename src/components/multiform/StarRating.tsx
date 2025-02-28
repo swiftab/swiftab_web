@@ -14,7 +14,9 @@ export function StarRating({ rating, onRatingChange }: StarRatingProps) {
           className={`w-6 h-6 cursor-pointer ${
             star <= rating ? "text-yellow-400 fill-yellow-400" : "text-gray-300"
           }`}
-          onClick={() => onRatingChange(star)}
+          onClick={() => {
+            onRatingChange(star);
+          }}
         />
       ))}
     </div>
