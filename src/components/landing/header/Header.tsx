@@ -60,21 +60,21 @@ export default function Header({
         ))}
       </nav>
       <div className="flex gap-4 px-4 sm:px-6 md:px-8 lg:px-10">
-        <Button
-          variant="outline"
-          asChild
-          className="hidden sm:inline-flex cursor-pointer"
-          onClick={() => onOpenModal("signin")}
-        >
-          <span>Log In</span>
-        </Button>
-        <Button
-          asChild
-          className="hidden sm:inline-flex cursor-pointer"
-          onClick={() => onOpenModal("signup")}
-        >
-          <span>Sign up</span>
-        </Button>
+        <Link href={"/signin"}>
+          <Button
+            variant="outline"
+            asChild
+            className="hidden sm:inline-flex cursor-pointer"
+            //onClick={() => router.push("/signin")}
+          >
+            <span>Log In</span>
+          </Button>
+        </Link>
+        <Link href={"/signup"}>
+          <Button asChild className="hidden sm:inline-flex cursor-pointer">
+            <span>Sign up</span>
+          </Button>
+        </Link>
         <Sheet open={isOpen} onOpenChange={setIsOpen}>
           <SheetTrigger asChild>
             <Button variant="outline" size="icon" className="md:hidden">
