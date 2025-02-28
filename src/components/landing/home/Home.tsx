@@ -1,126 +1,184 @@
 "use client";
-
 import { Button } from "@/components/ui/button";
-import {
-  LayoutDashboard,
-  MoveRight,
-  SlidersVertical,
-  Utensils,
-} from "lucide-react";
+import { Calendar, Users } from "lucide-react";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useRef } from "react";
 
 export default function Home() {
-  const [isClient, setIsClient] = useState(false);
+  const heroRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
+  const restaurants = [
+    {
+      id: 1,
+      imgUrl:
+        "https://res.cloudinary.com/dfuh1q6ic/image/upload/v1733905076/restaurants/zku4hfvxs9q7uwtcwdak.jpg",
+    },
+    {
+      id: 2,
+      imgUrl:
+        "https://res.cloudinary.com/dfuh1q6ic/image/upload/v1733910494/restaurants/ocm2vnbsfoauzoqldhme.jpg",
+    },
+    {
+      id: 3,
+      imgUrl:
+        "https://res.cloudinary.com/dfuh1q6ic/image/upload/v1733996854/restaurants/dphptf1c7gnropx6ax1v.jpg",
+    },
+    {
+      id: 4,
+      imgUrl:
+        "https://res.cloudinary.com/dfuh1q6ic/image/upload/v1733997670/restaurants/mndtver11wmkwhxy2scr.jpg",
+    },
+  ];
 
+  const trustedRes = [
+    { id: 1, imgUrl: "/trustedres/estilo.jpeg" },
+    { id: 2, imgUrl: "/trustedres/blitong.jpeg" },
+    { id: 3, imgUrl: "/trustedres/food.jpeg" },
+    { id: 4, imgUrl: "/trustedres/hotgrill.jpeg" },
+    { id: 5, imgUrl: "/trustedres/sokhaku.jpeg" },
+    { id: 6, imgUrl: "/trustedres/thai.jpeg" },
+    { id: 7, imgUrl: "/trustedres/mafe.jpeg" },
+  ];
   return (
-    <section className="container bg-primary/5 border-none grid lg:grid-cols-2 gap-8 items-center py-0 px-20 flex-1 mt-5 mb-2 border rounded-lg relative overflow-hidden">
-      {isClient && (
-        <>
-          <svg
-            className="absolute top-[-50px] left-[-50px] opacity-50 z-0"
-            width="175"
-            height="175"
-            viewBox="0 0 175 175"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <circle
-              cx="87.5"
-              cy="87.5"
-              r="87.5"
-              fill="#003366"
-              fillOpacity="0.1"
-            />
-          </svg>
-          <svg
-            className="absolute bottom-[-50px] right-[-90px] opacity-50 z-0"
-            width="175"
-            height="175"
-            viewBox="0 0 175 175"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <circle
-              cx="87.5"
-              cy="87.5"
-              r="87.5"
-              fill="green"
-              fillOpacity="0.1"
-            />
-          </svg>
-        </>
-      )}
-      <div className="space-y-8 relative z-10">
-        <h1 className="text-xl font-bold tracking-tight lg:text-4xl text-center md:text-left">
-          Your Ultimate <span className="text-primary">Restaurant</span>
-          <br />
-          Management Solution
-        </h1>
-
-        <div className="flex justify-between items-center gap-x-8">
-          <div className="flex justify-start items-center gap-x-8">
-            <span className="rounded-lg p-2 bg-white">
-              <LayoutDashboard size={20} />
-            </span>
-            <span className="rounded-lg p-2 bg-white">
-              <Utensils size={20} />
-            </span>
-            <span className="rounded-lg p-2 bg-white">
-              <SlidersVertical size={20} />
-            </span>
-          </div>
-        </div>
-
-        <p className="text-xl text-muted-foreground text-center md:text-left">
-          All essential restaurant Management function
-          <br />
-          in one unified function.
-        </p>
-        <div className="space-y-4 text-center md:text-left ">
-          <Button size="lg" className="px-8 hover:bg-slate-600">
-            Get started{" "}
-            <span>
-              <MoveRight />
-            </span>
-          </Button>
-          <div className="flex gap-8 items-center text-xl ">
-            <div>
-              <span className="font-bold text-center md:text-left">500+</span>
-              <span className="text-muted-foreground ml-2 text-center md:text-left">
-                Restaurants
-              </span>
+    <section ref={heroRef} className="relative py-10 md:py-20 ">
+      <div className="container px-4 md:px-6 relative z-10">
+        <div className="grid gap-12 lg:grid-cols-2 lg:gap-16 items-center">
+          <div className="flex flex-col justify-center space-y-8" data-animate>
+            <div className="space-y-4">
+              <div className="inline-flex items-center px-3 py-1 rounded-full bg-gray-300 backdrop-blur-sm text-sm font-medium text-gray-700 border border-white/20">
+                <span className="flex h-2 w-2 rounded-full bg-green-400 mr-2"></span>
+                Powering 2,000+ premier restaurants globally
+              </div>
+              <h1 className="text-4xl md:text-6xl font-bold tracking-tight bg-gradient-to-r from-gray-900 via-gray-900 to-primary/20 bg-clip-text text-transparent">
+                Smart Reservations for Modern Dining
+              </h1>
+              <p className="text-xl text-gray-700 max-w-[600px]">
+                Eliminate booking headaches, maximize table capacity, and
+                delight your guests with our AI-powered reservation management
+                system.
+              </p>
             </div>
-            <div>
-              <span className="font-bold text-center md:text-left">6k+</span>
-              <span className="text-muted-foreground ml-2 text-center md:text-left">
-                Customers
-              </span>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Button
+                size="lg"
+                className="bg-primary hover:bg-primary/80 text-white border-0 shadow-lg shadow-blue-700/20 px-8 h-14 rounded-full font-medium text-base transition-all duration-300"
+              >
+                Get Started 
+                {/* — Free for 14 Days */}
+              </Button>
+              <Button
+                size="lg"
+                variant="outline"
+                className="border-gray-300 text-gray-700 hover:bg-gray-100 px-8 h-14 rounded-full font-medium text-base transition-all duration-300"
+              >
+                Schedule a Personalized Demo
+              </Button>
+            </div>
+            <div className="flex items-center gap-4 text-sm">
+              <div className="flex -space-x-2">
+                {restaurants.map((item) => (
+                  <div
+                    key={item.id}
+                    className="inline-block rounded-full overflow-hidden border-2 border-gray-50 h-10 w-10 transition-transform hover:scale-105"
+                  >
+                    <Image
+                      src={item.imgUrl}
+                      width={40}
+                      height={40}
+                      alt="Restaurant Owner"
+                      className="h-full w-full object-cover"
+                    />
+                  </div>
+                ))}
+              </div>
+              <div className="text-gray-700">
+                Join <span className="font-medium text-gray-900">2,000+</span>{" "}
+                successful restaurants transforming their booking experience
+              </div>
+            </div>
+          </div>
+          <div className="relative" data-animate>
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-indigo-600/20 blur-3xl rounded-full opacity-30 animate-pulse"></div>
+            <div className="relative bg-gradient-to-r from-primary/50 to-green-900/50 backdrop-blur-sm rounded-2xl border border-gray-200/70 p-1 shadow-2xl">
+              <div className="bg-gray-50/80 rounded-xl overflow-hidden">
+                <Image
+                  src="/placeholder.svg?height=550&width=550&text=Intelligent+Reservation+System"
+                  width={550}
+                  height={550}
+                  alt="Restaurant reservation dashboard"
+                  className="w-full aspect-video object-cover object-center rounded-t-xl"
+                />
+                <div className="p-4 border-t border-gray-200/70">
+                  <div className="flex justify-between items-center">
+                    <div className="flex items-center gap-2">
+                      <div className="h-3 w-3 rounded-full bg-green-400"></div>
+                      <span className="text-sm text-gray-700">
+                        Real-time Dashboard
+                      </span>
+                    </div>
+                    <div className="text-sm text-gray-700">
+                      Live data • Auto-refreshed
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Floating UI elements with refined styling */}
+            <div className="absolute -top-10 -right-10 bg-gradient-to-br from-primary/90 to-green-900/90 backdrop-blur-sm rounded-xl border border-gray-200/70 p-4 shadow-xl animate-float-slow">
+              <div className="flex items-center gap-3">
+                <div className="bg-gradient-to-r from-primary/50 to-green-500 p-2 rounded-full">
+                  <Users className="h-5 w-5 text-white" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-white">
+                    Today's Guests
+                  </p>
+                  <p className="text-xl font-bold text-white">128</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="absolute -bottom-8 -left-8 bg-gradient-to-br from-primary/90 to-green-900/90 backdrop-blur-sm rounded-xl border border-gray-200/70 p-4 shadow-xl animate-float">
+              <div className="flex items-center gap-3">
+                <div className="bg-gradient-to-r from-blue-500 to-cyan-500 p-2 rounded-full">
+                  <Calendar className="h-5 w-5 text-white" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-white">
+                    Today's Bookings
+                  </p>
+                  <p className="text-xl font-bold text-white">42</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <div className="relative h-[500px] z-10">
-        {isClient && (
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="absolute inset-0 w-full h-full object-cover"
-          >
-            <source src="/swiftab/dash.mp4" type="video/mp4" />
-            <Image
-              src="/dashboard-placeholder.jpg"
-              alt="Dashboard Prototype"
-              className="absolute inset-0 w-full h-full object-cover"
-            />
-          </video>
-        )}
+
+      {/* Refined brands section */}
+      <div className="container px-4 md:px-6 mt-20">
+        <div className="text-center mb-8">
+          <p className="text-gray-500 text-sm uppercase tracking-wider font-medium">
+            Empowering culinary excellence at restaurants like
+          </p>
+        </div>
+        <div className="flex flex-wrap justify-center gap-8 md:gap-16 opacity-70">
+          {trustedRes.map((item) => (
+            <div
+              key={item.id}
+              className="h-20 transition-all duration-300 hover:opacity-100"
+            >
+              <Image
+                src={item.imgUrl}
+                width={80}
+                height={80}
+                alt={`Premium Restaurant Partner ${item.id}`}
+                className="h-full w-auto object-contain rounded-lg"
+              />
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );
