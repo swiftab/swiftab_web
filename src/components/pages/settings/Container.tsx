@@ -16,30 +16,11 @@ const Container = () => {
 
   return (
     <div className="max-w-6xl mx-auto p-4">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Restaurant Management</h1>
-        <div className="flex items-center gap-2">
-          <Button variant="outline" size="icon">
-            <Cog className="h-4 w-4" />
-          </Button>
-          <div className="flex items-center gap-2">
-            <Avatar className="h-8 w-8 bg-orange-400">
-              <span className="text-xs text-white font-medium">WB</span>
-            </Avatar>
-            <div className="hidden md:block">
-              <p className="text-sm font-medium">William Brinko</p>
-              <p className="text-xs text-gray-500">Louvre Opera</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList className="grid grid-cols-4 mb-6">
           <TabsTrigger value="restaurant">Restaurant</TabsTrigger>
           <TabsTrigger value="profile">Profile</TabsTrigger>
-          <TabsTrigger value="analytics">Analytics</TabsTrigger>
-          <TabsTrigger value="menu">Menu</TabsTrigger>
+          <TabsTrigger value="analytics">Subscription</TabsTrigger>
         </TabsList>
 
         {/* Restaurant Settings Tab */}
@@ -239,7 +220,7 @@ const Container = () => {
         </TabsContent>
 
         {/* Analytics Tab */}
-        <TabsContent value="analytics">
+        <TabsContent value="subscription">
           <Card>
             <CardContent className="pt-6">
               <h2 className="text-xl font-semibold mb-4">Sales Analytics</h2>
@@ -247,20 +228,6 @@ const Container = () => {
               
               <div className="h-64 bg-gray-100 rounded-lg mt-6 flex items-center justify-center">
                 <p className="text-gray-500">Analytics dashboard will be displayed here</p>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        {/* Menu Tab */}
-        <TabsContent value="menu">
-          <Card>
-            <CardContent className="pt-6">
-              <h2 className="text-xl font-semibold mb-4">Menu Management</h2>
-              <p className="text-gray-500">Add, edit, or remove items from your restaurant menu.</p>
-              
-              <div className="h-64 bg-gray-100 rounded-lg mt-6 flex items-center justify-center">
-                <p className="text-gray-500">Menu management interface will be displayed here</p>
               </div>
             </CardContent>
           </Card>
