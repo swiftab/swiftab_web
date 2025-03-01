@@ -109,12 +109,7 @@ export default function ReservationsPage() {
   if (error) return <FullScreenLoader />;
 
   return (
-    <div className="min-h-screen p-8">
-      <header className="flex items-center justify-between gap-4 border-b pb-2 mb-2">
-        <h1 className="text-lg font-semibold">Reservations</h1>
-        <NotificationCenter />
-      </header>
-
+    <div className="min-h-screen ">
       <ReservationStats reservations={filteredReservations} />
 
       <div className="flex justify-between items-center mb-6">

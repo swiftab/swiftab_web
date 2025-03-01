@@ -17,7 +17,7 @@ export default function ReservationDashboard() {
   return (
     <div className="container mx-auto py-2">
       <header className="flex items-center justify-between gap-4 border-b pb-2 mb-5">
-        <h1 className="text-lg font-semibold">Customer</h1>
+        <span />
         <div className="flex flex-row-reverse items-center gap-4 ml-auto">
           <Card className="w-36 h-auto">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">

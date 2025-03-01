@@ -46,10 +46,10 @@ export default function AnalyticsPage() {
   const [timeframe, setTimeframe] = React.useState("month");
 
   return (
-    <div className="flex-1 p-4 md:p-2 pt-6">
+    <div className="flex-1 p-4 md:p-2 ">
       <div className="mx-auto max-w-7xl">
-        <div className="flex items-center justify-between border-b pb-2 mb-5">
-          <h1 className="text-lg font-semibold">Report</h1>
+        <div className="flex items-center justify-between pb-2 mb-5">
+          <h1 className="text-lg font-semibold"></h1>
           <div className="flex items-center space-x-2">
             <Select defaultValue="custom">
               <SelectTrigger className="w-[240px]">

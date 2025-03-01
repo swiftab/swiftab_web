@@ -42,9 +42,7 @@ const recentOrders = [
 
 export default function Dashboard() {
   return (
-    <div className="flex h-screen flex-col px-4 overflow-x-hidden">
-      {/* Header */}
-      <Header />
+    <div className="flex flex-col overflow-x-hidden">
 
       {/* Dashboard Content */}
       <div className="grid grid-cols-4 gap-3 mt-4">

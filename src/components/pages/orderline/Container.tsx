@@ -84,10 +84,10 @@ export default function Container() {
   );
 
   return (
-    <div className="w-full flex-1 space-y-4 p-4  pt-0 overflow-x-auto">
+    <div className="w-full flex-1  overflow-x-auto">
       <div className="space-y-2">
-        <header className="flex items-center justify-between gap-4 border-b pb-2 mb-2">
-          <h1 className="text-lg font-semibold">Orders</h1>
+        <header className="flex items-center justify-between gap-4  pb-2 mb-2">
+          <span />
           <div className="relative w-64">
             <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input

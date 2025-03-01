@@ -140,8 +140,10 @@ export default function MenuManager() {
 
   return (
     <div className="flex flex-col h-screen">
-      <header className="flex items-center justify-between gap-4 border-b pb-2 mb-5">
-        <h1 className="text-lg font-semibold">Menu</h1>
+      <div className="flex justify-between items-center">
+        <CreateItemDialog
+        //onCreateItem={handleCreateItem}
+        />
         <div className="relative w-full md:w-64">
           <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
@@ -151,11 +153,6 @@ export default function MenuManager() {
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
-      </header>
-      <div className="flex justify-between items-center">
-        <CreateItemDialog
-        //onCreateItem={handleCreateItem}
-        />
       </div>
       <div className="flex-grow overflow-auto">
         <div className="max-w-7xl mx-auto p-4 md:p-6">

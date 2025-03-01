@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -8,23 +8,169 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Avatar } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
-import { Bell, Cog, Star, Package, DollarSign } from 'lucide-react';
+import { Cog, Star, Package, DollarSign, Save } from 'lucide-react';
+import { Toast } from '@/components/ui/toast';
+import { FullScreenLoader } from '@/components/Loading/FullScreen';
+import { fetchAdminInfo } from '@/hooks/authhook/authhooks';
+import { useQuery } from '@tanstack/react-query';
+import Image from 'next/image';
 
 const Container = () => {
   const [activeTab, setActiveTab] = useState('restaurant');
+  const [isFormChanged, setIsFormChanged] = useState(false);
+
+  const { data, error, isLoading } = useQuery({
+    queryKey: ["adminInfo"],
+    queryFn: fetchAdminInfo,
+  });
+
+  useEffect(() => {
+    setIsFormChanged(false);
+  }, [activeTab]);
+
+  const [formData, setFormData] = useState({
+    restaurant: {
+      image:'',
+      name: '',
+      cuisine: "Italian",
+      city: '',
+      state: '',
+      zip: "03463",
+      phone: '',
+      email: '',
+      hours: [
+        { day: 'Monday', open: true, from: '10:00', to: '18:00' },
+        { day: 'Tuesday', open: false, from: '', to: '' },
+        { day: 'Wednesday', open: true, from: '10:00', to: '18:00' },
+        { day: 'Thursday', open: true, from: '10:00', to: '18:00' },
+        { day: 'Friday', open: true, from: '10:00', to: '18:00' },
+        { day: 'Saturday', open: false, from: '', to: '' },
+        { day: 'Sunday', open: false, from: '', to: '' }
+      ]
+    },
+    profile: {
+      firstName: '',
+      email: ''
+    }
+  });
+
+  useEffect(() => {
+    if (data) {
+      const {
+        name,
+        email,
+        phoneNumber,
+        restaurantName,
+        location,
+        image,
+        restaurantEmail
+      } = data;
+
+      setFormData({
+        restaurant: {
+          image:image,
+          name: restaurantName,
+          cuisine: "",
+          city: location,
+          state: location,
+          zip: "03463",
+          phone: phoneNumber,
+          email: restaurantEmail,
+          hours: [
+            { day: 'Monday', open: true, from: '10:00', to: '18:00' },
+            { day: 'Tuesday', open: false, from: '', to: '' },
+            { day: 'Wednesday', open: true, from: '10:00', to: '18:00' },
+            { day: 'Thursday', open: true, from: '10:00', to: '18:00' },
+            { day: 'Friday', open: true, from: '10:00', to: '18:00' },
+            { day: 'Saturday', open: false, from: '', to: '' },
+            { day: 'Sunday', open: false, from: '', to: '' }
+          ]
+        },
+        profile: {
+          firstName: name,
+          email: email
+        }
+      });
+    }
+  }, [data]);
+
+  if (isLoading) {
+    return <FullScreenLoader />;
+  }
+
+  if (error) {
+    return <div>Error fetching admin info: {error.message}</div>;
+  }
+
+  if (!data) {
+    return <div>No data available</div>;
+  }
+
+
+  const handleInputChange = (section, field, value) => {
+    setFormData(prev => ({
+      ...prev,
+      [section]: {
+        ...prev[section],
+        [field]: value
+      }
+    }));
+    setIsFormChanged(true);
+  };
+
+  const handleHoursChange = (index, field, value) => {
+    setFormData(prev => {
+      const updatedHours = [...prev.restaurant.hours];
+      
+      if (field === 'open') {
+        updatedHours[index] = {
+          ...updatedHours[index],
+          open: value
+        };
+      } else {
+        updatedHours[index] = {
+          ...updatedHours[index],
+          [field]: value
+        };
+      }
+      
+      return {
+        ...prev,
+        restaurant: {
+          ...prev.restaurant,
+          hours: updatedHours
+        }
+      };
+    });
+    
+    setIsFormChanged(true);
+  };
+
+  const handleSaveChanges = () => {
+    // Here you would typically send the data to your API
+    console.log("Saving changes:", formData);
+    
+    // Show success toast
+    Toast({
+      title: "Changes saved",
+      description: "Your changes have been successfully saved.",
+      duration: 3000,
+    });
+    
+    setIsFormChanged(false);
+  };
 
   return (
     <div className="max-w-6xl mx-auto p-4">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid grid-cols-4 mb-6">
+        <TabsList className="grid grid-cols-3 mb-6">
           <TabsTrigger value="restaurant">Restaurant</TabsTrigger>
           <TabsTrigger value="profile">Profile</TabsTrigger>
           <TabsTrigger value="analytics">Subscription</TabsTrigger>
         </TabsList>
 
-        {/* Restaurant Settings Tab */}
-        <TabsContent value="restaurant" className="space-y-6">
+       {/* Restaurant Settings Tab */}
+       <TabsContent value="restaurant" className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* General Info */}
             <Card>
@@ -32,7 +178,7 @@ const Container = () => {
                 <h2 className="text-xl font-semibold mb-4">General Info</h2>
                 <div className="flex items-center gap-4 mb-6">
                   <Avatar className="h-16 w-16">
-                    <img src="/api/placeholder/100/100" alt="Restaurant logo" />
+                    <Image src={formData.restaurant.image} alt='restaurant image' width={100} height={100}/>
                   </Avatar>
                   <Button variant="outline" size="sm">Upload new picture</Button>
                 </div>
@@ -40,27 +186,43 @@ const Container = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="restaurantName">Restaurant Name</Label>
-                    <Input id="restaurantName" defaultValue="Dolce Vita" />
+                    <Input 
+                      id="restaurantName" 
+                      value={formData.restaurant.name}
+                      onChange={(e) => handleInputChange('restaurant', 'name', e.target.value)}
+                    />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="cuisine">Cuisine</Label>
-                    <Input id="cuisine" defaultValue="Italian" />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="address">Address</Label>
-                    <Input id="address" defaultValue="7384 Hayward Way" />
+                    <Input 
+                      id="cuisine" 
+                      value={formData.restaurant.cuisine}
+                      onChange={(e) => handleInputChange('restaurant', 'cuisine', e.target.value)}
+                    />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="city">City</Label>
-                    <Input id="city" defaultValue="Laguna" />
+                    <Input 
+                      id="city" 
+                      value={formData.restaurant.city}
+                      onChange={(e) => handleInputChange('restaurant', 'city', e.target.value)}
+                    />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="state">State/Province</Label>
-                    <Input id="state" defaultValue="Florida" />
+                    <Input 
+                      id="state" 
+                      value={formData.restaurant.state}
+                      onChange={(e) => handleInputChange('restaurant', 'state', e.target.value)}
+                    />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="zip">ZIP Code</Label>
-                    <Input id="zip" defaultValue="03463" />
+                    <Input 
+                      id="zip" 
+                      value={formData.restaurant.zip}
+                      onChange={(e) => handleInputChange('restaurant', 'zip', e.target.value)}
+                    />
                   </div>
                 </div>
 
@@ -68,11 +230,19 @@ const Container = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="phone">Phone Number</Label>
-                    <Input id="phone" defaultValue="(480) 555-0703" />
+                    <Input 
+                      id="phone" 
+                      value={formData.restaurant.phone}
+                      onChange={(e) => handleInputChange('restaurant', 'phone', e.target.value)}
+                    />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="email">Email Address</Label>
-                    <Input id="email" defaultValue="michelle.rivera@example.com" />
+                    <Input 
+                      id="email" 
+                      value={formData.restaurant.email}
+                      onChange={(e) => handleInputChange('restaurant', 'email', e.target.value)}
+                    />
                   </div>
                 </div>
               </CardContent>
@@ -84,21 +254,16 @@ const Container = () => {
                 <h2 className="text-xl font-semibold mb-4">Opening Hours</h2>
                 
                 <div className="space-y-4">
-                  {[
-                    { day: 'Monday', open: true, from: '10:00', to: '18:00' },
-                    { day: 'Tuesday', open: false },
-                    { day: 'Wednesday', open: true, from: '10:00', to: '18:00' },
-                    { day: 'Thursday', open: true, from: '10:00', to: '18:00' },
-                    { day: 'Friday', open: true, from: '10:00', to: '18:00' },
-                    { day: 'Saturday', open: false },
-                    { day: 'Sunday', open: false }
-                  ].map((schedule) => (
+                  {formData.restaurant.hours.map((schedule, index) => (
                     <div key={schedule.day} className="flex items-center justify-between">
                       <div className="w-32">
                         <p className="font-medium">{schedule.day}</p>
                       </div>
                       <div className="flex items-center gap-2">
-                        <Switch checked={schedule.open} />
+                        <Switch 
+                          checked={schedule.open} 
+                          onCheckedChange={(checked) => handleHoursChange(index, 'open', checked)}
+                        />
                         <span className="text-sm min-w-16">
                           {schedule.open ? 'Open' : 'Closed'}
                         </span>
@@ -107,12 +272,14 @@ const Container = () => {
                         <div className="flex items-center gap-2">
                           <Input 
                             className="w-20" 
-                            defaultValue={schedule.from} 
+                            value={schedule.from}
+                            onChange={(e) => handleHoursChange(index, 'from', e.target.value)}
                           />
                           <span>-</span>
                           <Input 
                             className="w-20" 
-                            defaultValue={schedule.to} 
+                            value={schedule.to}
+                            onChange={(e) => handleHoursChange(index, 'to', e.target.value)}
                           />
                         </div>
                       )}
@@ -122,6 +289,19 @@ const Container = () => {
               </CardContent>
             </Card>
           </div>
+          
+          {/* Save Changes Button for Restaurant Tab */}
+          {isFormChanged && (
+            <div className="fixed bottom-4 right-4 z-10">
+              <Button 
+                className="shadow-lg flex items-center gap-2" 
+                onClick={handleSaveChanges}
+              >
+                <Save className="h-4 w-4" />
+                Save Changes
+              </Button>
+            </div>
+          )}
         </TabsContent>
 
         {/* Profile Tab */}
@@ -155,11 +335,19 @@ const Container = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="firstName">First name</Label>
-                    <Input id="firstName" defaultValue="Darlene Robertson" />
+                    <Input 
+                      id="firstName" 
+                      value={formData.profile.firstName}
+                      onChange={(e) => handleInputChange('profile', 'firstName', e.target.value)}
+                    />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="userEmail">Email</Label>
-                    <Input id="userEmail" defaultValue="anna.lawson@example.com" />
+                    <Input 
+                      id="userEmail" 
+                      value={formData.profile.email}
+                      onChange={(e) => handleInputChange('profile', 'email', e.target.value)}
+                    />
                   </div>
                 </div>
 
@@ -217,6 +405,19 @@ const Container = () => {
               </CardContent>
             </Card>
           </div>
+          
+          {/* Save Changes Button for Profile Tab */}
+          {isFormChanged && (
+            <div className="fixed bottom-4 right-4 z-10">
+              <Button 
+                className="shadow-lg flex items-center gap-2" 
+                onClick={handleSaveChanges}
+              >
+                <Save className="h-4 w-4" />
+                Save Changes
+              </Button>
+            </div>
+          )}
         </TabsContent>
 
         {/* Analytics Tab */}
