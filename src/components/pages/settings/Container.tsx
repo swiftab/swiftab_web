@@ -1,0 +1,273 @@
+"use client";
+
+import React, { useState } from 'react';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { Label } from '@/components/ui/label';
+import { Switch } from '@/components/ui/switch';
+import { Avatar } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
+import { Bell, Cog, Star, Package, DollarSign } from 'lucide-react';
+
+const Container = () => {
+  const [activeTab, setActiveTab] = useState('restaurant');
+
+  return (
+    <div className="max-w-6xl mx-auto p-4">
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold">Restaurant Management</h1>
+        <div className="flex items-center gap-2">
+          <Button variant="outline" size="icon">
+            <Cog className="h-4 w-4" />
+          </Button>
+          <div className="flex items-center gap-2">
+            <Avatar className="h-8 w-8 bg-orange-400">
+              <span className="text-xs text-white font-medium">WB</span>
+            </Avatar>
+            <div className="hidden md:block">
+              <p className="text-sm font-medium">William Brinko</p>
+              <p className="text-xs text-gray-500">Louvre Opera</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+        <TabsList className="grid grid-cols-4 mb-6">
+          <TabsTrigger value="restaurant">Restaurant</TabsTrigger>
+          <TabsTrigger value="profile">Profile</TabsTrigger>
+          <TabsTrigger value="analytics">Analytics</TabsTrigger>
+          <TabsTrigger value="menu">Menu</TabsTrigger>
+        </TabsList>
+
+        {/* Restaurant Settings Tab */}
+        <TabsContent value="restaurant" className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* General Info */}
+            <Card>
+              <CardContent className="pt-6">
+                <h2 className="text-xl font-semibold mb-4">General Info</h2>
+                <div className="flex items-center gap-4 mb-6">
+                  <Avatar className="h-16 w-16">
+                    <img src="/api/placeholder/100/100" alt="Restaurant logo" />
+                  </Avatar>
+                  <Button variant="outline" size="sm">Upload new picture</Button>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="restaurantName">Restaurant Name</Label>
+                    <Input id="restaurantName" defaultValue="Dolce Vita" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="cuisine">Cuisine</Label>
+                    <Input id="cuisine" defaultValue="Italian" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="address">Address</Label>
+                    <Input id="address" defaultValue="7384 Hayward Way" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="city">City</Label>
+                    <Input id="city" defaultValue="Laguna" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="state">State/Province</Label>
+                    <Input id="state" defaultValue="Florida" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="zip">ZIP Code</Label>
+                    <Input id="zip" defaultValue="03463" />
+                  </div>
+                </div>
+
+                <h3 className="text-lg font-semibold mt-6 mb-4">Contact Information</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="phone">Phone Number</Label>
+                    <Input id="phone" defaultValue="(480) 555-0703" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="email">Email Address</Label>
+                    <Input id="email" defaultValue="michelle.rivera@example.com" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Opening Hours */}
+            <Card>
+              <CardContent className="pt-6">
+                <h2 className="text-xl font-semibold mb-4">Opening Hours</h2>
+                
+                <div className="space-y-4">
+                  {[
+                    { day: 'Monday', open: true, from: '10:00', to: '18:00' },
+                    { day: 'Tuesday', open: false },
+                    { day: 'Wednesday', open: true, from: '10:00', to: '18:00' },
+                    { day: 'Thursday', open: true, from: '10:00', to: '18:00' },
+                    { day: 'Friday', open: true, from: '10:00', to: '18:00' },
+                    { day: 'Saturday', open: false },
+                    { day: 'Sunday', open: false }
+                  ].map((schedule) => (
+                    <div key={schedule.day} className="flex items-center justify-between">
+                      <div className="w-32">
+                        <p className="font-medium">{schedule.day}</p>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Switch checked={schedule.open} />
+                        <span className="text-sm min-w-16">
+                          {schedule.open ? 'Open' : 'Closed'}
+                        </span>
+                      </div>
+                      {schedule.open && (
+                        <div className="flex items-center gap-2">
+                          <Input 
+                            className="w-20" 
+                            defaultValue={schedule.from} 
+                          />
+                          <span>-</span>
+                          <Input 
+                            className="w-20" 
+                            defaultValue={schedule.to} 
+                          />
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+
+        {/* Profile Tab */}
+        <TabsContent value="profile" className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Account Settings */}
+            <Card>
+              <CardContent className="pt-6">
+                <div className="mb-6">
+                  <div className="flex gap-4 mb-4">
+                    <Button variant="outline" className="px-0 border-0">Account</Button>
+                    <Button variant="ghost" className="px-0">Notifications</Button>
+                  </div>
+                  <div className="h-0.5 bg-gray-100 mb-6"></div>
+                </div>
+
+                <h2 className="text-lg font-semibold mb-4">Account</h2>
+                <p className="text-sm text-gray-500 mb-6">Please configure your profile and fill in your information.</p>
+
+                <div className="flex items-center gap-4 mb-6">
+                  <Avatar className="h-16 w-16">
+                    <img src="/api/placeholder/100/100" alt="User Avatar" />
+                  </Avatar>
+                  <div>
+                    <Button variant="ghost" className="text-sm text-gray-500 hover:text-gray-900">Upload Photo</Button>
+                    <p className="text-xs text-gray-500">Pick a photo up to 4 MB</p>
+                  </div>
+                  <Button variant="outline" size="sm" className="text-red-500 hover:text-red-600">Remove Photo</Button>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="firstName">First name</Label>
+                    <Input id="firstName" defaultValue="Darlene Robertson" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="userEmail">Email</Label>
+                    <Input id="userEmail" defaultValue="anna.lawson@example.com" />
+                  </div>
+                </div>
+
+                <div className="mt-6">
+                  <h3 className="text-lg font-semibold mb-2">Password</h3>
+                  <p className="text-sm text-gray-500 mb-4">Change your password.</p>
+                  <div className="flex justify-end">
+                    <Button variant="outline" className="bg-orange-50 text-orange-500 hover:bg-orange-100">Change Password</Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Notifications */}
+            <Card>
+              <CardContent className="pt-6">
+                <div className="flex justify-between items-center mb-6">
+                  <h2 className="text-lg font-semibold">Notification</h2>
+                  <Button variant="ghost" size="icon">
+                    <Cog className="h-4 w-4" />
+                  </Button>
+                </div>
+
+                <div className="space-y-4">
+                  <div className="flex items-start gap-3 p-3 rounded-lg border">
+                    <div className="rounded-full bg-red-100 p-2">
+                      <DollarSign className="h-4 w-4 text-red-500" />
+                    </div>
+                    <div>
+                      <p className="text-sm">Your restaurant <span className="font-medium">'Whispering Willow'</span> has achieved total sales of <span className="font-medium">$5,432.87</span> today</p>
+                      <p className="text-xs text-gray-500 mt-1">2 min ago</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-3 p-3 rounded-lg border">
+                    <div className="rounded-full bg-green-100 p-2">
+                      <Package className="h-4 w-4 text-green-500" />
+                    </div>
+                    <div>
+                      <p className="text-sm">The stock level of <span className="font-medium">Chicken Breast</span> at <span className="font-medium">'Whispering Willow'</span> is below the threshold. Reorder soon to avoid shortages.</p>
+                      <p className="text-xs text-gray-500 mt-1">2 min ago</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-3 p-3 rounded-lg border">
+                    <div className="rounded-full bg-blue-100 p-2">
+                      <Star className="h-4 w-4 text-blue-500" />
+                    </div>
+                    <div>
+                      <p className="text-sm">A customer at <span className="font-medium">'Whispering Willow'</span> has left a 5-star review. <span className="text-blue-500">Click here</span> to read their comments.</p>
+                      <p className="text-xs text-gray-500 mt-1">2 min ago</p>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+
+        {/* Analytics Tab */}
+        <TabsContent value="analytics">
+          <Card>
+            <CardContent className="pt-6">
+              <h2 className="text-xl font-semibold mb-4">Sales Analytics</h2>
+              <p className="text-gray-500">View detailed sales and traffic analytics for your restaurant.</p>
+              
+              <div className="h-64 bg-gray-100 rounded-lg mt-6 flex items-center justify-center">
+                <p className="text-gray-500">Analytics dashboard will be displayed here</p>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Menu Tab */}
+        <TabsContent value="menu">
+          <Card>
+            <CardContent className="pt-6">
+              <h2 className="text-xl font-semibold mb-4">Menu Management</h2>
+              <p className="text-gray-500">Add, edit, or remove items from your restaurant menu.</p>
+              
+              <div className="h-64 bg-gray-100 rounded-lg mt-6 flex items-center justify-center">
+                <p className="text-gray-500">Menu management interface will be displayed here</p>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
+    </div>
+  );
+};
+
+export default Container;
