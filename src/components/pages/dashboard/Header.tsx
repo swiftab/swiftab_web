@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 import {
-  Search,
   Bell,
   Menu,
   ChevronDown,
@@ -13,7 +12,6 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Input } from "@/components/ui/input";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -26,11 +24,11 @@ import {
 import { Badge } from "@/components/ui/badge";
 
 export default function HeaderDashboard() {
+  const notifications = 3;
   const [user, setUser] = useState(null);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [initials, setInitials] = useState("");
-  const [notifications, setNotifications] = useState(3);
   const [currentTime, setCurrentTime] = useState("");
 
   useEffect(() => {

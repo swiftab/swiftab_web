@@ -1,11 +1,8 @@
 "use client";
 
 import { SignInForm } from "@/components/auth/SignInForm";
-import { FullScreenLoader } from "@/components/Loading/FullScreen";
-import { ArrowLeft, ArrowRight } from "lucide-react";
-import React, { Suspense, useEffect, useState } from "react";
+import React, {useEffect, useState } from "react";
 
-// Benefits data for carousel
 const benefits = [
   {
     title: "Streamlined Reservations",

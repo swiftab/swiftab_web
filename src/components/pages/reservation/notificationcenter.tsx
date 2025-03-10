@@ -1,17 +1,20 @@
-import { useState } from "react"
-import { Bell } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { Bell } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 export function NotificationCenter() {
-  const [notifications, setNotifications] = useState([
+  const notifications = [
     { id: 1, message: "New reservation added" },
     {
       id: 2,
       message: "Reservation #1234 updated",
     },
     { id: 3, message: "Reservation #5678 canceled" },
-  ])
+  ];
 
   return (
     <Popover>
@@ -31,6 +34,5 @@ export function NotificationCenter() {
         </div>
       </PopoverContent>
     </Popover>
-  )
+  );
 }
-
