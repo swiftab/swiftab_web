@@ -49,9 +49,10 @@ export function SignInForm({
       });
 
       setLoading(true);
-      setTimeout(() => {
-        router.replace("/dash");
-      }, 1500);
+      router.replace("/dash");
+      // setTimeout(() => {
+        
+      // }, 1500);
     }
 
     if (signInMutation.isError) {
