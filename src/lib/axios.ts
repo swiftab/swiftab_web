@@ -2,7 +2,7 @@ import axios from "axios";
 
 const apiClient = axios.create({
   baseURL: "https://server-production-2ee7.up.railway.app/swiftab",
-  headers: { "Content-Type": "application/json","Access-Control-Allow-Credentials": "true" },
+  headers: { "Content-Type": "application/json","Access-Control-Allow-Credentials": "true","Accept": "application/json" },
   withCredentials: true,
 });
 
