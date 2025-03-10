@@ -85,7 +85,7 @@ export default function ReservationsPage() {
   const filteredReservations = useMemo(() => {
     if (!serverData) return [];
 
-    return serverData.filter((reservation) => {
+    return serverData.filter((reservation: Reservation) => {
       const reservationDate = new Date(reservation.start);
       const matchesSearch = reservation.name
         .toLowerCase()
@@ -131,7 +131,15 @@ export default function ReservationsPage() {
       <ReservationStats reservations={filteredReservations} />
 
       <div className="flex justify-between items-center mb-6">
-        <DateRangePicker onChange={setDateRange} />
+        <DateRangePicker
+          onChange={(range) => {
+            setDateRange({
+              start: range.start ? new Date(range.start) : undefined,
+              end: range.end ? new Date(range.end) : undefined,
+            });
+          }}
+        />
+
         <Button>
           <Plus className="mr-2 h-4 w-4" /> New Reservation
         </Button>
@@ -207,7 +215,7 @@ export default function ReservationsPage() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {paginatedReservations.map((reservation) => (
+          {paginatedReservations.map((reservation: Reservation) => (
             <TableRow
               key={reservation.id}
               onClick={() => setSelectedReservation(reservation)}

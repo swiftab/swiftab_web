@@ -15,6 +15,23 @@ import { fetchAdminInfo } from "@/hooks/authhook/authhooks";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 
+interface FormDataType {
+  restaurant: {
+    image: string;
+    name: string;
+    cuisine: string;
+    city: string;
+    state: string;
+    zip: string;
+    phone: string;
+    email: string;
+    hours: { day: string; open: boolean; from: string; to: string }[];
+  };
+  profile: {
+    firstName: string;
+    email: string;
+  };
+}
 const Container = () => {
   const [activeTab, setActiveTab] = useState("restaurant");
   const [isFormChanged, setIsFormChanged] = useState(false);
@@ -28,7 +45,7 @@ const Container = () => {
     setIsFormChanged(false);
   }, [activeTab]);
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormDataType>({
     restaurant: {
       image: "",
       name: "",
@@ -106,7 +123,11 @@ const Container = () => {
     return <div>No data available</div>;
   }
 
-  const handleInputChange = (section, field, value) => {
+  const handleInputChange = <K extends keyof FormDataType>(
+    section: K,
+    field: keyof FormDataType[K],
+    value: string | boolean
+  ) => {
     setFormData((prev) => ({
       ...prev,
       [section]: {
@@ -117,21 +138,18 @@ const Container = () => {
     setIsFormChanged(true);
   };
 
-  const handleHoursChange = (index, field, value) => {
+  const handleHoursChange = (
+    index: number,
+    field: "open" | "from" | "to",
+    value: string | boolean
+  ) => {
     setFormData((prev) => {
       const updatedHours = [...prev.restaurant.hours];
 
-      if (field === "open") {
-        updatedHours[index] = {
-          ...updatedHours[index],
-          open: value,
-        };
-      } else {
-        updatedHours[index] = {
-          ...updatedHours[index],
-          [field]: value,
-        };
-      }
+      updatedHours[index] = {
+        ...updatedHours[index],
+        [field]: value,
+      };
 
       return {
         ...prev,
@@ -152,7 +170,7 @@ const Container = () => {
     // Show success toast
     Toast({
       title: "Changes saved",
-      description: "Your changes have been successfully saved.",
+      //description: "Your changes have been successfully saved.",
       duration: 3000,
     });
 

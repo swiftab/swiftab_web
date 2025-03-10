@@ -3,13 +3,14 @@ import { Button } from "@/components/ui/button"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { CalendarDays } from "lucide-react"
 import { Calendar } from "@/components/ui/calendar"
+import { DateRange } from "react-day-picker" // Ensure you have this type
 
 interface DateRangePickerProps {
   onChange: (range: { start: string; end: string }) => void
 }
 
 export function DateRangePicker({ onChange }: DateRangePickerProps) {
-  const [date, setDate] = useState<Date | undefined>(new Date())
+  const [date, setDate] = useState<DateRange | undefined>({ from: new Date(), to: undefined })
 
   return (
     <Popover>
@@ -21,14 +22,15 @@ export function DateRangePicker({ onChange }: DateRangePickerProps) {
       <PopoverContent className="w-auto p-0" align="start">
         <Calendar
           mode="range"
-          selected={date}
+          selected={date} // Now `date` is a `DateRange`
           onSelect={(newDate) => {
-            setDate(newDate)
-            if (newDate && newDate instanceof Date) {
+            setDate(newDate);
+
+            if (newDate?.from) {
               onChange({
-                start: newDate.toISOString(),
-                end: new Date(newDate.getTime() + 7 * 24 * 60 * 60 * 1000).toISOString(),
-              })
+                start: newDate.from.toISOString(),
+                end: newDate.to ? newDate.to.toISOString() : newDate.from.toISOString(),
+              });
             }
           }}
           initialFocus
@@ -37,4 +39,3 @@ export function DateRangePicker({ onChange }: DateRangePickerProps) {
     </Popover>
   )
 }
-

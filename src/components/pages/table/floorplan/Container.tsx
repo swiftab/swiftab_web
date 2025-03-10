@@ -10,7 +10,7 @@ import {
 } from "@dnd-kit/core";
 import { restrictToParentElement } from "@dnd-kit/modifiers";
 import { Button } from "@/components/ui/button";
-import { TableItem} from "@/types/table";
+import { TableItem } from "@/types/table";
 import { DraggableTable } from "./DraggableTable";
 import { FloorSelector } from "./FloorSelector";
 import { AddTableDialog } from "./AddTable";
@@ -19,6 +19,8 @@ import { fetchRestaurantTables } from "@/hooks/tablehook/fetchrestable";
 import { FullScreenLoader } from "@/components/Loading/FullScreen";
 import { useSaveTable } from "@/hooks/tablehook/savelayouthook";
 
+type Chair = "top" | "right" | "bottom" | "left"; // Example type
+
 interface DiningArea {
   id: string;
   name: string;
@@ -26,14 +28,10 @@ interface DiningArea {
 
 const initialTables: TableItem[] = [];
 
-
-
 export default function Container() {
   const [diningAreas, setDiningAreas] = React.useState<DiningArea[]>([]);
   //console.log(diningAreas)
-  const [selectedFloor, setSelectedFloor] = React.useState<string>(
-    ""
-  );
+  const [selectedFloor, setSelectedFloor] = React.useState<string>("");
   //console.log(selectedFloor)
   const [tables, setTables] = React.useState<TableItem[]>(initialTables);
   const [selectedTable, setSelectedTable] = React.useState<string | null>(null);
@@ -84,15 +82,16 @@ export default function Container() {
       tables.map((table) => {
         if (table.id === tableId) {
           const newChairId = `${table.id}-chair-${table.chairs.length + 1}`;
-          const newChairPosition =
-            table.shape === "round"
-              ? { id: newChairId, position: "top" }
-              : {
-                  id: newChairId,
-                  position: ["top", "right", "bottom", "left"][
+          const newChairPosition: { id: string; position: Chair } = {
+            id: newChairId,
+            position:
+              table.shape === "round"
+                ? ("top" as Chair) // Ensure it's explicitly typed
+                : (["top", "right", "bottom", "left"][
                     table.chairs.length % 4
-                  ] as ChairPosition,
-                };
+                  ] as Chair),
+          };
+
           return {
             ...table,
             chairs: [...table.chairs, newChairPosition],
@@ -143,7 +142,6 @@ export default function Container() {
     );
   };
 
-
   const { data, isLoading, error } = useQuery({
     queryKey: ["restaurantTables"],
     queryFn: fetchRestaurantTables,
@@ -156,29 +154,28 @@ export default function Container() {
         : { diningAreas: [], tablePosition: [] },
   });
 
-  
-
-
   React.useEffect(() => {
     if (data?.diningAreas) {
-      const areasWithIds = data.diningAreas.map((area: string, index:number) => ({
-        id:(index + 1).toString(),
-        name: area
-      }));
+      const areasWithIds = data.diningAreas.map(
+        (area: string, index: number) => ({
+          id: (index + 1).toString(),
+          name: area,
+        })
+      );
       setDiningAreas(areasWithIds);
       setSelectedFloor(areasWithIds[0]?.id || "");
-      setTables(data?.tablePosition)
+      setTables(data?.tablePosition);
     }
   }, [data]);
 
-console.log(data?.tablePosition)
+  console.log(data?.tablePosition);
 
   const filteredTables = tables?.filter(
-    (table:TableItem) => table.floorId === selectedFloor
+    (table: TableItem) => table.floorId === selectedFloor
   );
-  
+
   if (isLoading) return <FullScreenLoader />;
-  if (error) return <div>Error loading tables</div>; 
+  if (error) return <div>Error loading tables</div>;
 
   const handleSave = () => {
     console.log("Payload to be sent:", tables);
@@ -198,12 +195,15 @@ console.log(data?.tablePosition)
           <header className="flex items-center justify-between gap-4 border-b pb-2 mb-5">
             <h1 className="text-lg font-semibold">Floor Plan</h1>
             <FloorSelector
-                  floors={diningAreas}
-                  selectedFloor={selectedFloor}
-                  onFloorChange={setSelectedFloor}
-                />
+              floors={diningAreas}
+              selectedFloor={selectedFloor}
+              onFloorChange={setSelectedFloor}
+            />
             <div className="flex items-center gap-2">
-              <AddTableDialog floors={diningAreas} onAddTable={handleAddTable} />
+              <AddTableDialog
+                floors={diningAreas}
+                onAddTable={handleAddTable}
+              />
               <Button
                 onClick={handleSave}
                 disabled={saveTableMutation.isPending}
@@ -218,10 +218,8 @@ console.log(data?.tablePosition)
             onDragEnd={handleDragEnd}
           >
             <div className="relative h-[calc(100vh-8rem)] border rounded-lg bg-muted/20 grid-background flex items-center justify-center">
-              <div className="absolute top-2 left-2 z-10">
-                
-              </div>
-              {filteredTables.map((table:TableItem) => (
+              <div className="absolute top-2 left-2 z-10"></div>
+              {filteredTables.map((table: TableItem) => (
                 <DraggableTable
                   key={table.id}
                   table={table}

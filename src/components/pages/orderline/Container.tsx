@@ -1,7 +1,13 @@
 "use client";
 
 import * as React from "react";
-import { Search, AlertCircle, CheckCircle2, Clock, XCircle } from "lucide-react";
+import {
+  Search,
+  AlertCircle,
+  CheckCircle2,
+  Clock,
+  XCircle,
+} from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
@@ -17,80 +23,132 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchOrders } from "@/hooks/orderhook/fetchorder";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { 
-  Card, 
-  CardContent, 
-  CardDescription, 
-  CardHeader, 
-  CardTitle 
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
 } from "@/components/ui/card";
+
+export interface MenuItem {
+  _id: string;
+  image: string;
+  name: string;
+  description: string;
+  cost: number;
+  quantity: number;
+}
+
+export interface Order {
+  _id: string;
+  userId: string;
+  orderId: string;
+  restaurantId: string;
+  reservationId: string;
+  tableNumber: string;
+  menu: MenuItem[];
+  status: "Served" | "Not-served";
+  paid: "Paid" | "Unpaid";
+  takenBy?: string;
+  createdAt: string;
+}
 
 export default function OrdersContainer() {
   const [searchQuery, setSearchQuery] = React.useState("");
   const [activeTab, setActiveTab] = React.useState("all");
 
   // Fetch orders data
-  const { data, error, isPending } = useQuery({
+  const { data, error, isPending } = useQuery<{ orders: Order[] }>({
     queryKey: ["orders"],
-    queryFn: fetchOrders
+    queryFn: fetchOrders,
   });
 
   const orders = data?.orders || [];
 
   // Filter orders based on search query
   const filteredOrders = React.useMemo(() => {
-    return orders.filter(order => 
-      order.orderId.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      order.menu.some(item => 
-        item.name.toLowerCase().includes(searchQuery.toLowerCase())
-      ) ||
-      order.tableNumber.toLowerCase().includes(searchQuery.toLowerCase())
+    return orders.filter(
+      (order) =>
+        order.orderId.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        order.menu.some((item) =>
+          item.name.toLowerCase().includes(searchQuery.toLowerCase())
+        ) ||
+        order.tableNumber.toLowerCase().includes(searchQuery.toLowerCase())
     );
   }, [orders, searchQuery]);
 
   // Filter orders based on status for tabs
-  const getFilteredOrdersByStatus = React.useCallback((status) => {
-    if (status === "all") return filteredOrders;
-    if (status === "recent") return filteredOrders.filter(order => order.status === "Not-served");
-    if (status === "previous") return filteredOrders.filter(order => order.status === "Served");
-    if (status === "canceled") return filteredOrders.filter(order => order.paid === "Cancelled" || order.status === "Cancelled");
-    return filteredOrders;
-  }, [filteredOrders]);
+  const getFilteredOrdersByStatus = React.useCallback(
+    (status: string) => {
+      if (status === "all") return filteredOrders;
+      if (status === "recent")
+        return filteredOrders.filter((order) => order.status === "Not-served");
+      if (status === "previous")
+        return filteredOrders.filter((order) => order.status === "Served");
+      // if (status === "canceled") return filteredOrders.filter(order => order.paid === "Cancelled" || order.status === "Cancelled");
+      return filteredOrders;
+    },
+    [filteredOrders]
+  );
 
   // Calculate total price for an order
-  const calculateOrderTotal = (order) => {
-    return order.menu.reduce((total, item) => total + (item.cost * item.quantity), 0);
+  const calculateOrderTotal = (order: Order): number => {
+    return order.menu.reduce(
+      (total, item) => total + item.cost * item.quantity,
+      0
+    );
   };
 
   // Format price to display with currency
-  const formatPrice = (price) => {
-    return (price / 100).toLocaleString('en-KE', { 
-      style: 'currency', 
-      currency: 'KES',
+  const formatPrice = (price: number) => {
+    return (price / 100).toLocaleString("en-KE", {
+      style: "currency",
+      currency: "KES",
       minimumFractionDigits: 0,
-      maximumFractionDigits: 0
+      maximumFractionDigits: 0,
     });
   };
 
+  type getstatus = {
+    status: string;
+    paid: "Paid" | "Unpaid";
+  };
+
   // Get status icon and color
-  const getStatusDetails = (status, paid) => {
-    if (status === "Served" && paid === "Paid") 
-      return { icon: <CheckCircle2 className="h-4 w-4 text-green-500" />, color: "bg-green-100 text-green-800" };
-    if (status === "Served") 
-      return { icon: <CheckCircle2 className="h-4 w-4 text-blue-500" />, color: "bg-blue-100 text-blue-800" };
-    if (status === "Not-served") 
-      return { icon: <Clock className="h-4 w-4 text-amber-500" />, color: "bg-amber-100 text-amber-800" };
-    
-    return { icon: <XCircle className="h-4 w-4 text-red-500" />, color: "bg-red-100 text-red-800" };
+  const getStatusDetails = ({ status, paid }: getstatus) => {
+    if (status === "Served" && paid === "Paid")
+      return {
+        icon: <CheckCircle2 className="h-4 w-4 text-green-500" />,
+        color: "bg-green-100 text-green-800",
+      };
+    if (status === "Served")
+      return {
+        icon: <CheckCircle2 className="h-4 w-4 text-blue-500" />,
+        color: "bg-blue-100 text-blue-800",
+      };
+    if (status === "Not-served")
+      return {
+        icon: <Clock className="h-4 w-4 text-amber-500" />,
+        color: "bg-amber-100 text-amber-800",
+      };
+
+    return {
+      icon: <XCircle className="h-4 w-4 text-red-500" />,
+      color: "bg-red-100 text-red-800",
+    };
   };
 
   // Calculate metrics for the summary
   const metrics = React.useMemo(() => {
     return {
       total: orders.length,
-      served: orders.filter(order => order.status === "Served").length,
-      pending: orders.filter(order => order.status === "Not-served").length,
-      revenue: orders.reduce((total, order) => total + calculateOrderTotal(order), 0)
+      served: orders.filter((order) => order.status === "Served").length,
+      pending: orders.filter((order) => order.status === "Not-served").length,
+      revenue: orders.reduce(
+        (total, order) => total + calculateOrderTotal(order),
+        0
+      ),
     };
   }, [orders]);
 
@@ -105,7 +163,9 @@ export default function OrdersContainer() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p>There was a problem loading your orders. Please try again later.</p>
+            <p>
+              There was a problem loading your orders. Please try again later.
+            </p>
           </CardContent>
         </Card>
       </div>
@@ -127,19 +187,25 @@ export default function OrdersContainer() {
             <Card>
               <CardHeader className="pb-2">
                 <CardDescription>Served Orders</CardDescription>
-                <CardTitle className="text-2xl text-green-600">{metrics.served}</CardTitle>
+                <CardTitle className="text-2xl text-green-600">
+                  {metrics.served}
+                </CardTitle>
               </CardHeader>
             </Card>
             <Card>
               <CardHeader className="pb-2">
                 <CardDescription>Pending Orders</CardDescription>
-                <CardTitle className="text-2xl text-amber-600">{metrics.pending}</CardTitle>
+                <CardTitle className="text-2xl text-amber-600">
+                  {metrics.pending}
+                </CardTitle>
               </CardHeader>
             </Card>
             <Card>
               <CardHeader className="pb-2">
                 <CardDescription>Total Revenue</CardDescription>
-                <CardTitle className="text-2xl">{formatPrice(metrics.revenue)}</CardTitle>
+                <CardTitle className="text-2xl">
+                  {formatPrice(metrics.revenue)}
+                </CardTitle>
               </CardHeader>
             </Card>
           </div>
@@ -161,21 +227,37 @@ export default function OrdersContainer() {
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid w-full md:w-auto md:inline-flex grid-cols-4 h-auto">
             <TabsTrigger value="all" className="py-2">
-              All <Badge className="ml-2 bg-gray-100 text-gray-800">{filteredOrders.length}</Badge>
+              All{" "}
+              <Badge className="ml-2 bg-gray-100 text-gray-800">
+                {filteredOrders.length}
+              </Badge>
             </TabsTrigger>
             <TabsTrigger value="recent" className="py-2">
-              Pending <Badge className="ml-2 bg-amber-100 text-amber-800">{getFilteredOrdersByStatus("recent").length}</Badge>
+              Pending{" "}
+              <Badge className="ml-2 bg-amber-100 text-amber-800">
+                {getFilteredOrdersByStatus("recent").length}
+              </Badge>
             </TabsTrigger>
             <TabsTrigger value="previous" className="py-2">
-              Served <Badge className="ml-2 bg-green-100 text-green-800">{getFilteredOrdersByStatus("previous").length}</Badge>
+              Served{" "}
+              <Badge className="ml-2 bg-green-100 text-green-800">
+                {getFilteredOrdersByStatus("previous").length}
+              </Badge>
             </TabsTrigger>
             <TabsTrigger value="canceled" className="py-2">
-              Canceled <Badge className="ml-2 bg-red-100 text-red-800">{getFilteredOrdersByStatus("canceled").length}</Badge>
+              Canceled{" "}
+              <Badge className="ml-2 bg-red-100 text-red-800">
+                {getFilteredOrdersByStatus("canceled").length}
+              </Badge>
             </TabsTrigger>
           </TabsList>
-          
+
           {["all", "recent", "previous", "canceled"].map((tab) => (
-            <TabsContent key={tab} value={tab} className="border rounded-lg mt-6">
+            <TabsContent
+              key={tab}
+              value={tab}
+              className="border rounded-lg mt-6"
+            >
               <div className="p-4 md:p-6">
                 {isPending ? (
                   <OrdersLoadingSkeleton />
@@ -192,21 +274,34 @@ export default function OrdersContainer() {
                           <TableHead>MENU ITEMS</TableHead>
                           <TableHead>TABLE</TableHead>
                           <TableHead>STATUS</TableHead>
-                          <TableHead className="text-right pr-6">TOTAL</TableHead>
+                          <TableHead className="text-right pr-6">
+                            TOTAL
+                          </TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
                         {getFilteredOrdersByStatus(tab).map((order) => {
-                          const { icon, color } = getStatusDetails(order.status, order.paid);
+                          const { icon, color } = getStatusDetails({
+                            status: order.status,
+                            paid: order.paid,
+                          });
                           const totalPrice = calculateOrderTotal(order);
-                          
+
                           return (
-                            <TableRow key={order._id} className="cursor-pointer hover:bg-gray-50">
-                              <TableCell className="font-medium">{order.orderId}</TableCell>
+                            <TableRow
+                              key={order._id}
+                              className="cursor-pointer hover:bg-gray-50"
+                            >
+                              <TableCell className="font-medium">
+                                {order.orderId}
+                              </TableCell>
                               <TableCell>
                                 <div className="flex flex-col gap-1">
                                   {order.menu.slice(0, 2).map((item, index) => (
-                                    <div key={index} className="flex items-center gap-2">
+                                    <div
+                                      key={index}
+                                      className="flex items-center gap-2"
+                                    >
                                       <div className="h-8 w-8 rounded-md bg-gray-50 flex items-center justify-center overflow-hidden">
                                         <Image
                                           src={item.image}
@@ -217,8 +312,12 @@ export default function OrdersContainer() {
                                         />
                                       </div>
                                       <div className="flex-1 min-w-0">
-                                        <p className="text-sm truncate">{item.name}</p>
-                                        <p className="text-xs text-gray-500">x{item.quantity}</p>
+                                        <p className="text-sm truncate">
+                                          {item.name}
+                                        </p>
+                                        <p className="text-xs text-gray-500">
+                                          x{item.quantity}
+                                        </p>
                                       </div>
                                     </div>
                                   ))}
@@ -230,10 +329,14 @@ export default function OrdersContainer() {
                                 </div>
                               </TableCell>
                               <TableCell>
-                                <Badge variant="outline">{order.tableNumber}</Badge>
+                                <Badge variant="outline">
+                                  {order.tableNumber}
+                                </Badge>
                               </TableCell>
                               <TableCell>
-                                <Badge className={`flex gap-1 items-center ${color}`}>
+                                <Badge
+                                  className={`flex gap-1 items-center ${color}`}
+                                >
                                   {icon}
                                   {order.status}
                                 </Badge>
@@ -267,7 +370,7 @@ function OrdersLoadingSkeleton() {
             <Skeleton className="h-8 w-1/4" />
             <Skeleton className="h-8 w-24" />
           </div>
-          {[1, 2, 3, 4].map(item => (
+          {[1, 2, 3, 4].map((item) => (
             <div key={item} className="py-3 flex items-center gap-4">
               <Skeleton className="h-10 w-24" />
               <div className="flex items-center gap-2 flex-1">

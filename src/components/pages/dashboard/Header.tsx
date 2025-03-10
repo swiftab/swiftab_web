@@ -23,9 +23,18 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
 
+interface User {
+  userId: string;
+  name: string;
+  email: string;
+  phoneNumber: string;
+  restaurant?: string; // Assuming this is a property
+  avatar?: string; // Ensure avatar is included (optional)
+}
+
 export default function HeaderDashboard() {
   const notifications = 3;
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<User | null>(null);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [initials, setInitials] = useState("");
@@ -56,18 +65,20 @@ export default function HeaderDashboard() {
 
   const updateCurrentTime = () => {
     const now = new Date();
-    const options = {
+    const options: Intl.DateTimeFormatOptions = {
       weekday: "long",
       year: "numeric",
       month: "long",
       day: "numeric",
       hour: "2-digit",
       minute: "2-digit",
+      hour12: true, // Ensure it's a valid option
     };
+
     setCurrentTime(now.toLocaleDateString("en-US", options));
   };
 
-  function splitName(name) {
+  function splitName(name: string) {
     const parts = name.trim().split(" ");
 
     if (parts.length === 1) {
@@ -142,7 +153,7 @@ export default function HeaderDashboard() {
                   <p className="text-xs text-slate-500">Administrator</p>
                 </div>
                 <Avatar className="h-8 w-8 border border-slate-200">
-                  <AvatarImage src={user.avatar || ""} alt={firstName} />
+                  <AvatarImage src={user?.avatar ?? ""} alt={firstName} />
                   <AvatarFallback className="bg-indigo-100 text-indigo-600">
                     {initials}
                   </AvatarFallback>

@@ -1,7 +1,7 @@
 import React from "react";
 import { cn } from "@/lib/utils";
 
-export const LoadingSpinner = ({ className }) => {
+export const LoadingSpinner = ({ className }: any) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

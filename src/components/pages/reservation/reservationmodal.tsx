@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button"
 
 interface Reservation {
   id: string
-  title: string
+  //title: string
   start: string
   end: string
   guests: number
@@ -27,7 +27,7 @@ export function ReservationModal({ reservation, onClose }: ReservationModalProps
         <div className="grid gap-4">
           <div>
             <h3 className="font-semibold">Guest</h3>
-            <p>{reservation.title}</p>
+            <p>{reservation.guests}</p>
           </div>
           <div>
             <h3 className="font-semibold">Date & Time</h3>

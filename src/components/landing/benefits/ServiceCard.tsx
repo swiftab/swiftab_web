@@ -1,35 +1,49 @@
 import React, { useState, useEffect } from "react";
 import { CalendarCheck, Settings, LineChart, Target } from "lucide-react";
 import { useInView } from "react-intersection-observer";
+interface CounterProps {
+  end: number;
+  duration?: number;
+  prefix?: string;
+  suffix?: string;
+}
 
+const Counter: React.FC<CounterProps> = ({
+  end,
+  duration = 2000,
+  prefix = "",
+  suffix = "",
+}) => {
+  const [count, setCount] = useState<number>(0);
 
-const Counter = ({ end, duration = 2000, prefix = "", suffix = "" }) => {
-  const [count, setCount] = useState(0);
-  
   useEffect(() => {
-    let startTime;
-    let animationFrame;
-    
-    const animate = (timestamp) => {
-      if (!startTime) startTime = timestamp;
+    let startTime: number | null = null;
+    let animationFrame: number;
+
+    const animate = (timestamp: number) => {
+      if (startTime === null) startTime = timestamp;
       const progress = timestamp - startTime;
       const percentage = Math.min(progress / duration, 1);
-      
+
       setCount(Math.floor(percentage * end));
-      
+
       if (percentage < 1) {
         animationFrame = requestAnimationFrame(animate);
       }
     };
-    
+
     animationFrame = requestAnimationFrame(animate);
-    
+
     return () => cancelAnimationFrame(animationFrame);
   }, [end, duration]);
-  
+
   return (
     <div className="flex items-center">
-      <span className="text-2xl font-bold">{prefix}{count}{suffix}</span>
+      <span className="text-2xl font-bold">
+        {prefix}
+        {count}
+        {suffix}
+      </span>
     </div>
   );
 };
@@ -136,47 +150,41 @@ export default function FeatureSection() {
 
         {/* Metrics Section */}
         <div className="flex flex-wrap justify-center gap-8 mb-20">
-        {/* User Satisfaction */}
-        <div className="flex flex-col items-center p-6 bg-white rounded-lg shadow-lg transition-all duration-500 transform hover:scale-105">
-          <span className="rounded-full p-4 bg-yellow-50 mb-4">
-            <Target className="w-8 h-8 text-yellow-500" />
-          </span>
-          <div className="flex items-center h-10">
-            {animateStep.metrics && (
-              <Counter end={100} suffix="%" />
-            )}
+          {/* User Satisfaction */}
+          <div className="flex flex-col items-center p-6 bg-white rounded-lg shadow-lg transition-all duration-500 transform hover:scale-105">
+            <span className="rounded-full p-4 bg-yellow-50 mb-4">
+              <Target className="w-8 h-8 text-yellow-500" />
+            </span>
+            <div className="flex items-center h-10">
+              {animateStep.metrics && <Counter end={100} suffix="%" />}
+            </div>
+            <p className="text-gray-600 font-medium mt-2">User satisfaction</p>
           </div>
-          <p className="text-gray-600 font-medium mt-2">User satisfaction</p>
-        </div>
 
-        {/* Revenue Increase */}
-        <div className="flex flex-col items-center p-6 bg-white rounded-lg shadow-lg transition-all duration-500 transform hover:scale-105">
-          <span className="rounded-full p-4 bg-blue-50 mb-4">
-            <LineChart className="w-8 h-8 text-blue-500" />
-          </span>
-          <div className="flex items-center h-10">
-            {animateStep.metrics && (
-              <Counter end={95} suffix="%" />
-            )}
+          {/* Revenue Increase */}
+          <div className="flex flex-col items-center p-6 bg-white rounded-lg shadow-lg transition-all duration-500 transform hover:scale-105">
+            <span className="rounded-full p-4 bg-blue-50 mb-4">
+              <LineChart className="w-8 h-8 text-blue-500" />
+            </span>
+            <div className="flex items-center h-10">
+              {animateStep.metrics && <Counter end={95} suffix="%" />}
+            </div>
+            <p className="text-gray-600 font-medium mt-2">Revenue growth</p>
           </div>
-          <p className="text-gray-600 font-medium mt-2">Revenue growth</p>
-        </div>
 
-        {/* Implementation Time */}
-        <div className="flex flex-col items-center p-6 bg-white rounded-lg shadow-lg transition-all duration-500 transform hover:scale-105">
-          <span className="rounded-full p-4 bg-green-50 mb-4">
-            <CalendarCheck className="w-8 h-8 text-green-500" />
-          </span>
-          <div className="flex items-center h-10">
-            {animateStep.metrics && (
-              <Counter end={97} suffix="%" />
-            )}
+          {/* Implementation Time */}
+          <div className="flex flex-col items-center p-6 bg-white rounded-lg shadow-lg transition-all duration-500 transform hover:scale-105">
+            <span className="rounded-full p-4 bg-green-50 mb-4">
+              <CalendarCheck className="w-8 h-8 text-green-500" />
+            </span>
+            <div className="flex items-center h-10">
+              {animateStep.metrics && <Counter end={97} suffix="%" />}
+            </div>
+            <p className="text-gray-600 font-medium mt-2">
+              Faster implementation
+            </p>
           </div>
-          <p className="text-gray-600 font-medium mt-2">
-            Faster implementation
-          </p>
         </div>
-      </div>
 
         {/* Features Steps */}
         <div className="relative max-w-5xl mx-auto">
@@ -301,7 +309,7 @@ export default function FeatureSection() {
                   <Target className="w-12 h-12 text-purple-500 mb-4" />
                   <div className="h-40 bg-purple-100/50 backdrop-blur-sm rounded-lg flex items-center justify-center">
                     <p className="text-purple-800 font-medium">
-                    Audience Targeting Visualization
+                      Audience Targeting Visualization
                     </p>
                   </div>
                 </div>
