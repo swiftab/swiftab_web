@@ -164,7 +164,7 @@ export default function FooterHome() {
         </div>
         <div className="mt-12 border-t border-gray-200/70 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm text-gray-500">
-            © {new Date().getFullYear()} TableReserve. All rights reserved.
+            © {new Date().getFullYear()} swiftab. All rights reserved.
           </p>
           <div className="flex gap-6">
             <Link

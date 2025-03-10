@@ -2,7 +2,7 @@
 
 import React from "react";
 import { VerticalTimeline } from "./verticaltimeline";
-import { useQueries, useQuery } from "@tanstack/react-query";
+import { useQueries } from "@tanstack/react-query";
 import { fetchAllReservation } from "@/hooks/reservationhook/fetchreservation";
 import { FullScreenLoader } from "@/components/Loading/FullScreen";
 import { fetchRestaurantTables } from "@/hooks/tablehook/fetchrestable";

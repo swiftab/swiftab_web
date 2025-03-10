@@ -2,25 +2,34 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 export function middleware(request: NextRequest) {
-  // Get the token from cookies
   const token = request.cookies.get('token')?.value;
+  
+  // Debug headers
+  const response = NextResponse.next();
+  response.headers.set('x-debug-token', token || 'missing');
+  response.headers.set('x-debug-cookies', request.headers.get('cookie') || 'none');
 
-  // If no token, redirect to the login page
-  if (!token) {
+  console.log({
+    token,
+    cookies: request.headers.get('cookie'),
+    url: request.url
+  });
+
+  // Check if the route is within the protected dashboard routes
+  if (request.nextUrl.pathname.startsWith('/dash') && !token) {
+    // Use the full URL including protocol and host for the redirect
     return NextResponse.redirect(new URL('/signin', request.url));
   }
 
-  // Optional: Validate the token with the backend
-  // You cannot use await here, but you can perform a synchronous check if needed
-  // For example, you could check the token format or expiration if applicable
-
-  // If you need to validate the token, consider doing it in a separate function
-  // and call it in your API routes instead of middleware.
-
-  return NextResponse.next();
+  return response;
 }
 
-// Define routes to protect
+
 export const config = {
-  matcher: '/(dashboard)/:path*', // Protect all routes under /dashboard
+  matcher: ['/dash', '/dashboard/:path*'],
+  experimental: {
+    serverActions: {
+      allowedOrigins: ['server-production-2ee7.up.railway.app','localhost:3000']
+    }
+  }
 };

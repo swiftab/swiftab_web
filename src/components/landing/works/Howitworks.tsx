@@ -115,7 +115,7 @@ export default function Howitworks() {
                     data-animate
                   >
                     <Image
-                      src="/placeholder.svg?height=300&width=500&text=Implementation+Team"
+                      src="/swiftab/management.webp"
                       width={500}
                       height={300}
                       alt="Implementation Team"

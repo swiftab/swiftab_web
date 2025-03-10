@@ -1,8 +1,9 @@
 "use client";
 
 import { SignInForm } from "@/components/auth/SignInForm";
+import { FullScreenLoader } from "@/components/Loading/FullScreen";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 
 // Benefits data for carousel
 const benefits = [
@@ -33,7 +34,7 @@ const benefits = [
   },
 ];
 
-export default function page() {
+export default function Page() {
   const [currentBenefit, setCurrentBenefit] = useState(0);
 
   useEffect(() => {
@@ -43,21 +44,11 @@ export default function page() {
     return () => clearInterval(interval);
   }, []);
 
-
-  const navigateBenefit = (direction: "next" | "prev") => {
-    if (direction === "next") {
-      setCurrentBenefit((prev) => (prev + 1) % benefits.length);
-    } else {
-      setCurrentBenefit(
-        (prev) => (prev - 1 + benefits.length) % benefits.length
-      );
-    }
-  };
   return (
     <div className="flex min-h-screen bg-gray-50 px-2 py-2">
       <div
         className="hidden lg:flex w-1/2 bg-cover bg-center relative"
-        style={{ backgroundImage: "url('/swiftab/bg.jpg')", borderRadius:20 }}
+        style={{ backgroundImage: "url('/swiftab/bg.jpg')", borderRadius: 20 }}
       >
         <div className="absolute inset-0 bg-teal-800 bg-opacity-70 flex flex-col justify-center p-12 rounded-xl">
           <div className="text-white max-w-lg">

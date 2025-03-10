@@ -31,6 +31,7 @@ export function AddTableDialog({ floors, onAddTable }: AddTableDialogProps) {
   const [tableName, setTableName] = React.useState("")
   const [tableShape, setTableShape] = React.useState<TableItem["shape"]>("rectangle")
 
+  console.log(floors)
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (!tableName) return

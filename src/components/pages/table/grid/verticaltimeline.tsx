@@ -107,7 +107,7 @@ export function VerticalTimeline({
   // Effect to update events when date, floor, or timelineData changes
   useEffect(() => {
     updateVisibleEvents();
-  }, [selectedDate, selectedFloor, timelineData]);
+  }, [selectedDate, selectedFloor]);
 
   const handleEventClick = (clickInfo: EventClickArg) => {
     const event = visibleEvents.find((e) => e.id === clickInfo.event.id);

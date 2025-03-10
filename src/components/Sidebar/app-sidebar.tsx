@@ -13,16 +13,25 @@ import {
   SidebarTrigger,
   useSidebar,
 } from "@/components/ui/sidebar";
-
-// import SideBarFooter from "./sidebar-footer";
-// import { SideBarContent } from "./side-barcontent";
-import { useQuery } from "@tanstack/react-query";
-import { fetchAdminInfo } from "@/hooks/authhook/authhooks";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { fetchAdminInfo, fetchLogout } from "@/hooks/authhook/authhooks";
 import { FullScreenLoader } from "../Loading/FullScreen";
 import Link from "next/link";
-import { Calendar, ChartNetwork, HelpCircle, LayoutDashboard, ListOrdered, LogOut, Settings, Table2, Users, Utensils } from "lucide-react";
-import { usePathname } from "next/navigation";
-
+import {
+  Calendar,
+  ChartNetwork,
+  HelpCircle,
+  LayoutDashboard,
+  ListOrdered,
+  LogOut,
+  Settings,
+  Table2,
+  Users,
+  Utensils,
+} from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
+import { toast } from "@/hooks/use-toast";
+import { useState } from "react";
 
 const sidebarItems = [
   { name: "Dashboard", href: "/dash", icon: LayoutDashboard },
@@ -40,17 +49,48 @@ const footerItems = [
   { name: "Need Help", href: "#", icon: HelpCircle },
 ];
 
-
 export function AppSidebar() {
   const { state } = useSidebar();
   const pathname = usePathname();
+  const [logoutLoading,setLogoutLoading] = useState(false)
 
   const { data, error, isLoading } = useQuery({
     queryKey: ["adminInfo"],
     queryFn: fetchAdminInfo,
   });
 
-  if (isLoading) {
+  const router = useRouter();
+
+  const logoutMutation = useMutation<void, Error, void>({
+    mutationFn: fetchLogout,
+    onSuccess: () => {
+      toast({
+        title: "Logged out",
+        description: "You have logged out successfully.",
+        variant: "default",
+      });
+      router.replace("/signin");
+      localStorage.clear();
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Logout failed",
+        description: error.message || "An error occurred.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const handleLogout = async () => {
+    try {
+      await logoutMutation.mutateAsync();
+      setLogoutLoading(true)
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
+
+  if (isLoading && logoutLoading) {
     return <FullScreenLoader />;
   }
 
@@ -84,9 +124,9 @@ export function AppSidebar() {
           </div>
         </div>
       </SidebarHeader>
-      <SidebarSeparator className="mt-2"/>
+      <SidebarSeparator className="mt-2" />
       <SidebarContent>
-        <SidebarMenu>
+        <SidebarMenu className="px-2">
           {sidebarItems.map((item) => (
             <SidebarMenuItem key={item.name}>
               <SidebarMenuButton asChild isActive={pathname === item.href}>
@@ -99,16 +139,23 @@ export function AppSidebar() {
           ))}
         </SidebarMenu>
       </SidebarContent>
-      <SidebarSeparator className="mt-2"/>
+      <SidebarSeparator className="mt-2" />
       <SidebarFooter>
         <SidebarMenu>
           {footerItems.map((item) => (
             <SidebarMenuItem key={item.name}>
               <SidebarMenuButton asChild>
-                <Link href={item.href}>
-                  <item.icon className="mr-2 h-4 w-4" />
-                  {item.name}
-                </Link>
+                {item.name == "Logout" ? (
+                  <button onClick={handleLogout}>
+                    <item.icon className="mr-2 h-4 w-4" />
+                    Logout
+                  </button>
+                ) : (
+                  <Link href={item.href}>
+                    <item.icon className="mr-2 h-4 w-4" />
+                    {item.name}
+                  </Link>
+                )}
               </SidebarMenuButton>
             </SidebarMenuItem>
           ))}

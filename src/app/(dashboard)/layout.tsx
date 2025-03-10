@@ -9,6 +9,7 @@ export default async function Layout({
   children: React.ReactNode;
 }) {
   const cookieStore = await cookies();
+  
   const token = cookieStore.get("token")?.value;
 
   if (!token) {

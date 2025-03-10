@@ -40,7 +40,7 @@ export default function Home() {
     { id: 7, imgUrl: "/trustedres/mafe.jpeg" },
   ];
   return (
-    <section ref={heroRef} className="relative py-10 md:py-20 ">
+    <section ref={heroRef} className="relative py-10 md:py-15 ">
       <div className="container px-4 md:px-6 relative z-10">
         <div className="grid gap-12 lg:grid-cols-2 lg:gap-16 items-center">
           <div className="flex flex-col justify-center space-y-8" data-animate>
@@ -54,8 +54,7 @@ export default function Home() {
               </h1>
               <p className="text-xl text-gray-700 max-w-[600px]">
                 Eliminate booking headaches, maximize table capacity, and
-                delight your guests with our AI-powered reservation management
-                system.
+                delight your guests with our reservation management system.
               </p>
             </div>
             <div className="flex flex-col sm:flex-row gap-4">
@@ -63,7 +62,7 @@ export default function Home() {
                 size="lg"
                 className="bg-primary hover:bg-primary/80 text-white border-0 shadow-lg shadow-blue-700/20 px-8 h-14 rounded-full font-medium text-base transition-all duration-300"
               >
-                Get Started 
+                Get Started
                 {/* — Free for 14 Days */}
               </Button>
               <Button
@@ -101,13 +100,55 @@ export default function Home() {
             <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-indigo-600/20 blur-3xl rounded-full opacity-30 animate-pulse"></div>
             <div className="relative bg-gradient-to-r from-primary/50 to-green-900/50 backdrop-blur-sm rounded-2xl border border-gray-200/70 p-1 shadow-2xl">
               <div className="bg-gray-50/80 rounded-xl overflow-hidden">
-                <Image
-                  src="/placeholder.svg?height=550&width=550&text=Intelligent+Reservation+System"
-                  width={550}
-                  height={550}
-                  alt="Restaurant reservation dashboard"
-                  className="w-full aspect-video object-cover object-center rounded-t-xl"
-                />
+                {/* <Image
+                  src="/swiftab/home.jpg"
+                  width={1920}
+                  height={1080}
+                  alt="SwifTab restaurant management dashboard showing reservations, table availability, customer metrics, and revenue data"
+                  className="w-full aspect-video object-cover object-center rounded-t-xl shadow-md"
+                  quality={100}
+                  priority
+                /> */}
+                <div className="flex flex-col md:flex-row gap-4 items-start">
+                  {/* Desktop HD Image */}
+                  <div className="hidden md:block w-full md:w-2/3">
+                    <Image
+                      src="/swiftab/home.jpg"
+                      width={1920}
+                      height={1080}
+                      alt="SwifTab restaurant management dashboard showing reservations, table availability, and metrics"
+                      className="w-full aspect-auto object-cover object-center rounded-xl shadow-md"
+                      quality={100}
+                      priority
+                    />
+                  </div>
+
+                  {/* Mobile Image */}
+                  <div className="block md:hidden w-full">
+                    <Image
+                      src="/swiftab/mobile.jpg"
+                      width={375}
+                      height={512}
+                      alt="SwifTab mobile dashboard view with service utilization and orders"
+                      className="w-full aspect-auto object-contain object-center rounded-xl shadow-md"
+                      quality={100}
+                      priority
+                    />
+                  </div>
+
+                  {/* Mobile Image Preview (Shown beside desktop on larger screens) */}
+                  <div className="hidden md:block w-full md:w-1/3">
+                    <Image
+                      src="/swiftab/mobile.jpg"
+                      width={375}
+                      height={512}
+                      alt="SwifTab mobile dashboard view with service utilization and orders"
+                      className="w-full max-w-xs mx-auto aspect-auto object-contain object-center rounded-xl shadow-md border-2 border-gray-200"
+                      quality={100}
+                    />
+                  </div>
+                </div>
+
                 <div className="p-4 border-t border-gray-200/70">
                   <div className="flex justify-between items-center">
                     <div className="flex items-center gap-2">

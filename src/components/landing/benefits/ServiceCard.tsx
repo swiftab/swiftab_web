@@ -1,12 +1,38 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { CalendarCheck, Settings, LineChart, Target } from "lucide-react";
-import dynamic from "next/dynamic";
 import { useInView } from "react-intersection-observer";
 
-// Import animated numbers component with SSR handling
-const AnimatedNumbers = dynamic(() => import("react-animated-numbers"), {
-  ssr: false,
-});
+
+const Counter = ({ end, duration = 2000, prefix = "", suffix = "" }) => {
+  const [count, setCount] = useState(0);
+  
+  useEffect(() => {
+    let startTime;
+    let animationFrame;
+    
+    const animate = (timestamp) => {
+      if (!startTime) startTime = timestamp;
+      const progress = timestamp - startTime;
+      const percentage = Math.min(progress / duration, 1);
+      
+      setCount(Math.floor(percentage * end));
+      
+      if (percentage < 1) {
+        animationFrame = requestAnimationFrame(animate);
+      }
+    };
+    
+    animationFrame = requestAnimationFrame(animate);
+    
+    return () => cancelAnimationFrame(animationFrame);
+  }, [end, duration]);
+  
+  return (
+    <div className="flex items-center">
+      <span className="text-2xl font-bold">{prefix}{count}{suffix}</span>
+    </div>
+  );
+};
 
 export default function FeatureSection() {
   // Use intersection observer to trigger animations when scrolled into view
@@ -110,68 +136,47 @@ export default function FeatureSection() {
 
         {/* Metrics Section */}
         <div className="flex flex-wrap justify-center gap-8 mb-20">
-          {/* User Satisfaction */}
-          <div className="flex flex-col items-center p-6 bg-white rounded-lg shadow-lg transition-all duration-500 transform hover:scale-105">
-            <span className="rounded-full p-4 bg-yellow-50 mb-4">
-              <Target className="w-8 h-8 text-yellow-500" />
-            </span>
-            <div className="flex items-center h-10">
-              {animateStep.metrics && (
-                <AnimatedNumbers
-                  includeComma
-                  animateToNumber={100}
-                  fontStyle={{ fontSize: 28, fontWeight: "bold" }}
-                  locale="en-US"
-                  configs={[{ mass: 1, tension: 210, friction: 40 }]}
-                />
-              )}
-              <span className="text-2xl font-bold ml-1">%</span>
-            </div>
-            <p className="text-gray-600 font-medium mt-2">User satisfaction</p>
+        {/* User Satisfaction */}
+        <div className="flex flex-col items-center p-6 bg-white rounded-lg shadow-lg transition-all duration-500 transform hover:scale-105">
+          <span className="rounded-full p-4 bg-yellow-50 mb-4">
+            <Target className="w-8 h-8 text-yellow-500" />
+          </span>
+          <div className="flex items-center h-10">
+            {animateStep.metrics && (
+              <Counter end={100} suffix="%" />
+            )}
           </div>
-
-          {/* Revenue Increase */}
-          <div className="flex flex-col items-center p-6 bg-white rounded-lg shadow-lg transition-all duration-500 transform hover:scale-105">
-            <span className="rounded-full p-4 bg-blue-50 mb-4">
-              <LineChart className="w-8 h-8 text-blue-500" />
-            </span>
-            <div className="flex items-center h-10">
-              {animateStep.metrics && (
-                <AnimatedNumbers
-                  includeComma
-                  animateToNumber={95}
-                  fontStyle={{ fontSize: 28, fontWeight: "bold" }}
-                  locale="en-US"
-                  configs={[{ mass: 1, tension: 190, friction: 40 }]}
-                />
-              )}
-              <span className="text-2xl font-bold ml-1">%</span>
-            </div>
-            <p className="text-gray-600 font-medium mt-2">Revenue growth</p>
-          </div>
-
-          {/* Implementation Time */}
-          <div className="flex flex-col items-center p-6 bg-white rounded-lg shadow-lg transition-all duration-500 transform hover:scale-105">
-            <span className="rounded-full p-4 bg-green-50 mb-4">
-              <CalendarCheck className="w-8 h-8 text-green-500" />
-            </span>
-            <div className="flex items-center h-10">
-              {animateStep.metrics && (
-                <AnimatedNumbers
-                  includeComma
-                  animateToNumber={97}
-                  fontStyle={{ fontSize: 28, fontWeight: "bold" }}
-                  locale="en-US"
-                  configs={[{ mass: 1, tension: 170, friction: 40 }]}
-                />
-              )}
-              <span className="text-2xl font-bold ml-1">%</span>
-            </div>
-            <p className="text-gray-600 font-medium mt-2">
-              Faster implementation
-            </p>
-          </div>
+          <p className="text-gray-600 font-medium mt-2">User satisfaction</p>
         </div>
+
+        {/* Revenue Increase */}
+        <div className="flex flex-col items-center p-6 bg-white rounded-lg shadow-lg transition-all duration-500 transform hover:scale-105">
+          <span className="rounded-full p-4 bg-blue-50 mb-4">
+            <LineChart className="w-8 h-8 text-blue-500" />
+          </span>
+          <div className="flex items-center h-10">
+            {animateStep.metrics && (
+              <Counter end={95} suffix="%" />
+            )}
+          </div>
+          <p className="text-gray-600 font-medium mt-2">Revenue growth</p>
+        </div>
+
+        {/* Implementation Time */}
+        <div className="flex flex-col items-center p-6 bg-white rounded-lg shadow-lg transition-all duration-500 transform hover:scale-105">
+          <span className="rounded-full p-4 bg-green-50 mb-4">
+            <CalendarCheck className="w-8 h-8 text-green-500" />
+          </span>
+          <div className="flex items-center h-10">
+            {animateStep.metrics && (
+              <Counter end={97} suffix="%" />
+            )}
+          </div>
+          <p className="text-gray-600 font-medium mt-2">
+            Faster implementation
+          </p>
+        </div>
+      </div>
 
         {/* Features Steps */}
         <div className="relative max-w-5xl mx-auto">
@@ -219,13 +224,24 @@ export default function FeatureSection() {
             </div>
 
             <div className="md:w-1/2 md:pl-10">
-              <div className="relative bg-gradient-to-br from-blue-50 to-white p-4 rounded-xl shadow-lg overflow-hidden">
+              <div
+                className="relative p-4 rounded-xl shadow-lg overflow-hidden"
+                style={{
+                  backgroundImage: "url('/swiftab/craftfloor.webp')",
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  backgroundBlendMode: "overlay",
+                }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-50/90 to-white/80 z-0"></div>
                 <div className="absolute rounded-full w-64 h-64 blur-3xl -top-20 -right-20 bg-blue-500/10 z-0"></div>
-                <Settings className="w-12 h-12 text-blue-500 mb-4" />
-                <div className="h-40 bg-blue-100/50 rounded-lg flex items-center justify-center">
-                  <p className="text-blue-800 font-medium">
-                    Paywall Editor Visualization
-                  </p>
+                <div className="relative z-10">
+                  <Settings className="w-12 h-12 text-blue-500 mb-4" />
+                  <div className="h-40 bg-blue-100/50 backdrop-blur-sm rounded-lg flex items-center justify-center">
+                    <p className="text-blue-800 font-medium">
+                      Paywall Editor Visualization
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -269,15 +285,25 @@ export default function FeatureSection() {
                 <span className="text-2xl font-bold">2</span>
               </div>
             </div>
-
             <div className="md:w-1/2 md:pr-10">
-              <div className="relative bg-gradient-to-br from-purple-50 to-white p-4 rounded-xl shadow-lg overflow-hidden">
-                <div className="absolute rounded-full w-64 h-64 blur-3xl -top-20 -left-20 bg-purple-500/10 z-0"></div>
-                <Target className="w-12 h-12 text-purple-500 mb-4" />
-                <div className="h-40 bg-purple-100/50 rounded-lg flex items-center justify-center">
-                  <p className="text-purple-800 font-medium">
+              <div
+                className="relative p-4 rounded-xl shadow-lg overflow-hidden"
+                style={{
+                  backgroundImage: "url('/swiftab/operation.webp')",
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  backgroundBlendMode: "overlay",
+                }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-purple-50/90 to-white/80 z-0"></div>
+                <div className="absolute rounded-full w-64 h-64 blur-3xl -top-20 -right-20 bg-purple-500/10 z-0"></div>
+                <div className="relative z-10">
+                  <Target className="w-12 h-12 text-purple-500 mb-4" />
+                  <div className="h-40 bg-purple-100/50 backdrop-blur-sm rounded-lg flex items-center justify-center">
+                    <p className="text-purple-800 font-medium">
                     Audience Targeting Visualization
-                  </p>
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -322,15 +348,25 @@ export default function FeatureSection() {
                 <span className="text-2xl font-bold">3</span>
               </div>
             </div>
-
             <div className="md:w-1/2 md:pl-10">
-              <div className="relative bg-gradient-to-br from-green-50 to-white p-4 rounded-xl shadow-lg overflow-hidden">
-                <div className="absolute rounded-full w-64 h-64 blur-3xl -bottom-20 -right-20 bg-green-500/10 z-0"></div>
-                <LineChart className="w-12 h-12 text-green-500 mb-4" />
-                <div className="h-40 bg-green-100/50 rounded-lg flex items-center justify-center">
-                  <p className="text-green-800 font-medium">
-                    A/B Testing Analytics Visualization
-                  </p>
+              <div
+                className="relative p-4 rounded-xl shadow-lg overflow-hidden"
+                style={{
+                  backgroundImage: "url('/swiftab/reservation.webp')",
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  backgroundBlendMode: "overlay",
+                }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-green-50/90 to-white/80 z-0"></div>
+                <div className="absolute rounded-full w-64 h-64 blur-3xl -top-20 -right-20 bg-green-500/10 z-0"></div>
+                <div className="relative z-10">
+                  <LineChart className="w-12 h-12 text-green-500 mb-4" />
+                  <div className="h-40 bg-green-100/50 backdrop-blur-sm rounded-lg flex items-center justify-center">
+                    <p className="text-green-800 font-medium">
+                      Analytics Visualization
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>

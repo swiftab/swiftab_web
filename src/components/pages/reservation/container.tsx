@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-import { CalendarDays, Search, Filter, Plus, Bell } from "lucide-react";
+import { Search, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -24,7 +24,6 @@ import { ReservationModal } from "./reservationmodal";
 import { DateRangePicker } from "./daterangepicker";
 import { ReservationStats } from "./reservationstats";
 import { Pagination } from "./pagination";
-import { NotificationCenter } from "./notificationcenter";
 import { useQuery } from "@tanstack/react-query";
 import { fetchAllReservation } from "@/hooks/reservationhook/fetchreservation";
 import { FullScreenLoader } from "@/components/Loading/FullScreen";
@@ -45,7 +44,8 @@ interface Reservation {
 const ITEMS_PER_PAGE = 10;
 
 export default function ReservationsPage() {
-  const [selectedReservation, setSelectedReservation] = useState<Reservation | null>(null);
+  const [selectedReservation, setSelectedReservation] =
+    useState<Reservation | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [dateRange, setDateRange] = useState<{ start?: Date; end?: Date }>({});
   const [filters, setFilters] = useState({
@@ -56,21 +56,26 @@ export default function ReservationsPage() {
   });
   const [searchTerm, setSearchTerm] = useState("");
 
-  const { data: serverData, error, isPending } = useQuery({
+  const {
+    data: serverData,
+    error,
+    isPending,
+  } = useQuery({
     queryKey: ["reservations"],
     queryFn: fetchAllReservation,
-    select: (data) => data.map((item: any) => ({
-      id: item.reservationInfo.reservationID,
-      name: item.reservationInfo.name,
-      email: item.reservationInfo.email,
-      phoneNumber: item.reservationInfo.phoneNumber,
-      start: item.reservationInfo.bookingFor,
-      end: item.reservationInfo.endTime,
-      guests: item.reservationInfo.guest,
-      table: item.reservationInfo.tableNumber,
-      floor: item.reservationInfo.diningArea,
-      status: item.status
-    }))
+    select: (data) =>
+      data.map((item: any) => ({
+        id: item.reservationInfo.reservationID,
+        name: item.reservationInfo.name,
+        email: item.reservationInfo.email,
+        phoneNumber: item.reservationInfo.phoneNumber,
+        start: item.reservationInfo.bookingFor,
+        end: item.reservationInfo.endTime,
+        guests: item.reservationInfo.guest,
+        table: item.reservationInfo.tableNumber,
+        floor: item.reservationInfo.diningArea,
+        status: item.status,
+      })),
   });
 
   useEffect(() => {
@@ -82,15 +87,28 @@ export default function ReservationsPage() {
 
     return serverData.filter((reservation) => {
       const reservationDate = new Date(reservation.start);
-      const matchesSearch = reservation.name.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesDate = (!dateRange.start || reservationDate >= dateRange.start) &&
-                         (!dateRange.end || reservationDate <= dateRange.end);
-      const matchesStatus = filters.status === "all" || reservation.status === filters.status;
-      const matchesFloor = filters.floor === "all" || reservation.floor === filters.floor;
-      const matchesGuests = (!filters.guestsMin || reservation.guests >= Number(filters.guestsMin)) &&
-                           (!filters.guestsMax || reservation.guests <= Number(filters.guestsMax));
+      const matchesSearch = reservation.name
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase());
+      const matchesDate =
+        (!dateRange.start || reservationDate >= dateRange.start) &&
+        (!dateRange.end || reservationDate <= dateRange.end);
+      const matchesStatus =
+        filters.status === "all" || reservation.status === filters.status;
+      const matchesFloor =
+        filters.floor === "all" || reservation.floor === filters.floor;
+      const matchesGuests =
+        (!filters.guestsMin ||
+          reservation.guests >= Number(filters.guestsMin)) &&
+        (!filters.guestsMax || reservation.guests <= Number(filters.guestsMax));
 
-      return matchesSearch && matchesDate && matchesStatus && matchesFloor && matchesGuests;
+      return (
+        matchesSearch &&
+        matchesDate &&
+        matchesStatus &&
+        matchesFloor &&
+        matchesGuests
+      );
     });
   }, [serverData, dateRange, filters, searchTerm]);
 
@@ -102,7 +120,7 @@ export default function ReservationsPage() {
   }, [filteredReservations, currentPage]);
 
   const handleFilterChange = (name: string, value: string) => {
-    setFilters(prev => ({ ...prev, [name]: value }));
+    setFilters((prev) => ({ ...prev, [name]: value }));
   };
 
   if (isPending) return <FullScreenLoader />;
@@ -129,7 +147,7 @@ export default function ReservationsPage() {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-        
+
         <div className="flex items-center gap-4 flex-wrap">
           <Select
             value={filters.status}
@@ -201,11 +219,13 @@ export default function ReservationsPage() {
               </TableCell>
               <TableCell>
                 {new Date(reservation.start).toLocaleTimeString([], {
-                  hour: '2-digit',
-                  minute: '2-digit'
-                })} - {new Date(reservation.end).toLocaleTimeString([], {
-                  hour: '2-digit',
-                  minute: '2-digit'
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}{" "}
+                -{" "}
+                {new Date(reservation.end).toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
                 })}
               </TableCell>
               <TableCell>{reservation.guests}</TableCell>
@@ -214,7 +234,9 @@ export default function ReservationsPage() {
               <TableCell>
                 <Badge
                   variant={
-                    reservation.status === "confirmed" ? "default" : "destructive"
+                    reservation.status === "confirmed"
+                      ? "default"
+                      : "destructive"
                   }
                 >
                   {reservation.status}
