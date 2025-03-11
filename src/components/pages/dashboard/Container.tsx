@@ -25,6 +25,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import useSocketData from "@/hooks/socket/useSocketData";
+import { useQuery } from "@tanstack/react-query";
+import { fetchOrders } from "@/hooks/orderhook/fetchorder";
 
 const monthlyOrders = [
   { month: "Jan", orders: 45 },
@@ -41,30 +43,6 @@ const monthlyOrders = [
   { month: "Dec", orders: 58 },
 ];
 
-const recentOrders = [
-  {
-    id: "#435080",
-    item: "Burger with fries",
-    customer: "Bessie Cooper",
-    price: "$9.00",
-    date: "02 May 2024",
-  },
-  {
-    id: "#435081",
-    item: "Chicken Caesar Salad",
-    customer: "Jenny Wilson",
-    price: "$12.00",
-    date: "02 May 2024",
-  },
-  {
-    id: "#435082",
-    item: "Margherita Pizza",
-    customer: "Guy Hawkins",
-    price: "$15.00",
-    date: "02 May 2024",
-  },
-];
-
 const monthlyReservations = [
   { month: "Jan", reservations: 45, revenue: 1800 },
   { month: "Feb", reservations: 52, revenue: 2080 },
@@ -79,31 +57,68 @@ const monthlyReservations = [
   { month: "Nov", reservations: 45, revenue: 1800 },
   { month: "Dec", reservations: 58, revenue: 2320 },
 ];
+export interface MenuItem {
+  _id: string;
+  image: string;
+  name: string;
+  description: string;
+  cost: number;
+  quantity: number;
+}
 
-const todayReservations = 18;
-const availableTables = 7;
-const totalTables = 15;
-const occupancyRate = Math.round((1 - availableTables / totalTables) * 100);
+export interface Order {
+  _id: string;
+  userId: string;
+  orderId: string;
+  restaurantId: string;
+  reservationId: string;
+  tableNumber: string;
+  menu: MenuItem[];
+  status: "Served" | "Not-served";
+  paid: "Paid" | "Unpaid";
+  takenBy?: string;
+  createdAt: string;
+}
 
 export default function Dashboard() {
-  const data = useSocketData("realTimeData");
-  console.log("socketio", data);
+  const realtimeData = useSocketData("realTimeData");
+
+  const { data, error, isPending } = useQuery<{ orders: Order[] }>({
+    queryKey: ["orders"],
+    queryFn: fetchOrders,
+  });
+
+  const recentOrders =
+    data?.orders
+      ?.sort(
+        (a, b) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      ) // Sort by latest
+      .slice(0, 3) || []; // Get only the latest 3 orders
+
+  const activeTables = realtimeData?.tableStatus?.activeTables ?? 0;
+  const totalTables = realtimeData?.tableStatus?.totalTables ?? 0;
+  const occupancyRate = totalTables ? (activeTables / totalTables) * 100 : 0;
+
   return (
     <div className="flex flex-col overflow-x-hidden">
       {/* Dashboard Content */}
       <div>
         {/* Metrics */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-5">
+          {/* Reservations */}
           <Card className="shadow-sm">
             <CardContent className="p-4">
-              <div className="flex items-center justify-between space-y-0 pb-2">
+              <div className="flex items-center justify-between pb-2">
                 <p className="text-sm font-medium text-slate-500">
                   Today's Reservations
                 </p>
                 <Calendar className="h-4 w-4 text-indigo-500" />
               </div>
               <div className="flex items-baseline justify-between">
-                <h3 className="text-2xl font-bold">{todayReservations}</h3>
+                <h3 className="text-2xl font-bold">
+                  {realtimeData?.reservations ?? 0}
+                </h3>
                 <div className="text-xs text-emerald-500 font-medium">
                   +12% from yesterday
                 </div>
@@ -124,9 +139,10 @@ export default function Dashboard() {
             </CardContent>
           </Card>
 
+          {/* Table Availability */}
           <Card className="shadow-sm">
             <CardContent className="p-4">
-              <div className="flex items-center justify-between space-y-0 pb-2">
+              <div className="flex items-center justify-between pb-2">
                 <p className="text-sm font-medium text-slate-500">
                   Table Availability
                 </p>
@@ -134,10 +150,10 @@ export default function Dashboard() {
               </div>
               <div className="flex items-baseline justify-between">
                 <h3 className="text-2xl font-bold">
-                  {availableTables}/{totalTables}
+                  {activeTables}/{totalTables}
                 </h3>
                 <div className="text-xs text-emerald-500 font-medium">
-                  {occupancyRate}% occupancy
+                  {occupancyRate.toFixed(1)}% occupancy
                 </div>
               </div>
               <div className="mt-3 h-2 w-full bg-slate-200 rounded-full overflow-hidden">
@@ -149,16 +165,19 @@ export default function Dashboard() {
             </CardContent>
           </Card>
 
+          {/* Active Customers */}
           <Card className="shadow-sm">
             <CardContent className="p-4">
-              <div className="flex items-center justify-between space-y-0 pb-2">
+              <div className="flex items-center justify-between pb-2">
                 <p className="text-sm font-medium text-slate-500">
                   Active Customers
                 </p>
                 <Users className="h-4 w-4 text-emerald-500" />
               </div>
               <div className="flex items-baseline justify-between">
-                <h3 className="text-2xl font-bold">2,453</h3>
+                <h3 className="text-2xl font-bold">
+                  {realtimeData?.totalCustomers ?? 0}
+                </h3>
                 <div className="text-xs text-emerald-500 font-medium">
                   +8% this month
                 </div>
@@ -179,16 +198,19 @@ export default function Dashboard() {
             </CardContent>
           </Card>
 
+          {/* Revenue */}
           <Card className="shadow-sm">
             <CardContent className="p-4">
-              <div className="flex items-center justify-between space-y-0 pb-2">
+              <div className="flex items-center justify-between pb-2">
                 <p className="text-sm font-medium text-slate-500">
                   Revenue (MTD)
                 </p>
                 <CreditCard className="h-4 w-4 text-violet-500" />
               </div>
               <div className="flex items-baseline justify-between">
-                <h3 className="text-2xl font-bold">$11,260</h3>
+                <h3 className="text-2xl font-bold">
+                  Ksh.{realtimeData?.revenue.toLocaleString() ?? "0"}
+                </h3>
                 <div className="text-xs text-emerald-500 font-medium">
                   +15% vs last month
                 </div>
@@ -434,6 +456,7 @@ export default function Dashboard() {
             </div>
           </CardContent>
         </Card>
+
         {/* Recent Orders */}
         <Card className="col-span-6 mt-5">
           <CardContent className="p-2">
@@ -441,33 +464,54 @@ export default function Dashboard() {
               <div className="h-8 w-1 bg-red-500 rounded-full"></div>
               <div>
                 <h3 className="font-medium text-slate-800">Recent Orders 🔴</h3>
-                {/* <p className="text-xs text-slate-500">
-                  Current table allocation
-                </p> */}
               </div>
             </div>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="text-xs">Order ID</TableHead>
-                  <TableHead className="text-xs">Item</TableHead>
-                  <TableHead className="text-xs">Customer</TableHead>
-                  <TableHead className="text-xs">Price</TableHead>
-                  <TableHead className="text-xs">Date</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {recentOrders.map((order) => (
-                  <TableRow key={order.id}>
-                    <TableCell className="text-xs">{order.id}</TableCell>
-                    <TableCell className="text-xs">{order.item}</TableCell>
-                    <TableCell className="text-xs">{order.customer}</TableCell>
-                    <TableCell className="text-xs">{order.price}</TableCell>
-                    <TableCell className="text-xs">{order.date}</TableCell>
+
+            {isPending && (
+              <p className="text-sm text-gray-500">Loading orders...</p>
+            )}
+            {error && (
+              <p className="text-sm text-red-500">Failed to fetch orders.</p>
+            )}
+            {!isPending && !error && recentOrders.length === 0 && (
+              <p className="text-sm text-gray-500">
+                No recent orders available.
+              </p>
+            )}
+
+            {recentOrders.length > 0 && (
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="text-xs">Order ID</TableHead>
+                    <TableHead className="text-xs">Item</TableHead>
+                    <TableHead className="text-xs">Customer</TableHead>
+                    <TableHead className="text-xs">Price</TableHead>
+                    <TableHead className="text-xs">Date</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {recentOrders.map((order) => (
+                    <TableRow key={order._id}>
+                      <TableCell className="text-xs">{order.orderId}</TableCell>
+                      <TableCell className="text-xs">
+                        {order.menu.map((item) => item.name).join(", ")}
+                      </TableCell>
+                      <TableCell className="text-xs">{order.userId}</TableCell>
+                      <TableCell className="text-xs">
+                        Ksh.
+                        {order.menu
+                          .reduce((sum, item) => sum + item.cost, 0)
+                          .toFixed(2)}
+                      </TableCell>
+                      <TableCell className="text-xs">
+                        {new Date(order.createdAt).toLocaleDateString()}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            )}
           </CardContent>
         </Card>
       </div>
