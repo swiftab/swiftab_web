@@ -2,22 +2,30 @@ import { useMutation, UseMutationResult } from "@tanstack/react-query";
 import { AuthData, AuthResponse, ErrorResponse } from "@/types/auth";
 import { loginAdmin, signUpAdmin } from "@/lib/api";
 import apiClient from "@/lib/axios";
+import { useRouter } from "next/navigation";
 
 export function useLogin(): UseMutationResult<
   AuthResponse,
   ErrorResponse,
   AuthData
 > {
+  const router = useRouter();
+  
   return useMutation<AuthResponse, ErrorResponse, AuthData>({
     mutationFn: loginAdmin,
     onSuccess: (data: AuthResponse) => {
       console.log("Login successful:", data);
+      // if (data.token) {
+      //   localStorage.setItem("authToken", data.token);
+      // }
       if (data.token) {
-        localStorage.setItem("authToken", data.token);
+        document.cookie = `token=${data.token}; path=/; max-age=${24 * 60 * 60}; secure=${process.env.NODE_ENV === 'production'}; sameSite=${process.env.NODE_ENV === 'production' ? 'none' : 'lax'}`;
+        localStorage.setItem("authToken", data.token); // Optional
       }
       if (data.user) {
         localStorage.setItem("user", JSON.stringify(data.user));
       }
+      router.replace('/dash');
     },
     onError: (error: ErrorResponse) => {
       console.error(
