@@ -1,6 +1,6 @@
 import { useMutation, UseMutationResult } from "@tanstack/react-query";
-import { AuthData, AuthResponse, ErrorResponse } from "@/types/auth";
-import { loginAdmin, signUpAdmin } from "@/lib/api";
+import { AuthData, AuthResponse, Authwaiter, AuthWaiterResponse, ErrorResponse } from "@/types/auth";
+import { loginAdmin, signUpAdmin, signUpWaiter } from "@/lib/api";
 import apiClient from "@/lib/axios";
 import { useRouter } from "next/navigation";
 
@@ -67,3 +67,19 @@ export const fetchLogout = async (): Promise<void> => {
     throw new Error("Logout failed");
   }
 };
+
+export function useWaiterSignUp(): UseMutationResult<
+  AuthWaiterResponse,
+  ErrorResponse,
+  Authwaiter
+> {
+  return useMutation<AuthWaiterResponse, ErrorResponse, Authwaiter>({
+    mutationFn: signUpWaiter,
+    onSuccess: () => {
+      console.log("Sign-up waiter successful:");
+    },
+    onError: (error: ErrorResponse) => {
+      console.error("Sign-up waiter error:", error.message);
+    },
+  });
+}

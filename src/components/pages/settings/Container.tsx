@@ -8,12 +8,16 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Avatar } from "@/components/ui/avatar";
-import { Cog, Star, Package, DollarSign, Save } from "lucide-react";
+import { Cog, Star, Package, DollarSign, Save, Ticket } from "lucide-react";
 import { Toast } from "@/components/ui/toast";
 import { FullScreenLoader } from "@/components/Loading/FullScreen";
 import { fetchAdminInfo } from "@/hooks/authhook/authhooks";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
+import { toast } from "@/hooks/use-toast";
+import Waiter from "./Waiter";
+import AdsManager from "./AdsManager";
+import Subscription from "./Subscription";
 
 interface FormDataType {
   restaurant: {
@@ -178,12 +182,14 @@ const Container = () => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto p-4">
+    <div className="max-w-6xl mx-auto">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid grid-cols-3 mb-6">
+        <TabsList className="grid grid-cols-5 mb-6 bg-white">
           <TabsTrigger value="restaurant">Restaurant</TabsTrigger>
           <TabsTrigger value="profile">Profile</TabsTrigger>
-          <TabsTrigger value="analytics">Subscription</TabsTrigger>
+          <TabsTrigger value="subscription">Subscription</TabsTrigger>
+          <TabsTrigger value="waiters">Waiter</TabsTrigger>
+          <TabsTrigger value="promotion">Promotion</TabsTrigger>
         </TabsList>
 
         {/* Restaurant Settings Tab */}
@@ -383,7 +389,7 @@ const Container = () => {
                 <div className="flex items-center gap-4 mb-6">
                   <Avatar className="h-16 w-16">
                     <Image
-                      src="/api/placeholder/100/100"
+                      src={"/swiftab/USER.jpg"}
                       alt="User Avatar"
                       width={100}
                       height={100}
@@ -471,9 +477,9 @@ const Container = () => {
                     <div>
                       <p className="text-sm">
                         Your restaurant{" "}
-                        <span className="font-medium">'Whispering Willow'</span>{" "}
+                        <span className="font-medium">'Sushi Paradise'</span>{" "}
                         has achieved total sales of{" "}
-                        <span className="font-medium">$5,432.87</span> today
+                        <span className="font-medium">Ksh.5,432.87</span> today
                       </p>
                       <p className="text-xs text-gray-500 mt-1">2 min ago</p>
                     </div>
@@ -532,18 +538,39 @@ const Container = () => {
         <TabsContent value="subscription">
           <Card>
             <CardContent className="pt-6">
-              <h2 className="text-xl font-semibold mb-4">Sales Analytics</h2>
-              <p className="text-gray-500">
-                View detailed sales and traffic analytics for your restaurant.
-              </p>
-
-              <div className="h-64 bg-gray-100 rounded-lg mt-6 flex items-center justify-center">
-                <p className="text-gray-500">
-                  Analytics dashboard will be displayed here
-                </p>
-              </div>
+              <Subscription />
             </CardContent>
           </Card>
+        </TabsContent>
+
+        {/* waiter form */}
+        <TabsContent value="waiters">
+          <Card>
+            <CardContent className="pt-6">
+              <Waiter />
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Ads */}
+        {/* Analytics Tab */}
+        <TabsContent value="promotion">
+          <Card className="border border-gray-200 shadow-sm mb-6">
+                  <CardContent className="pt-6">
+                    <div className="flex items-center mb-6 space-x-3">
+                      <div className="bg-purple-100 p-2 rounded-full">
+                        <Ticket className="h-6 w-6 text-purple-600" />
+                      </div>
+                      <div>
+                        <h2 className="text-xl font-semibold text-gray-800">Restaurant Promotions</h2>
+                        <p className="text-gray-500 text-sm">
+                          Create special offers and promotions to attract customers
+                        </p>
+                      </div>
+                    </div>
+                    <AdsManager />
+                    </CardContent>
+                    </Card>
         </TabsContent>
       </Tabs>
     </div>

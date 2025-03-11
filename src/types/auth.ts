@@ -15,6 +15,17 @@ export interface AuthResponse {
   };
 }
 
+export interface Authwaiter {
+  firstname: string;
+  lastname: string;
+  email: string;
+  phoneNumber: string;
+}
+
+export interface AuthWaiterResponse {
+  message: string;
+}
+
 export interface ErrorResponse {
   message: string;
   statusCode?: number;

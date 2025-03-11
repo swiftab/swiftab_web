@@ -1,4 +1,4 @@
-import { AuthData, AuthResponse, ErrorResponse } from "@/types/auth";
+import { AuthData, AuthResponse, Authwaiter, AuthWaiterResponse, ErrorResponse } from "@/types/auth";
 import apiClient from "./axios";
 import { RestaurantResponse } from "@/types/restaurant";
 import {  MenuResponse } from "@/types/addmenu";
@@ -23,6 +23,28 @@ export const signUpAdmin = async (data: AuthData): Promise<AuthResponse> => {
   try {
     const response = await apiClient.post<AuthResponse>(
       "/auth/admin/SignUp",
+      data
+    );
+    return response.data;
+  } catch (error: any) {
+    if (error?.response) {
+      console.error("Sign-up error details:", error.response);
+      // Show a more specific error message
+      const errorMessage =
+        error?.response?.data?.message || "An error occurred during sign up.";
+      throw new Error(errorMessage);
+    } else {
+      // response (network issues, etc.)
+      console.error("Network error or no response:", error);
+      throw new Error("Network error or no response from server.");
+    }
+  }
+};
+
+export const signUpWaiter = async (data: Authwaiter): Promise<AuthWaiterResponse> => {
+  try {
+    const response = await apiClient.post<AuthWaiterResponse>(
+      "/auth/waiter/waiter-app-signup",
       data
     );
     return response.data;
