@@ -14,7 +14,6 @@ import { FullScreenLoader } from "@/components/Loading/FullScreen";
 import { fetchAdminInfo } from "@/hooks/authhook/authhooks";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
-import { toast } from "@/hooks/use-toast";
 import Waiter from "./Waiter";
 import AdsManager from "./AdsManager";
 import Subscription from "./Subscription";

@@ -6,7 +6,6 @@ import { Label } from "@/components/ui/label";
 import { useWaiterSignUp } from "@/hooks/authhook/authhooks";
 import { useToast } from "@/hooks/use-toast";
 import { ErrorMessage, Field, Form, Formik } from "formik";
-import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import * as Yup from "yup";
 import { Card, CardContent } from "@/components/ui/card";
@@ -26,7 +25,6 @@ const WaiterSignUpSchema = Yup.object().shape({
 
 export default function WaiterSignupTab() {
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
   const { toast } = useToast();
   const signUpMutation = useWaiterSignUp();
 

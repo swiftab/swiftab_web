@@ -99,7 +99,7 @@ export function AppSidebar() {
   }
 
   if (!data) {
-    return <div>No data available</div>;
+    return <FullScreenLoader />;
   }
 
   const { restaurantName, image } = data;
