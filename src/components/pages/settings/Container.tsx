@@ -11,12 +11,12 @@ import { Avatar } from "@/components/ui/avatar";
 import { Cog, Star, Package, DollarSign, Save, Ticket } from "lucide-react";
 import { Toast } from "@/components/ui/toast";
 import { FullScreenLoader } from "@/components/Loading/FullScreen";
-import { fetchAdminInfo } from "@/hooks/authhook/authhooks";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Waiter from "./Waiter";
 import AdsManager from "./AdsManager";
 import Subscription from "./Subscription";
+import { fetchAdminInfo } from "@/lib/api";
 
 interface FormDataType {
   restaurant: {

@@ -19,7 +19,7 @@ export function useLogin(): UseMutationResult<
       //   localStorage.setItem("authToken", data.token);
       // }
       if (data.token) {
-        document.cookie = `token=${data.token}; path=/; max-age=${24 * 60 * 60}; secure=${process.env.NODE_ENV === 'production'}; sameSite=${process.env.NODE_ENV === 'production' ? 'none' : 'lax'}`;
+        //document.cookie = `token=${data.token}; path=/; max-age=${24 * 60 * 60}; secure=${process.env.NODE_ENV === 'production'}; sameSite=${process.env.NODE_ENV === 'production' ? 'none' : 'lax'}`;
         localStorage.setItem("authToken", data.token); // Optional
       }
       if (data.user) {
@@ -53,11 +53,6 @@ export function useSignUp(): UseMutationResult<
       console.error("Sign-up error:", error.message);
     },
   });
-}
-
-export async function fetchAdminInfo() {
-  const response = await apiClient.get("/auth/admin/fetchinfo");
-  return response.data;
 }
 
 export const fetchLogout = async (): Promise<void> => {

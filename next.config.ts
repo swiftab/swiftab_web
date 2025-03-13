@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
       allowedOrigins: [
         "swiftab-web.vercel.app",
         "server-production-2ee7.up.railway.app",
+        "2321-41-90-42-184.ngrok-free.app",
       ],
     },
   },

@@ -9,31 +9,18 @@ const apiClient = axios.create({
   withCredentials: true,
 });
 
-// apiClient.interceptors.response.use(
-//   (response) => response,
-//   (error) => {
-//     if (error.response) {
-//       // Map error response to ErrorResponse interface
-//       const errorResponse: ErrorResponse = {
-//         message: error.response.data?.message || "An error occurred",
-//         statusCode: error.response.status,
-//         details: error.response.data || null, // Entire response if needed
-//       };
-//       return Promise.reject(errorResponse);
-//     } else if (error.request) {
-//       // Handle no response (e.g., network issues)
-//       const errorResponse: ErrorResponse = {
-//         message: "No response received from the server",
-//       };
-//       return Promise.reject(errorResponse);
-//     } else {
-//       // Handle unexpected client-side errors
-//       const errorResponse: ErrorResponse = {
-//         message: error.message || "An unknown error occurred",
-//       };
-//       return Promise.reject(errorResponse);
-//     }
-//   }
-// );
+// Attach token to API requests
+apiClient.interceptors.request.use((config) => {
+  const token = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith("token="))
+    ?.split("=")[1];
+
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+
+  return config;
+});
 
 export default apiClient;

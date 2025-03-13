@@ -11,7 +11,8 @@ export const loginAdmin = async (data: AuthData): Promise<AuthResponse> => {
   try {
     const response = await apiClient.post<AuthResponse>(
       "/auth/admin/SignIn",
-      data
+      data,
+      {withCredentials: true}
     );
     return response.data;
   } catch (error: any) {
@@ -79,7 +80,7 @@ export const AddRestaurant = async (
       formData,
       {
         headers: {
-          "Content-Type": "multipart/form-data", // Set correct header for file uploads
+          "Content-Type": "multipart/form-data",
         },
       }
     );
@@ -225,3 +226,23 @@ export const saveTableLayout = async (
     }
   }
 };
+
+
+export async function fetchAdminInfo() {
+  try {
+    const response = await apiClient.get("/auth/admin/fetchinfo")
+    return response.data;
+  } catch (error: any) {
+    if (error?.response) {
+      console.error("Error fetching admin info:", error.response);
+      // Show a more specific error message
+      const errorMessage =
+        error?.response?.data?.message || "Error fetching admin info.";
+      throw new Error(errorMessage);
+    } else {
+      // response (network issues, etc.)
+      console.error("Network error or no response:", error);
+      throw new Error("Network error or no response from server.");
+    }
+}
+}

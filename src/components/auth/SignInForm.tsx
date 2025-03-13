@@ -50,9 +50,6 @@ export function SignInForm({
 
       setLoading(true);
       router.replace("/dash");
-      // setTimeout(() => {
-        
-      // }, 1500);
     }
 
     if (signInMutation.isError) {

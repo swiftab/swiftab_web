@@ -14,7 +14,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { fetchAdminInfo, fetchLogout } from "@/hooks/authhook/authhooks";
+import { fetchLogout } from "@/hooks/authhook/authhooks";
 import { FullScreenLoader } from "../Loading/FullScreen";
 import Link from "next/link";
 import {
@@ -32,6 +32,7 @@ import {
 import { usePathname, useRouter } from "next/navigation";
 import { toast } from "@/hooks/use-toast";
 import { useState } from "react";
+import { fetchAdminInfo } from "@/lib/api";
 
 const sidebarItems = [
   { name: "Dashboard", href: "/dash", icon: LayoutDashboard },

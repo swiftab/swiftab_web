@@ -8,8 +8,8 @@ import { Badge } from "@/components/ui/badge";
 import EditProfileDialog from "./EditProfileDialog";
 import { Pencil } from "lucide-react";
 import { FullScreenLoader } from "@/components/Loading/FullScreen";
-import { fetchAdminInfo } from "@/hooks/authhook/authhooks";
 import { useQuery } from "@tanstack/react-query";
+import { fetchAdminInfo } from "@/lib/api";
 
 export default function Container() {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
