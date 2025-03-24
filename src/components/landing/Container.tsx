@@ -2,11 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  CalendarClock,
-  Menu,
-  X,
-} from "lucide-react";
+import { CalendarClock, Menu, X } from "lucide-react";
 import Link from "next/link";
 import FeatureSection from "./benefits/ServiceCard";
 import EnhancedFeatures from "./features/EnhancedFeatures";
@@ -24,14 +20,14 @@ export default function LandingPage() {
   const observerRefs = useRef<IntersectionObserver[]>([]);
   const router = useRouter();
 
-  const navigateToSignin = ()=>{
-    router.push('/signin/')
-  }
+  const navigateToSignin = () => {
+    router.push("/signin/");
+  };
 
-  const navigateToSignup = ()=>{
-    router.push('/signup')
-  }
-  
+  const navigateToSignup = () => {
+    router.push("/signup");
+  };
+
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   // Track mouse position for parallax effects
@@ -97,8 +93,6 @@ export default function LandingPage() {
     };
   }, []);
 
-  
-
   return (
     <div className="flex min-h-screen flex-col bg-gray-50 text-gray-900 overflow-hidden">
       {/* Background gradient elements */}
@@ -129,10 +123,12 @@ export default function LandingPage() {
         <div className="container flex h-20 items-center justify-between py-4">
           <div className="flex items-center gap-2">
             <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-indigo-600 blur-sm rounded-full opacity-70"></div>
-              <CalendarClock className="h-8 w-8 relative" />
+              <div className="absolute inset-0 bg-gradient-to-r from-primary to-green-700 blur-sm rounded-full opacity-70"></div>
+              <div className="relative bg-white p-2 rounded-full">
+                <CalendarClock className="h-6 w-6 text-primary" />
+              </div>
             </div>
-            <span className="text-xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
+            <span className="text-xl font-bold bg-gradient-to-r from-gray-900 to-primary bg-clip-text text-transparent">
               SwifTab
             </span>
           </div>
@@ -240,18 +236,15 @@ export default function LandingPage() {
         <EnhancedFeatures />
 
         {/* Enhanced How It Works Section */}
-        
-          <Howitworks />
+
+        <Howitworks />
 
         {/* Pricing Section */}
         <Pricing />
 
-
-
-<Testimonials />
+        <Testimonials />
         {/* CTA Section */}
         <Cta />
-
       </main>
 
       <FooterHome />
