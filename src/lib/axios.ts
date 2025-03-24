@@ -1,7 +1,8 @@
 import axios from "axios";
 
+
 const apiClient = axios.create({
-  baseURL: "https://server-production-2ee7.up.railway.app/swiftab",
+  baseURL: process.env.NODE_ENV === "production"?"https://server-production-2ee7.up.railway.app/swiftab":"http://localhost:3002/swiftab",
   headers: {
     "Content-Type": "application/json",
     "Accept": "application/json"
