@@ -45,7 +45,7 @@ export default function Home() {
           <div className="absolute top-[60%] -left-[10%] w-[40%] h-[60%] bg-green-500/5 rounded-full blur-3xl"></div>
         </div>
 
-        <div className="container px-4 md:px-6 relative z-10">
+        <div className="px-4 md:px-6 relative z-10">
           <div className="grid gap-12 lg:grid-cols-2 lg:gap-16 items-center">
             <div className="flex flex-col justify-center space-y-8" data-animate>
               <div className="space-y-6">
@@ -174,7 +174,7 @@ export default function Home() {
         </div>
 
         {/* Trusted restaurants section */}
-        <div className="container px-4 md:px-6 mt-24">
+        <div className="px-4 md:px-6 mt-24">
           <div className="text-center mb-10">
             <p className="text-gray-500 text-sm uppercase tracking-wider font-medium">
               Trusted by leading restaurants worldwide

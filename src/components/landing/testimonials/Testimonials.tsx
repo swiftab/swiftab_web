@@ -55,7 +55,7 @@ export default function TestimonialsSection() {
       <div className="absolute top-0 left-0 w-1/2 h-full bg-gradient-to-b from-gray-50 via-blue-900/10 to-gray-50 opacity-50"></div>
       <div className="absolute top-0 right-0 w-1/2 h-3/4 bg-primary/40 transform rotate-12 translate-x-1/4 translate-y-[20%] rounded-3xl shadow-2xl opacity-30"></div>
       
-      <div className="container mx-auto px-4 md:px-6 relative">
+      <div className="mx-auto px-4 md:px-6 relative">
         {/* Heading section */}
         <div className="flex flex-col items-center justify-center space-y-4 text-center mb-16" data-animate>
           <div className="relative inline-block mb-2">

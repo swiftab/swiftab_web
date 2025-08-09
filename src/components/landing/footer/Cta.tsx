@@ -8,7 +8,7 @@ export default function Cta() {
     <section className="py-20 md:py-32 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-r from-gray-50 to-white"></div>
       <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] bg-repeat opacity-10"></div>
-      <div className="container px-4 md:px-6 relative">
+      <div className="px-4 md:px-6 relative">
         <div className="grid gap-12 lg:grid-cols-2 items-center">
           <div className="flex flex-col justify-center space-y-6" data-animate>
             <div className="space-y-4 justify-center text-center items-center">

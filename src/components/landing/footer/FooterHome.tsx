@@ -6,7 +6,7 @@ import Link from "next/link"
 export default function FooterHome() {
   return (
     <footer className="border-t border-gray-200 bg-gray-50">
-      <div className="container px-4 py-12 md:px-6 md:py-16 lg:py-20">
+      <div className="px-4 py-12 md:px-6 md:py-16 lg:py-20">
         {/* Newsletter section */}
         <div className="mb-16 p-6 md:p-8 bg-gradient-to-r from-primary/10 to-green-700/5 rounded-2xl border border-primary/20">
           <div className="grid gap-6 md:grid-cols-2 md:gap-8 items-center">

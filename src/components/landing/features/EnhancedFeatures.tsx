@@ -14,7 +14,7 @@ import {
 export default function EnhancedFeatures() {
   return (
     <section id="features" className="py-10 md:py-20 relative px-20 bg-gradient-to-r from-gray-50 to-white">
-      <div className="container px-4 md:px-6">
+      <div className="px-4 md:px-6">
         <div
           className="flex flex-col items-center justify-center space-y-4 text-center mb-16"
           data-animate

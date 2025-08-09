@@ -7,7 +7,7 @@ export default function Howitworks() {
   return (
     <section id="how-it-works" className="py-10 md:py-20 relative px-20 bg-gray-50">
           <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-gray-50 via-indigo-900/10 to-gray-50 opacity-50"></div>
-          <div className="container px-4 md:px-6 relative">
+          <div className="px-4 md:px-6 relative">
             <div
               className="flex flex-col items-center justify-center space-y-4 text-center mb-16"
               data-animate

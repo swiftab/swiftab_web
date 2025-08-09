@@ -91,7 +91,7 @@ export default function FeatureSection() {
 
   return (
     <section ref={sectionRef} className="py-10 overflow-hidden bg-gray-50">
-      <div className="container mx-auto px-4">
+      <div className="mx-auto px-4">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
           <div className="relative inline-block mb-4">
