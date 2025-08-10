@@ -18,6 +18,7 @@ import { useAddRestaurant } from "@/hooks/restauranthook/restauranthook";
 import { ErrorResponse } from "@/types/restaurant";
 import { useToast } from "@/hooks/use-toast";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
+import { useAuth } from "../auth/AuthContext";
 
 interface RestaurantSetupModalProps {
   isOpen: boolean;
@@ -28,6 +29,7 @@ export function RestaurantSetupModal({
   isOpen,
   onClose,
 }: RestaurantSetupModalProps) {
+  const { refreshUser } = useAuth();
   const [step, setStep] = useState(1);
   const validationSchemas = [
     stepOneValidationSchema,
@@ -145,7 +147,8 @@ export function RestaurantSetupModal({
             description: "Restaurant created successfully.",
             variant: "default",
           });
-          console.log("Restaurant created successfully");
+          window.location.reload();
+          refreshUser();
           onClose();
         },
         onError: (error: ErrorResponse) => {

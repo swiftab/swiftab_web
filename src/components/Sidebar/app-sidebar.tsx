@@ -13,35 +13,35 @@ import {
   SidebarTrigger,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { fetchLogout } from "@/hooks/authhook/authhooks";
 import { FullScreenLoader } from "../Loading/FullScreen";
 import Link from "next/link";
 import {
   Calendar,
-  ChartNetwork,
+  //ChartNetwork,
   HelpCircle,
   LayoutDashboard,
   ListOrdered,
   LogOut,
   Settings,
   Table2,
-  Users,
+  //Users,
   Utensils,
 } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { toast } from "@/hooks/use-toast";
 import { useState } from "react";
-import { fetchAdminInfo } from "@/lib/api";
+import { useAuth } from "../auth/AuthContext";
 
 const sidebarItems = [
   { name: "Dashboard", href: "/dash", icon: LayoutDashboard },
-  { name: "Report", href: "/analytics", icon: ChartNetwork },
+  //{ name: "Report", href: "/analytics", icon: ChartNetwork },
   { name: "Reservations", href: "/reservations", icon: Calendar },
   { name: "Orders", href: "/order-line", icon: ListOrdered },
   { name: "Manage Dishes", href: "/dishes", icon: Utensils },
   { name: "Manage Tables", href: "/tables/floorplan", icon: Table2 },
-  { name: "Customers", href: "/customers", icon: Users },
+  //{ name: "Customers", href: "/customers", icon: Users },
 ];
 
 const footerItems = [
@@ -55,10 +55,7 @@ export function AppSidebar() {
   const pathname = usePathname();
   const [logoutLoading,setLogoutLoading] = useState(false)
 
-  const { data, error, isLoading } = useQuery({
-    queryKey: ["adminInfo"],
-    queryFn: fetchAdminInfo,
-  });
+  const {user,isLoading} = useAuth();
 
   const router = useRouter();
 
@@ -91,25 +88,23 @@ export function AppSidebar() {
     }
   };
 
-  if (isLoading && logoutLoading) {
+  if (isLoading ) {
     return <FullScreenLoader />;
   }
 
-  if (error) {
-    return <div>Error fetching admin info: {error.message}</div>;
+  if (logoutLoading) {
+    return <FullScreenLoader />
   }
 
-  if (!data) {
+  if (!user) {
     return <FullScreenLoader />;
   }
-
-  const { restaurantName, image } = data;
 
   return (
     <Sidebar variant="floating" collapsible="icon">
       <SidebarHeader
         style={{
-          backgroundImage: image ? `url(${image})` : "none",
+          backgroundImage: user?.image ? `url(${user?.image})` : "none",
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
@@ -117,7 +112,7 @@ export function AppSidebar() {
         <div className="flex flex-row justify-between items-center px-0 h-16">
           {state === "expanded" && (
             <span className="text-center font-semibold text-sm text-white hover:text-primary/50 transition-all duration-300">
-              {restaurantName ? restaurantName : "Swiftab"}
+              {user.restaurantName ? user.restaurantName : "Swiftab"}
             </span>
           )}
           <div className="items-center flex">

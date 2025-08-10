@@ -42,6 +42,26 @@ export const signUpAdmin = async (data: AuthData): Promise<AuthResponse> => {
   }
 };
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export async function fetchAdminInfo() {
+  try {
+    const response = await apiClient.get("/auth/admin/fetchinfo");
+    return response.data;
+  } catch (error: any) {
+    console.log("error fetching admin info",error)
+    if (error?.response?.status === 401) {
+      // User is not logged in
+      return null;
+    } else if (error?.response) {
+      const errorMessage =
+        error?.response?.data?.error || "Error fetching admin info.";
+      throw new Error(errorMessage);
+    } else {
+      throw new Error("Network error or no response from server.");
+    }
+  }
+}
+
 export const signUpWaiter = async (data: Authwaiter): Promise<AuthWaiterResponse> => {
   try {
     const response = await apiClient.post<AuthWaiterResponse>(
@@ -226,23 +246,3 @@ export const saveTableLayout = async (
     }
   }
 };
-
-
-export async function fetchAdminInfo() {
-  try {
-    const response = await apiClient.get("/auth/admin/fetchinfo")
-    return response.data;
-  } catch (error: any) {
-    if (error?.response) {
-      console.error("Error fetching admin info:", error.response);
-      // Show a more specific error message
-      const errorMessage =
-        error?.response?.data?.message || "Error fetching admin info.";
-      throw new Error(errorMessage);
-    } else {
-      // response (network issues, etc.)
-      console.error("Network error or no response:", error);
-      throw new Error("Network error or no response from server.");
-    }
-}
-}

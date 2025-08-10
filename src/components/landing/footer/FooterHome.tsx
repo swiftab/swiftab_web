@@ -110,22 +110,12 @@ export default function FooterHome() {
             <ul className="space-y-3.5">
               <li>
                 <Link href="#" className="text-gray-600 hover:text-primary transition-colors inline-flex">
-                  Blog
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="text-gray-600 hover:text-primary transition-colors inline-flex">
                   Help Center
                 </Link>
               </li>
               <li>
                 <Link href="#" className="text-gray-600 hover:text-primary transition-colors inline-flex">
                   Guides
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="text-gray-600 hover:text-primary transition-colors inline-flex">
-                  API Documentation
                 </Link>
               </li>
               <li>
@@ -146,21 +136,16 @@ export default function FooterHome() {
               </li>
               <li>
                 <Link href="#" className="text-gray-600 hover:text-primary transition-colors inline-flex">
-                  Careers
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="text-gray-600 hover:text-primary transition-colors inline-flex">
                   Contact
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-gray-600 hover:text-primary transition-colors inline-flex">
+                <Link href="/privacy" className="text-gray-600 hover:text-primary transition-colors inline-flex">
                   Privacy Policy
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-gray-600 hover:text-primary transition-colors inline-flex">
+                <Link href="/terms" className="text-gray-600 hover:text-primary transition-colors inline-flex">
                   Terms of Service
                 </Link>
               </li>
@@ -171,10 +156,10 @@ export default function FooterHome() {
         <div className="mt-16 pt-8 border-t border-gray-200 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm text-gray-500">© {new Date().getFullYear()} SwifTab. All rights reserved.</p>
           <div className="flex gap-8">
-            <Link href="#" className="text-sm text-gray-500 hover:text-primary transition-colors">
+            <Link href="/terms" className="text-sm text-gray-500 hover:text-primary transition-colors">
               Terms
             </Link>
-            <Link href="#" className="text-sm text-gray-500 hover:text-primary transition-colors">
+            <Link href="/privacy" className="text-sm text-gray-500 hover:text-primary transition-colors">
               Privacy
             </Link>
             <Link href="#" className="text-sm text-gray-500 hover:text-primary transition-colors">

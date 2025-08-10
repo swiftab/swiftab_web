@@ -22,6 +22,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
+import { useAuth } from "@/components/auth/AuthContext";
 
 interface User {
   userId: string;
@@ -34,27 +35,21 @@ interface User {
 
 export default function HeaderDashboard() {
   const notifications = 3;
-  const [user, setUser] = useState<User | null>(null);
+  //const [user, setUser] = useState<User | null>(null);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [initials, setInitials] = useState("");
   const [currentTime, setCurrentTime] = useState("");
+  const {user} = useAuth();
 
   useEffect(() => {
-    // Get user from localStorage
-    const storedUser = localStorage.getItem("user");
 
-    if (storedUser) {
-      const parsedUser = JSON.parse(storedUser);
-      setUser(parsedUser);
-
-      if (parsedUser.name) {
-        const result = splitName(parsedUser.name);
+      if (user) {
+        const result = splitName(user.name);
         setFirstName(result.firstName);
         setLastName(result.lastName);
         setInitials(result.initials);
       }
-    }
 
     // Set current time and update every minute
     updateCurrentTime();
