@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { StepOne } from "./StepOne";
 import { StepTwo } from "./StepTwo";
@@ -22,14 +22,14 @@ import { useAuth } from "../auth/AuthContext";
 
 interface RestaurantSetupModalProps {
   isOpen: boolean;
-  onClose: () => void;
+  onOpenChange: (open: boolean) => void;
 }
 
 export function RestaurantSetupModal({
   isOpen,
-  onClose,
+  onOpenChange,
 }: RestaurantSetupModalProps) {
-  const { refreshUser } = useAuth();
+  const { refreshUser,user } = useAuth();
   const [step, setStep] = useState(1);
   const validationSchemas = [
     stepOneValidationSchema,
@@ -147,9 +147,8 @@ export function RestaurantSetupModal({
             description: "Restaurant created successfully.",
             variant: "default",
           });
-          window.location.reload();
           refreshUser();
-          onClose();
+          onOpenChange(false);
         },
         onError: (error: ErrorResponse) => {
           toast({
@@ -165,11 +164,21 @@ export function RestaurantSetupModal({
     }
   };
 
+  const handleClose = useCallback(
+    (open: boolean) => {
+      onOpenChange(open);
+      if (!open && user?.restaurantId) {
+          window.location.reload();
+      }
+    },
+    [onOpenChange]
+  );
+
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="w-full max-w-2xl max-h-[calc(100vh-100px)] overflow-y-auto">
+    <Dialog open={isOpen} onOpenChange={handleClose}>
+      <DialogContent className="[&>button]:hidden w-full max-w-2xl max-h-[calc(100vh-100px)] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Set Up Your Restaurant</DialogTitle>
+          <DialogTitle className="text-center">Set Up Your Restaurant</DialogTitle>
         </DialogHeader>
         <StepIndicator currentStep={step} totalSteps={4} />
         <Formik
@@ -180,71 +189,71 @@ export function RestaurantSetupModal({
           validateOnBlur={true}
           enableReinitialize
         >
-          {(formik) =>{  
+          {(formik) => {
             console.log("Formik state:", formik);
-              return (
-            
-            <Form>
-              {step === 1 && (
-                <StepOne
-                  formik={{
-                    values: formik.values.stepOne,
-                    handleChange: formik.handleChange,
-                    errors: formik.errors.stepOne || {},
-                    touched: formik.touched.stepOne || {},
-                    setFieldValue: formik.setFieldValue,
-                  }}
-                />
-              )}
-              {step === 2 && (
-                <StepTwo
-                  formik={{
-                    values: formik.values.stepTwo,
-                    setFieldValue: formik.setFieldValue,
-                    handleChange: formik.handleChange,
-                    errors: formik.errors.stepTwo || {},
-                    touched: formik.touched.stepTwo || {},
-                  }}
-                />
-              )}
-              {step === 3 && (
-                <StepThree
-                  formData={formik.values.stepThree}
-                  handleInputChange={formik.handleChange}
-                  errors={formik.errors.stepThree || {}}
-                  touched={formik.touched.stepThree || {}}
-                />
-              )}
-              {step === 4 && (
-                <StepFour
-                  formik={{
-                    values: formik.values.stepFour,
-                    setFieldValue: formik.setFieldValue,
-                  }}
-                />
-              )}
-              <div className="flex justify-between mt-4">
-                {step > 1 && (
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={handlePrevious}
-                  >
-                    Previous
-                  </Button>
+            return (
+              <Form>
+                {step === 1 && (
+                  <StepOne
+                    formik={{
+                      values: formik.values.stepOne,
+                      handleChange: formik.handleChange,
+                      errors: formik.errors.stepOne || {},
+                      touched: formik.touched.stepOne || {},
+                      setFieldValue: formik.setFieldValue,
+                    }}
+                  />
                 )}
-                {step < 4 ? (
-                  <Button type="button" onClick={() => handleNext(formik)}>
-                    Next
-                  </Button>
-                ) : (
-                  <Button type="submit" disabled={isPending}>
-                    {isPending ? "Submitting..." : "Submit"}
-                  </Button>
+                {step === 2 && (
+                  <StepTwo
+                    formik={{
+                      values: formik.values.stepTwo,
+                      setFieldValue: formik.setFieldValue,
+                      handleChange: formik.handleChange,
+                      errors: formik.errors.stepTwo || {},
+                      touched: formik.touched.stepTwo || {},
+                    }}
+                  />
                 )}
-              </div>
-            </Form>
-          )}}
+                {step === 3 && (
+                  <StepThree
+                    formData={formik.values.stepThree}
+                    handleInputChange={formik.handleChange}
+                    errors={formik.errors.stepThree || {}}
+                    touched={formik.touched.stepThree || {}}
+                  />
+                )}
+                {step === 4 && (
+                  <StepFour
+                    formik={{
+                      values: formik.values.stepFour,
+                      setFieldValue: formik.setFieldValue,
+                    }}
+                  />
+                )}
+                <div className="flex justify-between mt-4">
+                  {step > 1 && (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={handlePrevious}
+                    >
+                      Previous
+                    </Button>
+                  )}
+                  {step < 4 ? (
+                    <Button type="button" onClick={() => handleNext(formik)}>
+                      Next
+                    </Button>
+                  ) : (
+                    <Button type="submit" disabled={isPending}>
+                      {isPending ? "Submitting..." : "Submit"}
+                    </Button>
+                  )}
+                </div>
+              </Form>
+            );
+          }}
         </Formik>
       </DialogContent>
     </Dialog>

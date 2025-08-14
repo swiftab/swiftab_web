@@ -23,6 +23,7 @@ import { useDeleteMenu } from "@/hooks/restauranthook/deletehook";
 import { toast } from "@/hooks/use-toast";
 import { useEditMenuItem } from "@/hooks/restauranthook/editmenuhook";
 import { FullScreenLoader } from "@/components/Loading/FullScreen";
+import { LoadingSpinner } from "@/components/ui/loading";
 
 interface MenuItem {
   id: string;
@@ -55,7 +56,11 @@ export default function MenuManager() {
     }
   }, []);
 
-  const { data: menu, error, isPending } = useQuery({
+  const {
+    data: menu,
+    error,
+    isPending,
+  } = useQuery({
     queryKey: ["menu"],
     queryFn: () => fetchMenu(),
   });
@@ -134,9 +139,24 @@ export default function MenuManager() {
     }
   }, [deleteMutation.isSuccess, deleteMutation.isError, deleteMutation.error]);
 
-  if (isPending) return <FullScreenLoader />
-  if(deleteMutation.isPending) return <FullScreenLoader />
-  if (error) return <div>Error loading menu</div>;
+  if (isPending)
+    return (
+      <div className="fixed inset-0 flex items-center justify-center bg-gradient-to-br from-[#008080]/50 to-[#008080]/100">
+        <LoadingSpinner desc="Fetching Menu ... " />
+      </div>
+    );
+  if (deleteMutation.isPending)
+    return (
+      <div className="fixed inset-0 flex items-center justify-center bg-gradient-to-br from-[#008080]/50 to-[#008080]/100">
+        <LoadingSpinner desc="Deleting Menu ... " />
+      </div>
+    );
+  if (error)
+    return (
+      <div className="fixed inset-0 flex items-center justify-center bg-gradient-to-br from-[#008080]/50 to-[#008080]/100">
+        <LoadingSpinner desc="Error loading menu ... " />
+      </div>
+    );
 
   return (
     <div className="flex flex-col h-screen">
@@ -189,7 +209,7 @@ export default function MenuManager() {
                       {filteredMenuItems.map((item) => (
                         <TableRow key={item.id}>
                           <TableCell className="font-medium">
-                          {`****${item.code.slice(-4)}`}
+                            {`****${item.code.slice(-4)}`}
                           </TableCell>
                           <TableCell>
                             <div className="flex items-center gap-2">

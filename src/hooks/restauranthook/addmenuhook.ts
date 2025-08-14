@@ -19,7 +19,7 @@ export function useAddMenu(): UseMutationResult<
     },
     onSuccess: (data) => {
       console.log("Menu item added successfully:", data);
-      // Optionally, invalidate queries or update cache here
+      window.location.reload();
     },
     onError: (error) => {
       console.error("Error adding menu item:", error.message);

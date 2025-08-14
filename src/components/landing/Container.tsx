@@ -13,6 +13,7 @@ import FooterHome from "./footer/FooterHome";
 import Cta from "./footer/Cta";
 import Home from "./home/Home";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export default function LandingPage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -121,16 +122,15 @@ export default function LandingPage() {
 
       <header className="sticky top-0 z-40 backdrop-blur-xl bg-transparent border-b border-gray-200/70 md:px-20 px-5">
         <div className="container flex h-20 items-center justify-between py-4">
-          <div className="flex items-center gap-2">
-            <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-primary to-green-700 blur-sm rounded-full opacity-70"></div>
-              <div className="relative bg-white p-2 rounded-full">
-                <CalendarClock className="h-6 w-6 text-primary" />
-              </div>
+          <div className="flex justify-center mb-2">
+            <div className="w-10 h-10 bg-gradient-to-br from-primary to-primary/50 rounded-sm flex items-center justify-center">
+              <Image
+                src="/swiftab/logo.png"
+                width={50}
+                height={50}
+                alt="Picture of the author"
+              />
             </div>
-            <span className="text-xl font-bold bg-gradient-to-r from-gray-900 to-primary bg-clip-text text-transparent">
-              SwifTab
-            </span>
           </div>
 
           <nav className="hidden md:flex items-center gap-8">

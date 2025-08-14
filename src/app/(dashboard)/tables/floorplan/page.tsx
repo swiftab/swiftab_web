@@ -1,8 +1,8 @@
 "use client";
 
-import { FullScreenLoader } from "@/components/Loading/FullScreen";
 import Container from "@/components/pages/table/floorplan/Container";
-import { RestaurantLayoutModal } from "@/components/pages/table/restaurantlayout";
+import { RestaurantLayout } from "@/components/pages/table/restaurantlayout";
+import { LoadingSpinner } from "@/components/ui/loading";
 import { fetchRestaurantInfo } from "@/hooks/tablehook/fetchreslayout";
 import { useQuery } from "@tanstack/react-query";
 import React, { useState, useEffect } from "react";
@@ -29,7 +29,12 @@ export default function FloorPlans() {
     }
   }, [error, data]);
 
-  if (isLoading) return <FullScreenLoader />;
+  if (isLoading)
+    return (
+      <div className="fixed inset-0 flex items-center justify-center bg-gradient-to-br from-[#008080]/50 to-[#008080]/100">
+        <LoadingSpinner desc="Fetching restaurant layout ... " />
+      </div>
+    );
 
   if (error && (error as Error).message !== "Dining areas not found") {
     return (
@@ -44,7 +49,7 @@ export default function FloorPlans() {
       <div className="overflow-x-hidden overflow-y-hidden">
         <Container />
       </div>
-      <RestaurantLayoutModal isOpen={isModalOpen} onClose={handleCloseModal} />
+      <RestaurantLayout isOpen={isModalOpen} onClose={handleCloseModal} />
     </>
   );
 }

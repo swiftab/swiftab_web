@@ -27,6 +27,7 @@ import { Pagination } from "./pagination";
 import { useQuery } from "@tanstack/react-query";
 import { fetchAllReservation } from "@/hooks/reservationhook/fetchreservation";
 import { FullScreenLoader } from "@/components/Loading/FullScreen";
+import { LoadingSpinner } from "@/components/ui/loading";
 
 interface Reservation {
   id: string;
@@ -76,6 +77,7 @@ export default function ReservationsPage() {
         floor: item.reservationInfo.diningArea,
         status: item.status,
       })),
+    retry: false,
   });
 
   useEffect(() => {
@@ -123,8 +125,20 @@ export default function ReservationsPage() {
     setFilters((prev) => ({ ...prev, [name]: value }));
   };
 
-  if (isPending) return <FullScreenLoader />;
-  if (error) return <FullScreenLoader />;
+  if (isPending)
+    return (
+      <div className="fixed inset-0 flex items-center justify-center bg-gradient-to-br from-[#008080]/50 to-[#008080]/100">
+        <LoadingSpinner desc="Fetching reservation ... " />
+      </div>
+    );
+
+  if (error && error.message !== "No reservations found") {
+    return (
+      <div className="fixed inset-0 flex items-center justify-center bg-gradient-to-br from-[#008080]/50 to-[#008080]/100">
+        <LoadingSpinner desc="Error fetching reservations ... " />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen ">
@@ -215,43 +229,53 @@ export default function ReservationsPage() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {paginatedReservations.map((reservation: Reservation) => (
-            <TableRow
-              key={reservation.id}
-              onClick={() => setSelectedReservation(reservation)}
-              className="cursor-pointer hover:bg-gray-50"
-            >
-              <TableCell className="font-medium">{reservation.name}</TableCell>
-              <TableCell>
-                {new Date(reservation.start).toLocaleDateString()}
-              </TableCell>
-              <TableCell>
-                {new Date(reservation.start).toLocaleTimeString([], {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}{" "}
-                -{" "}
-                {new Date(reservation.end).toLocaleTimeString([], {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}
-              </TableCell>
-              <TableCell>{reservation.guests}</TableCell>
-              <TableCell>{reservation.table}</TableCell>
-              <TableCell>{reservation.floor}</TableCell>
-              <TableCell>
-                <Badge
-                  variant={
-                    reservation.status === "confirmed"
-                      ? "default"
-                      : "destructive"
-                  }
-                >
-                  {reservation.status}
-                </Badge>
+          {paginatedReservations.length === 0 ? (
+            <TableRow>
+              <TableCell colSpan={7} className="text-center text-gray-500 py-6">
+                No reservations found
               </TableCell>
             </TableRow>
-          ))}
+          ) : (
+            paginatedReservations.map((reservation: Reservation) => (
+              <TableRow
+                key={reservation.id}
+                onClick={() => setSelectedReservation(reservation)}
+                className="cursor-pointer hover:bg-gray-50"
+              >
+                <TableCell className="font-medium">
+                  {reservation.name}
+                </TableCell>
+                <TableCell>
+                  {new Date(reservation.start).toLocaleDateString()}
+                </TableCell>
+                <TableCell>
+                  {new Date(reservation.start).toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}{" "}
+                  -{" "}
+                  {new Date(reservation.end).toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </TableCell>
+                <TableCell>{reservation.guests}</TableCell>
+                <TableCell>{reservation.table}</TableCell>
+                <TableCell>{reservation.floor}</TableCell>
+                <TableCell>
+                  <Badge
+                    variant={
+                      reservation.status === "confirmed"
+                        ? "default"
+                        : "destructive"
+                    }
+                  >
+                    {reservation.status}
+                  </Badge>
+                </TableCell>
+              </TableRow>
+            ))
+          )}
         </TableBody>
       </Table>
 

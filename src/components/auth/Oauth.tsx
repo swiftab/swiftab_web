@@ -5,6 +5,7 @@ import { Sparkles } from "lucide-react";
 import { Button } from "../ui/button";
 import { useAuth } from "./AuthContext";
 import { toast } from "react-toastify";
+import Image from "next/image";
 
 export default function AuthPage() {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -14,9 +15,9 @@ export default function AuthPage() {
 
   useEffect(() => {
     if (user) return;
-      refreshUser()
+    refreshUser()
       .then(() => {
-          setIsNewLogin(false);
+        setIsNewLogin(false);
       })
       .catch((err) => {
         console.log("No active session:", err);
@@ -31,24 +32,23 @@ export default function AuthPage() {
           theme: "light",
         });
       });
-  }, [user, isNewLogin,refreshUser]);
+  }, [user, isNewLogin, refreshUser]);
 
   const handleGoogleAuth = () => {
     setIsNewLogin(true);
-    window.location.href = "https://78578e1782a0.ngrok-free.app/swiftab/auth/admin/google-auth";
+    window.location.href =
+      "https://server-production-2ee7.up.railway.app/swiftab/auth/admin/google-auth";
   };
   const handleXAuth = () => {
     setIsNewLogin(true);
-    window.location.href = "https://78578e1782a0.ngrok-free.app/swiftab/auth/admin/x-auth";
+    window.location.href = "https://server-production-2ee7.up.railway.app/swiftab/auth/admin/x-auth";
   };
-
 
   return (
     <div className="p-4 overflow-hidden relative">
       {/* Animated background elements */}
       <div className="absolute inset-0">
         <div className="absolute top-20 left-20 w-72 h-72 bg-[#008080] rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
-        
       </div>
 
       <div className="max-w-md relative z-10">
@@ -57,8 +57,13 @@ export default function AuthPage() {
           {/* Header */}
           <div className="text-center mb-8">
             <div className="flex justify-center mb-4">
-              <div className="w-16 h-16 bg-gradient-to-br from-blue-400 to-purple-600 rounded-2xl flex items-center justify-center">
-                <Sparkles className="w-8 h-8 text-white" />
+              <div className="w-16 h-16 bg-gradient-to-br from-primary to-primary/50 rounded-2xl flex items-center justify-center">
+                <Image
+                  src="/swiftab/logo.png"
+                  width={50}
+                  height={50}
+                  alt="Picture of the author"
+                />
               </div>
             </div>
             <h1 className="text-3xl font-bold text-black mb-2">

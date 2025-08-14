@@ -136,7 +136,7 @@ export const addMenu = async (
     return response.data;
   } catch (error: any) {
     if (error?.response) {
-      console.error("Add menu error details:", error.response);
+      console.error("Add menu error details:", error);
       const errorMessage =
         error.response.data?.message ||
         "An error occurred while adding the menu.";

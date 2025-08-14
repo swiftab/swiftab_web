@@ -33,6 +33,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { toast } from "@/hooks/use-toast";
 import { useState } from "react";
 import { useAuth } from "../auth/AuthContext";
+import { LoadingSpinner } from "../ui/loading";
 
 const sidebarItems = [
   { name: "Dashboard", href: "/dash", icon: LayoutDashboard },
@@ -53,9 +54,9 @@ const footerItems = [
 export function AppSidebar() {
   const { state } = useSidebar();
   const pathname = usePathname();
-  const [logoutLoading,setLogoutLoading] = useState(false)
+  const [logoutLoading, setLogoutLoading] = useState(false);
 
-  const {user,isLoading} = useAuth();
+  const { user, isLoading } = useAuth();
 
   const router = useRouter();
 
@@ -68,7 +69,6 @@ export function AppSidebar() {
         variant: "default",
       });
       router.replace("/signin");
-      localStorage.clear();
     },
     onError: (error: any) => {
       toast({
@@ -82,26 +82,38 @@ export function AppSidebar() {
   const handleLogout = async () => {
     try {
       await logoutMutation.mutateAsync();
-      setLogoutLoading(true)
+      setLogoutLoading(true);
     } catch (error) {
       console.error("Logout failed:", error);
     }
   };
 
-  if (isLoading ) {
-    return <FullScreenLoader />;
+  if (isLoading) {
+    return (
+      <div className="fixed inset-0 flex items-center justify-center bg-gradient-to-br from-[#008080]/50 to-[#008080]/100">
+        <LoadingSpinner desc="Preparing your restaurant ... " />
+      </div>
+    );
   }
 
   if (logoutLoading) {
-    return <FullScreenLoader />
+    return (
+      <div className="fixed inset-0 flex items-center justify-center bg-gradient-to-br from-[#008080]/50 to-[#008080]/100">
+        <LoadingSpinner desc="Logout ... " />
+      </div>
+    );
   }
 
   if (!user) {
-    return <FullScreenLoader />;
+    return (
+      <div className="fixed inset-0 flex items-center justify-center bg-gradient-to-br from-[#008080]/50 to-[#008080]/100">
+        <LoadingSpinner desc="Preparing your restaurant ... " />
+      </div>
+    );
   }
 
   return (
-    <Sidebar variant="floating" collapsible="icon">
+    <Sidebar variant="sidebar" collapsible="icon">
       <SidebarHeader
         style={{
           backgroundImage: user?.image ? `url(${user?.image})` : "none",

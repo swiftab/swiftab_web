@@ -5,7 +5,7 @@ const cn = (...classes: (string | undefined | null | false)[]) => {
   return classes.filter(Boolean).join(' ');
 };
 
-export const LoadingSpinner = ({ className }: { className?: string }) => {
+export const LoadingSpinner = ({ className,desc }: { className?: string,desc?:string }) => {
   return (
     <div className={cn("relative flex flex-col items-center justify-center", className)}>
       {/* Main spinning plate */}
@@ -59,7 +59,7 @@ export const LoadingSpinner = ({ className }: { className?: string }) => {
       {/* Loading text */}
       <div className="mt-8 text-center">
         <p className="text-gray-700 font-semibold text-sm tracking-wide animate-pulse">
-          Preparing your restaurant ...
+          {desc}
         </p>
         <div className="flex justify-center mt-2 space-x-1">
           <div className="w-1 h-1 bg-amber-500 rounded-full animate-bounce"></div>

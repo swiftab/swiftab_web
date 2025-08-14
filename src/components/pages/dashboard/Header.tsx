@@ -33,23 +33,26 @@ interface User {
   avatar?: string; // Ensure avatar is included (optional)
 }
 
-export default function HeaderDashboard() {
+type curentTabProp = {
+  currentTab: string;
+};
+
+export default function HeaderDashboard({ currentTab }: curentTabProp) {
   const notifications = 3;
   //const [user, setUser] = useState<User | null>(null);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [initials, setInitials] = useState("");
   const [currentTime, setCurrentTime] = useState("");
-  const {user} = useAuth();
+  const { user } = useAuth();
 
   useEffect(() => {
-
-      if (user) {
-        const result = splitName(user.name);
-        setFirstName(result.firstName);
-        setLastName(result.lastName);
-        setInitials(result.initials);
-      }
+    if (user) {
+      const result = splitName(user.name);
+      setFirstName(result.firstName);
+      setLastName(result.lastName);
+      setInitials(result.initials);
+    }
 
     // Set current time and update every minute
     updateCurrentTime();
@@ -106,10 +109,7 @@ export default function HeaderDashboard() {
           <span className="sr-only">Toggle menu</span>
         </Button>
         <div className="hidden md:flex items-center gap-2">
-          <div className="h-8 w-8 rounded-md bg-indigo-600 flex items-center justify-center">
-            <Calendar className="h-5 w-5 text-white" />
-          </div>
-          <span className="font-bold text-xl text-slate-800">SwifTab</span>
+          <span className="font-bold text-xl text-slate-800">{currentTab}</span>
         </div>
       </div>
 

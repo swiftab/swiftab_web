@@ -1,20 +1,15 @@
-"use client";
+"use client"
 
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-} from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
-import { useSaveLayoutInfo } from "@/hooks/tablehook/savelayouthook";
-import { SaveLayoutData } from "@/types/layoutinfo";
+import type React from "react"
+
+import { useState } from "react"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet"
+import { Label } from "@/components/ui/label"
+import { Checkbox } from "@/components/ui/checkbox"
+import { useSaveLayoutInfo } from "@/hooks/tablehook/savelayouthook"
+import type { SaveLayoutData } from "@/types/layoutinfo"
 
 const diningAreas = [
   "Main Dining Room",
@@ -30,74 +25,66 @@ const diningAreas = [
   "Lounge Area",
   "Al Fresco Dining",
   "Dining Pods",
-];
+]
 
-interface RestaurantLayoutModalProps {
-  isOpen: boolean;
-  onClose: () => void;
+interface RestaurantLayoutProps {
+  isOpen: boolean
+  onClose: () => void
 }
 
-export function RestaurantLayoutModal({
-  isOpen,
-  onClose,
-}: RestaurantLayoutModalProps) {
-  const [selectedDiningAreas, setSelectedDiningAreas] = useState<string[]>([]);
-  const [tableCapacity, setTableCapacity] = useState<string>("");
-  const [totalTables, setTotalTables] = useState<string>("");
+export function RestaurantLayout({ isOpen, onClose }: RestaurantLayoutProps) {
+  const [selectedDiningAreas, setSelectedDiningAreas] = useState<string[]>([])
+  const [tableCapacity, setTableCapacity] = useState<string>("")
+  const [totalTables, setTotalTables] = useState<string>("")
 
-  const mutation = useSaveLayoutInfo();
+  const mutation = useSaveLayoutInfo()
 
   const toggleDiningArea = (area: string) => {
-    setSelectedDiningAreas((prev) =>
-      prev.includes(area) ? prev.filter((item) => item !== area) : [...prev, area]
-    );
-  };
+    setSelectedDiningAreas((prev) => (prev.includes(area) ? prev.filter((item) => item !== area) : [...prev, area]))
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault()
 
     if (!selectedDiningAreas.length) {
-      alert("Please select at least one dining area.");
-      return;
+      alert("Please select at least one dining area.")
+      return
     }
 
     const layoutData: SaveLayoutData = {
       diningAreas: selectedDiningAreas,
       tableCapacity: Number(tableCapacity),
       totalTables: Number(totalTables),
-    };
+    }
 
     mutation.mutate(layoutData, {
       onSuccess: (response) => {
-        console.log("Layout saved:", response);
-        localStorage.setItem('diningAreas', JSON.stringify(response.diningAreas));
-        alert("Layout saved successfully!");
-        onClose();
+        console.log("Layout saved:", response)
+        localStorage.setItem("diningAreas", JSON.stringify(response.diningAreas))
+        onClose()
+        window.location.reload();
       },
       onError: (error) => {
-        console.error("Error saving layout info:", error.message);
-        alert("Failed to save layout. Please try again.");
+        console.error("Error saving layout info:", error.message)
+        alert("Failed to save layout. Please try again.")
       },
-    });
-  };
+    })
+  }
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>Add Dining Area</DialogTitle>
-          <DialogDescription>
-            Select one or more dining areas and optionally provide table capacity
-            and total tables.
-          </DialogDescription>
-        </DialogHeader>
-        <form onSubmit={handleSubmit}>
-          <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-4 items-start gap-4">
-              <Label htmlFor="diningArea" className="text-right">
-                Dining Areas
-              </Label>
-              <div className="col-span-3">
+    <Sheet open={isOpen} onOpenChange={onClose}>
+      <SheetContent className="w-[400px] sm:w-[540px]">
+        <SheetHeader>
+          <SheetTitle>Add Dining Area</SheetTitle>
+          <SheetDescription>
+            Select one or more dining areas and optionally provide table capacity and total tables.
+          </SheetDescription>
+        </SheetHeader>
+        <form onSubmit={handleSubmit} className="space-y-6 mt-6">
+          <div className="space-y-4">
+            <div className="space-y-3">
+              <Label className="text-sm font-medium">Dining Areas</Label>
+              <div className="grid grid-cols-1 gap-3 max-h-48 overflow-y-auto">
                 {diningAreas.map((area) => (
                   <div key={area} className="flex items-center space-x-2">
                     <Checkbox
@@ -105,13 +92,16 @@ export function RestaurantLayoutModal({
                       checked={selectedDiningAreas.includes(area)}
                       onCheckedChange={() => toggleDiningArea(area)}
                     />
-                    <Label htmlFor={area}>{area}</Label>
+                    <Label htmlFor={area} className="text-sm">
+                      {area}
+                    </Label>
                   </div>
                 ))}
               </div>
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="tableCapacity" className="text-right">
+
+            <div className="space-y-2">
+              <Label htmlFor="tableCapacity" className="text-sm font-medium">
                 Table Capacity
               </Label>
               <Input
@@ -119,12 +109,13 @@ export function RestaurantLayoutModal({
                 type="number"
                 value={tableCapacity}
                 onChange={(e) => setTableCapacity(e.target.value)}
-                className="col-span-3"
                 min="1"
+                placeholder="Enter table capacity"
               />
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="totalTables" className="text-right">
+
+            <div className="space-y-2">
+              <Label htmlFor="totalTables" className="text-sm font-medium">
                 Total Tables
               </Label>
               <Input
@@ -132,18 +123,17 @@ export function RestaurantLayoutModal({
                 type="number"
                 value={totalTables}
                 onChange={(e) => setTotalTables(e.target.value)}
-                className="col-span-3"
                 min="1"
+                placeholder="Enter total number of tables"
               />
             </div>
           </div>
-          <DialogFooter>
-            <Button type="submit" disabled={mutation.isPending}>
-              {mutation.isPending ? "Saving..." : "Save changes"}
-            </Button>
-          </DialogFooter>
+
+          <Button type="submit" disabled={mutation.isPending} className="w-full">
+            {mutation.isPending ? "Saving..." : "Save changes"}
+          </Button>
         </form>
-      </DialogContent>
-    </Dialog>
-  );
+      </SheetContent>
+    </Sheet>
+  )
 }

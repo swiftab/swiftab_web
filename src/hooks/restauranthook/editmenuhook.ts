@@ -17,6 +17,7 @@ export function useEditMenuItem(): UseMutationResult<
       editMenuItem(updatedItem, menuType),
     onSuccess: (data: EditResponse) => {
       console.log("Menu item updated successfully", data);
+      window.location.reload();
     },
     onError: (error: ErrorResponse) => {
       console.error("Error updating menu item:", error.message);
