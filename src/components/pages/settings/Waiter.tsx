@@ -29,16 +29,17 @@ export default function WaiterSignupTab() {
   const { toast } = useToast();
   const signUpMutation = useWaiterSignUp();
 
-  const handleSubmit = async (values: {
-    firstname: string;
-    lastname: string;
-    email: string;
-    phoneNumber: string;
-  }) => {
+  const handleSubmit = async (
+    values: {
+      firstname: string;
+      lastname: string;
+      email: string;
+      phoneNumber: string;
+    },
+    { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
+  ) => {
     try {
-      setLoading(true);
-      const { ...submitData } = values;
-      await signUpMutation.mutateAsync(submitData);
+      await signUpMutation.mutateAsync(values);
 
       toast({
         title: "Waiter Registered Successfully!",
@@ -54,7 +55,7 @@ export default function WaiterSignupTab() {
         variant: "destructive",
       });
     } finally {
-      setLoading(false);
+      setSubmitting(false);
     }
   };
 
@@ -196,10 +197,10 @@ export default function WaiterSignupTab() {
 
                 <Button
                   type="submit"
-                  disabled={isSubmitting || loading}
+                  disabled={isSubmitting}
                   className="w-full bg-teal-600 hover:bg-teal-700 text-white py-2 rounded-md transition-colors duration-300 mt-4"
                 >
-                  {loading ? (
+                  {isSubmitting ? (
                     <div className="flex items-center justify-center gap-2">
                       <div className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full" />
                       <span>Registering Waiter...</span>
