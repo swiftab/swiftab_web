@@ -22,7 +22,6 @@ import { fetchMenu } from "@/hooks/restauranthook/fetchmenuhook";
 import { useDeleteMenu } from "@/hooks/restauranthook/deletehook";
 import { toast } from "@/hooks/use-toast";
 import { useEditMenuItem } from "@/hooks/restauranthook/editmenuhook";
-import { FullScreenLoader } from "@/components/Loading/FullScreen";
 import { LoadingSpinner } from "@/components/ui/loading";
 
 interface MenuItem {

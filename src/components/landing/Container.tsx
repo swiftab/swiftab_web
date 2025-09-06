@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
-import { CalendarClock, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import FeatureSection from "./benefits/ServiceCard";
 import EnhancedFeatures from "./features/EnhancedFeatures";

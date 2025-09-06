@@ -11,6 +11,7 @@ import * as Yup from "yup";
 import { Card, CardContent } from "@/components/ui/card";
 import { TabsContent } from "@/components/ui/tabs";
 import { UserPlus, Mail, Phone, User } from "lucide-react";
+import WaiterTable from "./WaiterTable";
 
 const WaiterSignUpSchema = Yup.object().shape({
   firstname: Yup.string().required("First name is required"),
@@ -45,9 +46,6 @@ export default function WaiterSignupTab() {
           "Waiter account has been created and a validation code has been sent to their email.",
         variant: "default",
       });
-
-      // Reset form using formik's resetForm (passed as parameter to this function)
-      // Not implemented here as it depends on formik instance
     } catch (err: any) {
       toast({
         title: "Registration Failed",
@@ -224,6 +222,7 @@ export default function WaiterSignupTab() {
               </Form>
             )}
           </Formik>
+          <WaiterTable />
         </CardContent>
       </Card>
     </TabsContent>

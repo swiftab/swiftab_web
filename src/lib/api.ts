@@ -246,3 +246,53 @@ export const saveTableLayout = async (
     }
   }
 };
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export async function fetchWaiter() {
+  try {
+    const response = await apiClient.get("/auth/admin/fetch-waiter");
+    return response.data;
+  } catch (error: any) {
+    console.log("error fetching waiter",error)
+    if (error?.response?.status === 401) {
+      // User is not logged in
+      return null;
+    } else if (error?.response) {
+      const errorMessage =
+        error?.response?.data?.error || "Error fetching waiter.";
+      throw new Error(errorMessage);
+    } else {
+      throw new Error("Network error or no response from server.");
+    }
+  }
+}
+
+export const deleteWaiter = async (
+  waiterId: string
+): Promise<DeleteResponse> => {
+  try {
+    const response = await apiClient.delete<DeleteResponse>(
+      `/auth/admin/waiter/${waiterId}`
+    );
+    return response.data;
+  } catch (error: any) {
+    if (error?.response) {
+      console.error("delete waiter error:", error.response);
+
+      const errorMessage =
+        error.response.data?.message ||
+        "An error occurred while removing waiter.";
+
+      throw {
+        message: errorMessage,
+        statusCode: error.response.status,
+        details: error.response.data,
+      } as ErrorResponse;
+    } else {
+      console.error("Network error or no response:", error);
+      throw {
+        message: "Network error or no response from the server.",
+      } as ErrorResponse;
+    }
+  }
+};

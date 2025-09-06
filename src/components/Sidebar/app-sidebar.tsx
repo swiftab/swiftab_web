@@ -15,7 +15,6 @@ import {
 } from "@/components/ui/sidebar";
 import { useMutation } from "@tanstack/react-query";
 import { fetchLogout } from "@/hooks/authhook/authhooks";
-import { FullScreenLoader } from "../Loading/FullScreen";
 import Link from "next/link";
 import {
   Calendar,

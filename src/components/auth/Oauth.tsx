@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Sparkles } from "lucide-react";
 import { Button } from "../ui/button";
 import { useAuth } from "./AuthContext";
 import { toast } from "react-toastify";

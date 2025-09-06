@@ -26,7 +26,6 @@ import { ReservationStats } from "./reservationstats";
 import { Pagination } from "./pagination";
 import { useQuery } from "@tanstack/react-query";
 import { fetchAllReservation } from "@/hooks/reservationhook/fetchreservation";
-import { FullScreenLoader } from "@/components/Loading/FullScreen";
 import { LoadingSpinner } from "@/components/ui/loading";
 
 interface Reservation {
