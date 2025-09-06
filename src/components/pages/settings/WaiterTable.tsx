@@ -24,18 +24,19 @@ interface Waiter {
   createdAt: string;
 }
 
-export default function WaiterTable() {
-  const {
-    data: waiters,
-    isLoading,
-    isError,
-    error,
-  } = useQuery<Waiter[]>({
-    queryKey: ["waiters"],
-    queryFn: fetchWaiter,
-  });
+interface WaiterResponse {
+  message: string;
+  waiters: Waiter[];
+}
 
-  const deleteMutation = useDeleteWaiter()
+export default function WaiterTable() {
+  const { data, isLoading, isError, error } = useQuery<WaiterResponse>({
+  queryKey: ["waiters"],
+  queryFn: fetchWaiter,
+});
+
+const waiters = data?.waiters || [];
+  const deleteMutation = useDeleteWaiter();
 
   const handleDelete = (id: string) => {
     if (confirm("Are you sure you want to delete this waiter?")) {
@@ -56,6 +57,8 @@ export default function WaiterTable() {
   if (!waiters || waiters.length === 0) {
     return <p className="text-gray-500">No waiters registered yet.</p>;
   }
+
+  
 
   return (
     <div className="mt-8">
