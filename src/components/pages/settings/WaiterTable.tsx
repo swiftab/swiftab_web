@@ -26,7 +26,7 @@ interface Waiter {
 
 interface WaiterResponse {
   message: string;
-  waiters: Waiter[];
+  waiter: Waiter[];
 }
 
 export default function WaiterTable() {
@@ -35,7 +35,7 @@ export default function WaiterTable() {
   queryFn: fetchWaiter,
 });
 
-const waiters = data?.waiters || [];
+const waiters = data?.waiter || [];
   const deleteMutation = useDeleteWaiter();
 
   const handleDelete = (id: string) => {
