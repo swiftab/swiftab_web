@@ -2,8 +2,8 @@ import axios from "axios";
 
 
 const apiClient = axios.create({
-  //baseURL: process.env.NODE_ENV === "production"?"https://server-production-2ee7.up.railway.app/swiftab":"http://localhost:3002/swiftab",
-  baseURL:'https://server-production-2ee7.up.railway.app/swiftab',
+  baseURL: "http://localhost:3002/swiftab",
+ // baseURL:'https://server-production-2ee7.up.railway.app/swiftab',
   headers: {
     "Content-Type": "application/json",
     "Accept": "application/json"
@@ -14,7 +14,7 @@ const apiClient = axios.create({
 apiClient.interceptors.request.use((config) => {
   const token = document.cookie
     .split("; ")
-    .find((row) => row.startsWith("token="))
+    .find((row) => row.startsWith("admin_auth="))
     ?.split("=")[1];
 
   if (token) {

@@ -222,3 +222,8 @@
   gray:'#cdd5d7',
   black:'#000'
 } */
+
+
+.oswald {
+  font-family: var(--font-oswald);
+}

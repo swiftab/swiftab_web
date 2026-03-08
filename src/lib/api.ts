@@ -48,9 +48,7 @@ export async function fetchAdminInfo() {
     const response = await apiClient.get("/auth/admin/fetchinfo");
     return response.data;
   } catch (error: any) {
-    console.log("error fetching admin info",error)
     if (error?.response?.status === 401) {
-      // User is not logged in
       return null;
     } else if (error?.response) {
       const errorMessage =

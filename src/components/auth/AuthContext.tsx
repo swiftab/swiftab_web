@@ -11,11 +11,8 @@ import {
 } from "react";
 
 type User = {
-  firstName: string;
-  lastName: string;
   email: string | null;
   phoneNumber: string | null;
-  avatar:string | null;
   createdAt: string | null;
   restaurantId:string | null;
   name: string,

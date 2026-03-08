@@ -2,9 +2,11 @@ import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 
 // Use environment variable for flexibility
-const SOCKET_URL =
-  process.env.NEXT_PUBLIC_WS_URL ||
-  "wss://server-production-2ee7.up.railway.app";
+// const SOCKET_URL =
+//   process.env.NEXT_PUBLIC_WS_URL ||
+//   "wss://server-production-2ee7.up.railway.app";
+
+const SOCKET_URL = "http://localhost:3002/"
 
 const socket = io(SOCKET_URL, {
   withCredentials: true, // Send cookies (token)

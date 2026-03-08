@@ -1,59 +1,56 @@
 "use client";
 
 import { SignUpForm } from "@/components/auth/SignUpForm";
-import React from "react";
+import Image from "next/image";
 
-export default function page() {
+export default function Page() {
   return (
-    <div className="flex min-h-screen bg-gray-50">
-      {/* Left Section - Background Image */}
-      <div
-        className="hidden lg:flex w-1/2 bg-cover bg-center relative"
-        style={{ backgroundImage: "url('/swiftab/bg.jpg')" }}
-      >
-        <div className="absolute inset-0 bg-teal-800 bg-opacity-70 flex flex-col justify-center p-12">
-          <div className="text-white max-w-lg">
-            <h1 className="text-4xl font-bold mb-6">Streamline Your Restaurant Management</h1>
-            <p className="text-xl mb-8">Join thousands of restaurants that use our system to manage reservations, tables, staff, and more.</p>
-            
-            <div className="space-y-6">
-              <div className="flex items-start gap-3">
-                <div className="bg-white rounded-full p-1 flex-shrink-0">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#008080" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                  </svg>
-                </div>
-                <p className="text-white text-lg">Reduce no-shows by up to 45%</p>
-              </div>
-              
-              <div className="flex items-start gap-3">
-                <div className="bg-white rounded-full p-1 flex-shrink-0">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#008080" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                  </svg>
-                </div>
-                <p className="text-white text-lg">Optimize table turnover rates</p>
-              </div>
-              
-              <div className="flex items-start gap-3">
-                <div className="bg-white rounded-full p-1 flex-shrink-0">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#008080" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                  </svg>
-                </div>
-                <p className="text-white text-lg">Access insights on customer preferences</p>
-              </div>
+    <div className=" min-h-screen flex bg-gray-50 oswald">
+      <div className="hidden lg:flex lg:w-1/2 relative bg-gray-900 overflow-hidden">
+        <div
+          className="absolute inset-0 bg-cover bg-center opacity-50"
+          style={{ backgroundImage: "url('/swiftab/bg.jpg')" }}
+        />
+
+        <div className="absolute inset-0 bg-linear-to-br from-teal-900/90 to-gray-900/90" />
+        <div className="relative z-10 flex flex-col w-full p-12 xl:p-20 justify-between">
+          <div>
+            <div className="flex items-center gap-2 mb-12">
+              <Image
+                src="/assets/logo/logo2.png"
+                alt="swiftab"
+                width={1000}
+                height={800}
+                className=" md:h-24 md:w-auto transition-transform duration-300 hover:scale-105"
+              />
             </div>
+            <h1 className="text-4xl xl:text-5xl font-extrabold text-white leading-[1.15] mb-6 max-w-lg">
+              Start Optimizing Your Operations Today.
+            </h1>
+            <p className="text-lg text-teal-100 max-w-md leading-relaxed mb-10">
+              Join thousands of top-tier restaurants using our system to manage
+              reservations, optimize floor plans, and empower staff.
+            </p>
+          </div>
+
+          <div className="mt-12 text-teal-200/60 text-sm font-medium">
+            © {new Date().getFullYear()} Swiftab. All rights reserved.
           </div>
         </div>
       </div>
-      
-      {/* Right section - Sign Up Form */}
-      <div className="w-full lg:w-1/2 flex justify-center items-center p-4 md:p-8">
-        <SignUpForm />
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-6 sm:p-12 lg:p-16">
+        <div className="w-full max-w-md flex flex-col justify-center">
+          <div className="flex lg:hidden items-center justify-center gap-2 mb-10">
+            <div className="w-8 h-8 bg-teal-600 rounded-lg flex items-center justify-center text-white font-bold italic">
+              S
+            </div>
+            <span className="text-2xl font-bold text-gray-900 tracking-tight">
+              Swiftab
+            </span>
+          </div>
+
+          <SignUpForm />
+        </div>
       </div>
     </div>
   );

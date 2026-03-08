@@ -78,12 +78,14 @@ export default function CreateItemSheet() {
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>
-        <Button className="bg-gray-200 hover:bg-gray-300 text-black">
-          <Plus className="mr-2 h-4 w-4" />
-          Create New Item
-        </Button>
+        <Button 
+  className="fixed bottom-6 right-6 md:bottom-10 md:right-10 z-50 h-14 w-14 rounded-full bg-teal-600 hover:bg-teal-700 text-white shadow-xl shadow-teal-600/30 transition-all hover:scale-105 p-0 flex items-center justify-center"
+  aria-label="Create New Item"
+>
+  <Plus className="h-6 w-6" />
+</Button>
       </SheetTrigger>
-      <SheetContent className="w-[400px] sm:w-[540px] overflow-y-auto">
+      <SheetContent className="w-400px sm:w-540px overflow-y-auto oswald">
         <SheetHeader>
           <SheetTitle>Add Menu</SheetTitle>
         </SheetHeader>
@@ -176,7 +178,7 @@ export default function CreateItemSheet() {
             {useFileUpload ? (
               <div>
                 <Label htmlFor="imageFile" className="text-sm font-medium">
-                  Upload Image
+                  Upload Menu Image
                 </Label>
                 <Input
                   id="imageFile"

@@ -4,8 +4,8 @@ interface HeaderProps {
   currentTab: string;
 }
 
-export function Header({ currentTab }: HeaderProps) {
+export function Header() {
   return(
-    <HeaderDashboard currentTab={currentTab}/>
+    <HeaderDashboard />
   )
 }

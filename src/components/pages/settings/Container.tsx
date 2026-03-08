@@ -129,7 +129,7 @@ const Container = () => {
   const handleInputChange = <K extends keyof FormDataType>(
     section: K,
     field: keyof FormDataType[K],
-    value: string | boolean
+    value: string | boolean,
   ) => {
     setFormData((prev) => ({
       ...prev,
@@ -144,7 +144,7 @@ const Container = () => {
   const handleHoursChange = (
     index: number,
     field: "open" | "from" | "to",
-    value: string | boolean
+    value: string | boolean,
   ) => {
     setFormData((prev) => {
       const updatedHours = [...prev.restaurant.hours];
@@ -181,7 +181,7 @@ const Container = () => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto">
+    <div className="max-w-6xl mx-auto oswald">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList className="grid grid-cols-5 mb-6 bg-white">
           <TabsTrigger value="restaurant">Restaurant</TabsTrigger>
@@ -232,7 +232,7 @@ const Container = () => {
                         handleInputChange(
                           "restaurant",
                           "cuisine",
-                          e.target.value
+                          e.target.value,
                         )
                       }
                     />
@@ -424,7 +424,7 @@ const Container = () => {
                         handleInputChange(
                           "profile",
                           "firstName",
-                          e.target.value
+                          e.target.value,
                         )
                       }
                     />
@@ -542,7 +542,6 @@ const Container = () => {
           </Card>
         </TabsContent>
 
-        {/* waiter form */}
         <TabsContent value="waiters">
           <Card>
             <CardContent className="pt-6">
@@ -551,25 +550,25 @@ const Container = () => {
           </Card>
         </TabsContent>
 
-        {/* Ads */}
-        {/* Analytics Tab */}
         <TabsContent value="promotion">
           <Card className="border border-gray-200 shadow-sm mb-6">
-                  <CardContent className="pt-6">
-                    <div className="flex items-center mb-6 space-x-3">
-                      <div className="bg-purple-100 p-2 rounded-full">
-                        <Ticket className="h-6 w-6 text-purple-600" />
-                      </div>
-                      <div>
-                        <h2 className="text-xl font-semibold text-gray-800">Restaurant Promotions</h2>
-                        <p className="text-gray-500 text-sm">
-                          Create special offers and promotions to attract customers
-                        </p>
-                      </div>
-                    </div>
-                    <AdsManager />
-                    </CardContent>
-                    </Card>
+            <CardContent className="pt-6">
+              <div className="flex items-center mb-6 space-x-3">
+                <div className="bg-purple-100 p-2 rounded-full">
+                  <Ticket className="h-6 w-6 text-purple-600" />
+                </div>
+                <div>
+                  <h2 className="text-xl font-semibold text-gray-800">
+                    Restaurant Promotions
+                  </h2>
+                  <p className="text-gray-500 text-sm">
+                    Create special offers and promotions to attract customers
+                  </p>
+                </div>
+              </div>
+              <AdsManager />
+            </CardContent>
+          </Card>
         </TabsContent>
       </Tabs>
     </div>

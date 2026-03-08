@@ -15,14 +15,14 @@ interface FloorSelectorProps {
 
 export function FloorSelector({ floors, selectedFloor, onFloorChange }: FloorSelectorProps) {
   return (
-    <div className="flex items-center gap-2 bg-background p-2 rounded-md shadow-sm">
+    <div className="w-full sm:w-[180px]">
       <Select value={selectedFloor} onValueChange={onFloorChange}>
-        <SelectTrigger className="w-[200px]">
-          <SelectValue placeholder="Select floor" />
+        <SelectTrigger className="w-full bg-gray-50 border-gray-200 text-gray-800 font-medium h-9 rounded-lg focus:ring-indigo-500/20">
+          <SelectValue placeholder="Select Floor" />
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent className="rounded-xl border-gray-100 shadow-lg">
           {floors.map((floor) => (
-            <SelectItem key={floor.id} value={floor.id}>
+            <SelectItem key={floor.id} value={floor.id} className="rounded-lg font-medium">
               {floor.name}
             </SelectItem>
           ))}
@@ -31,4 +31,3 @@ export function FloorSelector({ floors, selectedFloor, onFloorChange }: FloorSel
     </div>
   )
 }
-

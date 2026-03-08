@@ -1,37 +1,33 @@
 import { useMutation, UseMutationResult } from "@tanstack/react-query";
-import { AuthData, AuthResponse, Authwaiter, AuthWaiterResponse, ErrorResponse } from "@/types/auth";
+import {
+  AuthData,
+  AuthResponse,
+  Authwaiter,
+  AuthWaiterResponse,
+  ErrorResponse,
+} from "@/types/auth";
 import { loginAdmin, signUpAdmin, signUpWaiter } from "@/lib/api";
 import apiClient from "@/lib/axios";
-import { useRouter } from "next/navigation";
+import { useAuth } from "@/components/auth/AuthContext";
 
 export function useLogin(): UseMutationResult<
   AuthResponse,
   ErrorResponse,
   AuthData
 > {
-  const router = useRouter();
-  
+  const { refreshUser } = useAuth();
+
   return useMutation<AuthResponse, ErrorResponse, AuthData>({
     mutationFn: loginAdmin,
-    onSuccess: (data: AuthResponse) => {
-      console.log("Login successful:", data);
-      // if (data.token) {
-      //   localStorage.setItem("authToken", data.token);
-      // }
-      if (data.token) {
-        //document.cookie = `token=${data.token}; path=/; max-age=${24 * 60 * 60}; secure=${process.env.NODE_ENV === 'production'}; sameSite=${process.env.NODE_ENV === 'production' ? 'none' : 'lax'}`;
-        localStorage.setItem("authToken", data.token); // Optional
-      }
-      if (data.user) {
-        localStorage.setItem("user", JSON.stringify(data.user));
-      }
-      router.replace('/dash');
+    onSuccess: async () => {
+      setTimeout(() => {
+        refreshUser();
+      }, 1000);
     },
     onError: (error: ErrorResponse) => {
       console.error(
-        `Login error (${error.statusCode || "Unknown"}): ${error.message}`
+        `Login error (${error.statusCode || "Unknown"}): ${error.message}`,
       );
-      alert(error.message || "An unexpected error occurred. Please try again."); // Display error to user
       if (error.details) {
         console.error("Additional error details:", error.details);
       }

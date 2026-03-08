@@ -8,20 +8,17 @@ interface StepIndicatorProps {
 
 export function StepIndicator({ currentStep, totalSteps, className = '' }: StepIndicatorProps) {
   return (
-    <div className={`w-full max-w-2xl mx-auto px-4 py-3 ${className}`}>
+    <div className={`w-full max-w-2xl mx-auto px-4 py-3 oswald ${className}`} >
       <div className="relative">
-        {/* Progress Line Background */}
         <div className="absolute top-4 left-0 w-full h-0.5 bg-gray-200 rounded-full" />
         
-        {/* Active Progress Line */}
         <div 
-          className="absolute top-4 left-0 h-0.5 bg-gradient-to-r from-[#0080807f] to-[#008080] rounded-full transition-all duration-500 ease-out"
+          className="absolute top-4 left-0 h-0.5 bg-linear-to-r from-[#0080807f] to-[#008080] rounded-full transition-all duration-500 ease-out"
           style={{ 
             width: `${((currentStep - 1) / (totalSteps - 1)) * 100}%` 
           }}
         />
 
-        {/* Step Circles and Labels */}
         <div className="relative flex justify-between">
           {Array.from({ length: totalSteps }, (_, i) => i + 1).map((step) => {
             const isCompleted = step < currentStep;
@@ -30,13 +27,12 @@ export function StepIndicator({ currentStep, totalSteps, className = '' }: StepI
 
             return (
               <div key={step} className="flex flex-col items-center group">
-                {/* Step Circle */}
                 <div
                   className={`
                     relative w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold
                     transition-all duration-300 ease-out transform
                     ${isCompleted 
-                      ? 'bg-gradient-to-r from-[#008080] to-[#008080] text-white shadow-lg scale-110' 
+                      ? 'bg-linear-to-r from-[#008080] to-[#008080] text-white shadow-lg scale-110' 
                       : isCurrent
                       ? 'bg-[#008080] text-white shadow-lg ring-4 ring-blue-100 scale-110'
                       : 'bg-gray-100 text-gray-400 hover:bg-gray-200'
@@ -60,7 +56,6 @@ export function StepIndicator({ currentStep, totalSteps, className = '' }: StepI
                   )}
                 </div>
 
-                {/* Step Label */}
                 <div className="mt-3 text-center">
                   <div
                     className={`
@@ -74,7 +69,6 @@ export function StepIndicator({ currentStep, totalSteps, className = '' }: StepI
                     Step {step}
                   </div>
                   
-                  {/* Status Indicator */}
                   <div
                     className={`
                       mt-1 text-xs transition-colors duration-300
@@ -92,17 +86,6 @@ export function StepIndicator({ currentStep, totalSteps, className = '' }: StepI
               </div>
             );
           })}
-        </div>
-      </div>
-
-      {/* Progress Summary */}
-      <div className="mt-6 text-center">
-        <div className="text-sm text-gray-600">
-          Step <span className="font-semibold text-blue-600">{currentStep}</span> of{' '}
-          <span className="font-semibold">{totalSteps}</span>
-        </div>
-        <div className="mt-1 text-xs text-gray-500">
-          {Math.round(((currentStep - 1) / (totalSteps - 1)) * 100)}% Complete
         </div>
       </div>
     </div>

@@ -1,72 +1,37 @@
 import React from "react";
+import { UtensilsCrossed } from "lucide-react";
 
-// Utility function to merge class names (simplified version)
 const cn = (...classes: (string | undefined | null | false)[]) => {
   return classes.filter(Boolean).join(' ');
 };
 
-export const LoadingSpinner = ({ className,desc }: { className?: string,desc?:string }) => {
+export const LoadingSpinner = ({ className, desc = "Loading..." }: { className?: string, desc?: string }) => {
   return (
-    <div className={cn("relative flex flex-col items-center justify-center", className)}>
-      {/* Main spinning plate */}
-      <div className="relative">
-        {/* Outer plate ring */}
-        <div className="w-16 h-16 border-4 border-amber-100 border-t-amber-500 rounded-full animate-spin"></div>
+    <div className={cn("flex flex-col items-center justify-center space-y-8", className)}>
+      
+      <div className="relative flex items-center justify-center">
         
-        {/* Inner plate */}
-        <div className="absolute inset-2 w-12 h-12 bg-gradient-to-br from-amber-50 to-amber-100 rounded-full shadow-inner"></div>
+        <div className="absolute inset-[-20px] border-[3px] border-teal-50 border-t-teal-600 rounded-full animate-spin"></div>
         
-        {/* Animated food elements */}
-        <div className="absolute inset-0 flex items-center justify-center">
-          {/* Fork and knife animation */}
-          <div className="relative w-8 h-8">
-            {/* Fork */}
-            <div className="absolute left-1 top-2 w-1 h-4 bg-gray-600 rounded-full animate-pulse"></div>
-            <div className="absolute left-0.5 top-1 w-0.5 h-1.5 bg-gray-600 rounded-full"></div>
-            <div className="absolute left-1.5 top-1 w-0.5 h-1.5 bg-gray-600 rounded-full"></div>
-            
-            {/* Knife */}
-            <div className="absolute right-1 top-2 w-1 h-4 bg-gray-600 rounded-full animate-pulse animation-delay-500"></div>
-            <div className="absolute right-0.5 top-1 w-1 h-1.5 bg-gray-700 rounded-sm"></div>
-          </div>
+        <div className="absolute inset-[-8px] border-2 border-teal-500/20 rounded-full animate-ping" style={{ animationDuration: '2s' }}></div>
+        
+        <div className="relative flex items-center justify-center h-16 w-16 bg-gradient-to-tr from-teal-600 to-teal-400 rounded-full shadow-lg shadow-teal-500/30">
+          <UtensilsCrossed className="h-7 w-7 text-white drop-shadow-md" />
         </div>
       </div>
-      
-      {/* Chef's hat floating above */}
-      <div className="absolute -top-6 animate-bounce">
-        <div className="relative">
-          {/* Hat base */}
-          <div className="w-8 h-3 bg-white rounded-full shadow-sm"></div>
-          {/* Hat top */}
-          <div className="absolute -top-4 left-1 w-6 h-5 bg-white rounded-t-full shadow-sm"></div>
-          {/* Hat band */}
-          <div className="absolute -top-1 left-0 w-8 h-1 bg-gray-100 rounded-full"></div>
-        </div>
-      </div>
-      
-      {/* Floating ingredients around the spinner */}
-      <div className="absolute inset-0 w-20 h-20">
-        {/* Tomato */}
-        <div className="absolute top-0 left-4 w-2 h-2 bg-red-500 rounded-full animate-pulse opacity-70"></div>
-        {/* Basil leaf */}
-        <div className="absolute top-6 right-0 w-2 h-1.5 bg-green-500 rounded-full animate-pulse opacity-70 animation-delay-1000"></div>
-        {/* Garlic */}
-        <div className="absolute bottom-2 left-0 w-1.5 h-2 bg-yellow-100 rounded-full animate-pulse opacity-70 animation-delay-1500"></div>
-        {/* Pepper */}
-        <div className="absolute bottom-0 right-4 w-1.5 h-1.5 bg-orange-600 rounded-full animate-pulse opacity-70 animation-delay-2000"></div>
-      </div>
-      
-      {/* Loading text */}
-      <div className="mt-8 text-center">
-        <p className="text-gray-700 font-semibold text-sm tracking-wide animate-pulse">
+
+      <div className="flex flex-col items-center gap-2.5">
+        <h3 className="text-sm font-bold text-gray-700 tracking-wider uppercase">
           {desc}
-        </p>
-        <div className="flex justify-center mt-2 space-x-1">
-          <div className="w-1 h-1 bg-amber-500 rounded-full animate-bounce"></div>
-          <div className="w-1 h-1 bg-amber-500 rounded-full animate-bounce animation-delay-200"></div>
-          <div className="w-1 h-1 bg-amber-500 rounded-full animate-bounce animation-delay-400"></div>
+        </h3>
+        
+        <div className="flex gap-1.5">
+          <div className="h-1.5 w-1.5 rounded-full bg-teal-500 animate-bounce" style={{ animationDelay: "0ms" }}></div>
+          <div className="h-1.5 w-1.5 rounded-full bg-teal-400 animate-bounce" style={{ animationDelay: "150ms" }}></div>
+          <div className="h-1.5 w-1.5 rounded-full bg-teal-300 animate-bounce" style={{ animationDelay: "300ms" }}></div>
         </div>
       </div>
+
     </div>
   );
 };
