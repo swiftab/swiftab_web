@@ -1,16 +1,10 @@
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 
-// Use environment variable for flexibility
-// const SOCKET_URL =
-//   process.env.NEXT_PUBLIC_WS_URL ||
-//   "wss://server-production-2ee7.up.railway.app";
-
-const SOCKET_URL = "http://localhost:3002/"
+const SOCKET_URL = process.env.NEXT_PUBLIC_SOCKET_URL
 
 const socket = io(SOCKET_URL, {
-  withCredentials: true, // Send cookies (token)
-  // Remove transports: ["websocket"] to allow polling fallback if needed
+  withCredentials: true,
 });
 
 interface TableStatus {
